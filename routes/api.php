@@ -12,6 +12,7 @@ Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
+Route::post('/register', [AuthenticationController::class, 'register']);
 
 
 Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');

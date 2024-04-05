@@ -8,11 +8,12 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\AccountCreation;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticationController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         try {
             $credentials = $request->only('email', 'password');
@@ -37,17 +38,21 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         try {
+
             $request->validate([
                 'name' => 'required',
-                'email' => 'required|email|unique:users,email'
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:6',
+                'confirm_password' => 'required|same:password'
             ]);
 
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->password = Hash::make($request->password);
             $user->save();
 
             $tokenResult = $user->createToken('api-token');
@@ -55,19 +60,28 @@ class AuthenticationController extends Controller
             $token->expires_at = now()->addHours(1); // Token expires in 1 hour
             $token->save();
 
-            return response()->json(['message' => 'Account created successfully', 'token' => $token], 201);
+            $plainTextToken = $tokenResult->plainTextToken;
+
+            return response()->json(['message' => 'Account created successfully', 'token' => $plainTextToken], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()()], 400);
         }
     }
 
-    public function createUser(Request $request)
+    public function createUser(Request $request): JsonResponse
     {
         try {
+
             $request->validate([
                 'name' => 'required|min:3',
                 'email' => 'required|email|unique:users',
+                'role' => 'in:admin,customer,staff,super-admin,driver,manager'
             ]);
+
+            echo 'User created successfully';
+
             // $password = Str::random(10); Auto generate password of 10 characters
             $password = 'password'; // Default password 'password
 
@@ -77,18 +91,21 @@ class AuthenticationController extends Controller
             $user->password = Hash::make($password);
             $user->save();
 
-            Mail::to($request->email)->send(new AccountCreation($request->email, $password,));
+            //  Mail::to($request->email)->send(new AccountCreation($request->email, $password,));
 
             return response()->json([
                 'message' => 'User created successfully',
-                'password' => $password
+                'password' => $password,
+                'user' => $user
             ], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         try {
             $request->user()->tokens()->delete();
@@ -98,12 +115,12 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function dashboard()
+    public function dashboard(): JsonResponse
     {
         return response()->json(['message' => 'Dashboard']);
     }
 
-    public function forgotPassword(Request $request)
+    public function forgotPassword(Request $request): JsonResponse
     {
         try {
             $request->validate([
