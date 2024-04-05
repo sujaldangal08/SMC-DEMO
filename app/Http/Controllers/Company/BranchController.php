@@ -116,4 +116,19 @@ class BranchController extends Controller
         ]);
     }
 
+    public function restoreBranch($id): \Illuminate\Http\JsonResponse
+    {
+        // Find the branch record in the database
+        $branch = Branch::withTrashed()->findOrFail($id);
+
+        // Restore the branch record
+        $branch->restore();
+
+        // Return a JSON response with the status and message
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Branch recovered successfully'
+        ]);
+    }
+
 }
