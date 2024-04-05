@@ -9,6 +9,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
+Route::post('/branch', 'App\Http\Controllers\Company\BranchController@createBranch');
+Route::patch('/branch/{id}', 'App\Http\Controllers\Company\BranchController@updateBranch');
+Route::delete('/branch/{id}', 'App\Http\Controllers\Company\BranchController@deleteBranch');
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);

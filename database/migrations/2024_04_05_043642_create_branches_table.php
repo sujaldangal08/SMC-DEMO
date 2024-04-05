@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('branch_code')->unique();
             $table->string('branch_status');
             $table->string('branch_country_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
