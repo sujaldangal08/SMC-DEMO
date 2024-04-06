@@ -131,4 +131,28 @@ class BranchController extends Controller
         ]);
     }
 
+    public function permanentDeleteBranch($id): \Illuminate\Http\JsonResponse
+    {
+        // Find the soft deleted branch record in the database
+        $branch = Branch::onlyTrashed()->where('id', $id)->first();
+
+        // Check if the branch record exists
+        if ($branch) {
+            // Permanently delete the soft deleted branch record
+            $branch->forceDelete();
+
+            // Return a JSON response with the status and message
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Branch permanently deleted successfully!'
+            ]);
+        } else {
+            // Return a JSON response with the status and message
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No deleted branch found with the given ID'
+            ]);
+        }
+    }
+
 }

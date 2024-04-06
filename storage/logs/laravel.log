@@ -4222,3 +4222,90 @@ Did you mean one of these?
 #32 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
 #33 {main}
 "} 
+[2024-04-05 09:32:48] local.ERROR: Typed property Illuminate\Http\Request::$routeResolver must not be accessed before initialization {"exception":"[object] (Error(code: 0): Typed property Illuminate\\Http\\Request::$routeResolver must not be accessed before initialization at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php:707)
+[stacktrace]
+#0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php(634): Illuminate\\Http\\Request->getRouteResolver()
+#1 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(304): Illuminate\\Http\\Request->route()
+#2 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(244): Illuminate\\Foundation\\Http\\Kernel->gatherRouteMiddleware(Object(Illuminate\\Http\\Request))
+#3 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(213): Illuminate\\Foundation\\Http\\Kernel->terminateMiddleware(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1170): Illuminate\\Foundation\\Http\\Kernel->terminate(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#5 /Users/nujan/Work/Herd/SMC-Laravel-API/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#6 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
+#7 {main}
+"} 
+[2024-04-05 09:33:24] local.ERROR: Typed property Illuminate\Http\Request::$routeResolver must not be accessed before initialization {"exception":"[object] (Error(code: 0): Typed property Illuminate\\Http\\Request::$routeResolver must not be accessed before initialization at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php:707)
+[stacktrace]
+#0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php(634): Illuminate\\Http\\Request->getRouteResolver()
+#1 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(304): Illuminate\\Http\\Request->route()
+#2 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(244): Illuminate\\Foundation\\Http\\Kernel->gatherRouteMiddleware(Object(Illuminate\\Http\\Request))
+#3 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(213): Illuminate\\Foundation\\Http\\Kernel->terminateMiddleware(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1170): Illuminate\\Foundation\\Http\\Kernel->terminate(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#5 /Users/nujan/Work/Herd/SMC-Laravel-API/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#6 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
+#7 {main}
+"} 
+[2024-04-05 09:33:37] local.ERROR: Typed property Illuminate\Http\Request::$routeResolver must not be accessed before initialization {"exception":"[object] (Error(code: 0): Typed property Illuminate\\Http\\Request::$routeResolver must not be accessed before initialization at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php:707)
+[stacktrace]
+#0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php(634): Illuminate\\Http\\Request->getRouteResolver()
+#1 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(304): Illuminate\\Http\\Request->route()
+#2 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(244): Illuminate\\Foundation\\Http\\Kernel->gatherRouteMiddleware(Object(Illuminate\\Http\\Request))
+#3 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(213): Illuminate\\Foundation\\Http\\Kernel->terminateMiddleware(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1170): Illuminate\\Foundation\\Http\\Kernel->terminate(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#5 /Users/nujan/Work/Herd/SMC-Laravel-API/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#6 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
+#7 {main}
+"} 
+[2024-04-05 09:34:43] local.ERROR: There are no commands defined in the "clear" namespace. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"clear\" namespace. at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/symfony/console/Application.php:638)
+[stacktrace]
+#0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/symfony/console/Application.php(687): Symfony\\Component\\Console\\Application->findNamespace('clear')
+#1 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/symfony/console/Application.php(260): Symfony\\Component\\Console\\Application->find('clear:route')
+#2 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/symfony/console/Application.php(169): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 /Users/nujan/Work/Herd/SMC-Laravel-API/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#6 {main}
+"} 
+[2024-04-05 09:35:19] local.ERROR: Typed property Illuminate\Http\Request::$routeResolver must not be accessed before initialization {"exception":"[object] (Error(code: 0): Typed property Illuminate\\Http\\Request::$routeResolver must not be accessed before initialization at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php:707)
+[stacktrace]
+#0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php(634): Illuminate\\Http\\Request->getRouteResolver()
+#1 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(304): Illuminate\\Http\\Request->route()
+#2 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(244): Illuminate\\Foundation\\Http\\Kernel->gatherRouteMiddleware(Object(Illuminate\\Http\\Request))
+#3 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(213): Illuminate\\Foundation\\Http\\Kernel->terminateMiddleware(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1170): Illuminate\\Foundation\\Http\\Kernel->terminate(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#5 /Users/nujan/Work/Herd/SMC-Laravel-API/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#6 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
+#7 {main}
+"} 
+[2024-04-05 09:35:39] local.ERROR: Typed property Illuminate\Http\Request::$routeResolver must not be accessed before initialization {"exception":"[object] (Error(code: 0): Typed property Illuminate\\Http\\Request::$routeResolver must not be accessed before initialization at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php:707)
+[stacktrace]
+#0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php(634): Illuminate\\Http\\Request->getRouteResolver()
+#1 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(304): Illuminate\\Http\\Request->route()
+#2 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(244): Illuminate\\Foundation\\Http\\Kernel->gatherRouteMiddleware(Object(Illuminate\\Http\\Request))
+#3 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(213): Illuminate\\Foundation\\Http\\Kernel->terminateMiddleware(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1170): Illuminate\\Foundation\\Http\\Kernel->terminate(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#5 /Users/nujan/Work/Herd/SMC-Laravel-API/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#6 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
+#7 {main}
+"} 
+[2024-04-05 09:37:02] local.ERROR: Typed property Illuminate\Http\Request::$routeResolver must not be accessed before initialization {"exception":"[object] (Error(code: 0): Typed property Illuminate\\Http\\Request::$routeResolver must not be accessed before initialization at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php:707)
+[stacktrace]
+#0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php(634): Illuminate\\Http\\Request->getRouteResolver()
+#1 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(304): Illuminate\\Http\\Request->route()
+#2 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(244): Illuminate\\Foundation\\Http\\Kernel->gatherRouteMiddleware(Object(Illuminate\\Http\\Request))
+#3 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(213): Illuminate\\Foundation\\Http\\Kernel->terminateMiddleware(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1170): Illuminate\\Foundation\\Http\\Kernel->terminate(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#5 /Users/nujan/Work/Herd/SMC-Laravel-API/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#6 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
+#7 {main}
+"} 
+[2024-04-05 09:38:02] local.ERROR: Typed property Illuminate\Http\Request::$routeResolver must not be accessed before initialization {"exception":"[object] (Error(code: 0): Typed property Illuminate\\Http\\Request::$routeResolver must not be accessed before initialization at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php:707)
+[stacktrace]
+#0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Request.php(634): Illuminate\\Http\\Request->getRouteResolver()
+#1 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(304): Illuminate\\Http\\Request->route()
+#2 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(244): Illuminate\\Foundation\\Http\\Kernel->gatherRouteMiddleware(Object(Illuminate\\Http\\Request))
+#3 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(213): Illuminate\\Foundation\\Http\\Kernel->terminateMiddleware(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1170): Illuminate\\Foundation\\Http\\Kernel->terminate(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\Response))
+#5 /Users/nujan/Work/Herd/SMC-Laravel-API/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#6 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
+#7 {main}
+"} 
