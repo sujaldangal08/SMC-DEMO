@@ -9,6 +9,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
+Route::get('/branch/{id}', 'App\Http\Controllers\Company\BranchController@branchSingle');
 Route::post('/branch', 'App\Http\Controllers\Company\BranchController@createBranch');
 Route::patch('/branch/{id}', 'App\Http\Controllers\Company\BranchController@updateBranch');
 Route::delete('/branch/{id}', 'App\Http\Controllers\Company\BranchController@deleteBranch');

@@ -23,7 +23,4 @@ class Branch extends Model
         'branch_status',
         'branch_country_id'
     ];
-
-
-
 }
