@@ -7,9 +7,12 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\AccountCreation;
+use App\Models\Backend;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
 {
@@ -17,7 +20,16 @@ class AuthenticationController extends Controller
     {
         try {
             $credentials = $request->only('email', 'password');
+            $user = User::where('email', $credentials['email'])->first();
+
+            if (!$user || ($user->login_attempts >= $user->role->max_login_attempts)) {
+                $user->deactivate();
+                return response()->json(['message' => 'You account has been deactivated. Pleas contact your admin in order to activate it again'], 401);
+            }
+
             if (auth()->attempt($credentials)) {
+                $user->resetLoginAttempts();
+
                 $tokenResult = $request->user()->createToken('api-token');
                 $token = $tokenResult->accessToken;
                 $token->expires_at = now()->addHours(1); // Token expires in 1 hour
@@ -30,8 +42,9 @@ class AuthenticationController extends Controller
                     'token' => $plainTextToken,
                 ]);
             }
+            $user->incrementLoginAttempts();
             return response()->json([
-                'message' => 'Unauthorized user does not exists'
+                'message' => 'Invalid Credentials'
             ], 401);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
@@ -49,10 +62,14 @@ class AuthenticationController extends Controller
                 'confirm_password' => 'required|same:password'
             ]);
 
+            $role = Role::where('role', 'customer')->first();
+
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->role_id = $role->id;
             $user->password = Hash::make($request->password);
+
             $user->save();
 
             $tokenResult = $user->createToken('api-token');
@@ -144,6 +161,37 @@ class AuthenticationController extends Controller
             // You can use Laravel's built-in Mail feature to do this.
 
             return response()->json(['message' => 'Reset link sent to your email']);
+        } catch (\Exception $e) {
+            return response()->json(['exception' => $e->getMessage()], 400);
+        }
+    }
+
+    // This is a separate login moult for the backend users
+
+    public function backendLogin(Request $request): JsonResponse
+    {
+        try {
+            $credentials = $request->only('email', 'password');
+            $user = Backend::where('email', $credentials['email'])->first();
+
+            if (!$user || !Hash::check($credentials['password'], $user->password)) {
+                return response()->json(['message' => 'Invalid credentials'], 401);
+            }
+
+            $tokenResult = $user->createToken('api-token');
+            $token = $tokenResult->accessToken;
+            $token->expires_at = now()->addHours(1); // Token expires in 1 hour
+            $token->save();
+
+            $plainTextToken = $tokenResult->plainTextToken;
+
+            // $tokenResult = $user->createToken('api-token');
+            // $plainTextToken = $tokenResult->plainTextToken;
+
+            return response()->json([
+                'message' => 'Login successful',
+                'token' => $plainTextToken,
+            ]);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
