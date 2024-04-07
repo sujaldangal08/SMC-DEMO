@@ -3272,7 +3272,7 @@ Did you mean one of these?
 #6 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #7 /Users/nujan/Work/Herd/SMC-Laravel-API/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #8 {main}
-"} 
+"}
 [2024-04-05 05:56:06] local.ERROR: Database file at path [/Users/nujan/Work/Herd/SMC-Laravel-API/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: select name from sqlite_master where type = 'table' and name not like 'sqlite_%' order by name) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [/Users/nujan/Work/Herd/SMC-Laravel-API/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: select name from sqlite_master where type = 'table' and name not like 'sqlite_%' order by name) at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php:813)
 [stacktrace]
 #0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('select name fro...', Array, Object(Closure))
@@ -3344,7 +3344,7 @@ Did you mean one of these?
 #33 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #34 /Users/nujan/Work/Herd/SMC-Laravel-API/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #35 {main}
-"} 
+"}
 [2024-04-05 05:57:29] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'personal_access_tokens' already exists (Connection: mysql, SQL: create table `personal_access_tokens` (`id` bigint unsigned not null auto_increment primary key, `tokenable_type` varchar(255) not null, `tokenable_id` bigint unsigned not null, `name` varchar(255) not null, `token` varchar(64) not null, `abilities` text null, `last_used_at` timestamp null, `expires_at` timestamp null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'personal_access_tokens' already exists (Connection: mysql, SQL: create table `personal_access_tokens` (`id` bigint unsigned not null auto_increment primary key, `tokenable_type` varchar(255) not null, `tokenable_id` bigint unsigned not null, `name` varchar(255) not null, `token` varchar(64) not null, `abilities` text null, `last_used_at` timestamp null, `expires_at` timestamp null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php:813)
 [stacktrace]
 #0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('create table `p...', Array, Object(Closure))
@@ -3422,7 +3422,7 @@ Did you mean one of these?
 #34 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #35 /Users/nujan/Work/Herd/SMC-Laravel-API/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #36 {main}
-"} 
+"}
 [2024-04-05 05:57:52] local.ERROR: There are no commands defined in the "fresh" namespace. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"fresh\" namespace. at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/symfony/console/Application.php:638)
 [stacktrace]
 #0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/symfony/console/Application.php(687): Symfony\\Component\\Console\\Application->findNamespace('fresh')
@@ -3432,7 +3432,7 @@ Did you mean one of these?
 #4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #5 /Users/nujan/Work/Herd/SMC-Laravel-API/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #6 {main}
-"} 
+"}
 [2024-04-05 05:58:06] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'personal_access_tokens' already exists (Connection: mysql, SQL: create table `personal_access_tokens` (`id` bigint unsigned not null auto_increment primary key, `tokenable_type` varchar(255) not null, `tokenable_id` bigint unsigned not null, `name` varchar(255) not null, `token` varchar(64) not null, `abilities` text null, `last_used_at` timestamp null, `expires_at` timestamp null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'personal_access_tokens' already exists (Connection: mysql, SQL: create table `personal_access_tokens` (`id` bigint unsigned not null auto_increment primary key, `tokenable_type` varchar(255) not null, `tokenable_id` bigint unsigned not null, `name` varchar(255) not null, `token` varchar(64) not null, `abilities` text null, `last_used_at` timestamp null, `expires_at` timestamp null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php:813)
 [stacktrace]
 #0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('create table `p...', Array, Object(Closure))
@@ -3532,7 +3532,7 @@ Did you mean one of these?
 #45 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #46 /Users/nujan/Work/Herd/SMC-Laravel-API/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #47 {main}
-"} 
+"}
 [2024-04-05 05:58:30] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'personal_access_tokens' already exists (Connection: mysql, SQL: create table `personal_access_tokens` (`id` bigint unsigned not null auto_increment primary key, `tokenable_type` varchar(255) not null, `tokenable_id` bigint unsigned not null, `name` varchar(255) not null, `token` varchar(64) not null, `abilities` text null, `last_used_at` timestamp null, `expires_at` timestamp null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'personal_access_tokens' already exists (Connection: mysql, SQL: create table `personal_access_tokens` (`id` bigint unsigned not null auto_increment primary key, `tokenable_type` varchar(255) not null, `tokenable_id` bigint unsigned not null, `name` varchar(255) not null, `token` varchar(64) not null, `abilities` text null, `last_used_at` timestamp null, `expires_at` timestamp null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php:813)
 [stacktrace]
 #0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('create table `p...', Array, Object(Closure))
@@ -3632,7 +3632,7 @@ Did you mean one of these?
 #45 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #46 /Users/nujan/Work/Herd/SMC-Laravel-API/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #47 {main}
-"} 
+"}
 [2024-04-05 05:59:06] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'personal_access_tokens' already exists (Connection: mysql, SQL: create table `personal_access_tokens` (`id` bigint unsigned not null auto_increment primary key, `tokenable_type` varchar(255) not null, `tokenable_id` bigint unsigned not null, `name` varchar(255) not null, `token` varchar(64) not null, `abilities` text null, `last_used_at` timestamp null, `expires_at` timestamp null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'personal_access_tokens' already exists (Connection: mysql, SQL: create table `personal_access_tokens` (`id` bigint unsigned not null auto_increment primary key, `tokenable_type` varchar(255) not null, `tokenable_id` bigint unsigned not null, `name` varchar(255) not null, `token` varchar(64) not null, `abilities` text null, `last_used_at` timestamp null, `expires_at` timestamp null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php:813)
 [stacktrace]
 #0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('create table `p...', Array, Object(Closure))
@@ -3710,7 +3710,7 @@ Did you mean one of these?
 #34 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #35 /Users/nujan/Work/Herd/SMC-Laravel-API/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #36 {main}
-"} 
+"}
 [2024-04-05 06:01:06] local.ERROR: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'test@example.com' for key 'users.users_email_unique' (Connection: mysql, SQL: insert into `users` (`name`, `email`, `email_verified_at`, `password`, `remember_token`, `updated_at`, `created_at`) values (Test User, test@example.com, 2024-04-05 06:01:06, $2y$12$w3X58hUT7rWEXyyFIyNPXeoQoKkRnV.5omSv9Z3o0RBOI/oMNYlHi, ItGyaeiR2E, 2024-04-05 06:01:06, 2024-04-05 06:01:06)) {"exception":"[object] (Illuminate\\Database\\UniqueConstraintViolationException(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'test@example.com' for key 'users.users_email_unique' (Connection: mysql, SQL: insert into `users` (`name`, `email`, `email_verified_at`, `password`, `remember_token`, `updated_at`, `created_at`) values (Test User, test@example.com, 2024-04-05 06:01:06, $2y$12$w3X58hUT7rWEXyyFIyNPXeoQoKkRnV.5omSv9Z3o0RBOI/oMNYlHi, ItGyaeiR2E, 2024-04-05 06:01:06, 2024-04-05 06:01:06)) at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php:808)
 [stacktrace]
 #0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Database/Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('insert into `us...', Array, Object(Closure))
@@ -3798,7 +3798,7 @@ Did you mean one of these?
 #39 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #40 /Users/nujan/Work/Herd/SMC-Laravel-API/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #41 {main}
-"} 
+"}
 [2024-04-07 06:46:13] production.ERROR: Database file at path [C:\xampp\htdocs\SMC-Laravel-API\database\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from "cache") {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [C:\\xampp\\htdocs\\SMC-Laravel-API\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from \"cache\") at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('delete from \"ca...', Array, Object(Closure))
@@ -3853,7 +3853,7 @@ Did you mean one of these?
 #24 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #25 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #26 {main}
-"} 
+"}
 [2024-04-07 06:46:15] production.ERROR: Database file at path [C:\xampp\htdocs\SMC-Laravel-API\database\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from "cache") {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [C:\\xampp\\htdocs\\SMC-Laravel-API\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from \"cache\") at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('delete from \"ca...', Array, Object(Closure))
@@ -3940,7 +3940,7 @@ Did you mean one of these?
 #40 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #41 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #42 {main}
-"} 
+"}
 [2024-04-07 06:46:24] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -3988,7 +3988,7 @@ Did you mean one of these?
 #42 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #43 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #44 {main}
-"} 
+"}
 [2024-04-07 06:46:24] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -4013,7 +4013,7 @@ Did you mean one of these?
 #19 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #20 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #21 {main}
-"} 
+"}
 [2024-04-07 06:47:08] production.ERROR: Database file at path [C:\xampp\htdocs\SMC-Laravel-API\database\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from "cache") {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [C:\\xampp\\htdocs\\SMC-Laravel-API\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from \"cache\") at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('delete from \"ca...', Array, Object(Closure))
@@ -4068,7 +4068,7 @@ Did you mean one of these?
 #24 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #25 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #26 {main}
-"} 
+"}
 [2024-04-07 06:47:09] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -4116,7 +4116,7 @@ Did you mean one of these?
 #42 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #43 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #44 {main}
-"} 
+"}
 [2024-04-07 06:47:10] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -4141,7 +4141,7 @@ Did you mean one of these?
 #19 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #20 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #21 {main}
-"} 
+"}
 [2024-04-07 06:47:10] production.ERROR: Database file at path [C:\xampp\htdocs\SMC-Laravel-API\database\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from "cache") {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [C:\\xampp\\htdocs\\SMC-Laravel-API\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from \"cache\") at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('delete from \"ca...', Array, Object(Closure))
@@ -4228,7 +4228,7 @@ Did you mean one of these?
 #40 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #41 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #42 {main}
-"} 
+"}
 [2024-04-07 06:47:12] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -4276,7 +4276,7 @@ Did you mean one of these?
 #42 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #43 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #44 {main}
-"} 
+"}
 [2024-04-07 06:47:12] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -4301,7 +4301,7 @@ Did you mean one of these?
 #19 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #20 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #21 {main}
-"} 
+"}
 [2024-04-07 06:47:53] production.ERROR: file_get_contents(C:\xampp\htdocs\SMC-Laravel-API\.env): Failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_get_contents(C:\\xampp\\htdocs\\SMC-Laravel-API\\.env): Failed to open stream: No such file or directory at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\KeyGenerateCommand.php:100)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(256): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_get_conten...', 'C:\\\\xampp\\\\htdocs...', 100)
@@ -4324,7 +4324,7 @@ Did you mean one of these?
 #17 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #18 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #19 {main}
-"} 
+"}
 [2024-04-07 06:48:39] production.ERROR: file_get_contents(C:\xampp\htdocs\SMC-Laravel-API\.env): Failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_get_contents(C:\\xampp\\htdocs\\SMC-Laravel-API\\.env): Failed to open stream: No such file or directory at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\KeyGenerateCommand.php:100)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(256): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_get_conten...', 'C:\\\\xampp\\\\htdocs...', 100)
@@ -4347,7 +4347,7 @@ Did you mean one of these?
 #17 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #18 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #19 {main}
-"} 
+"}
 [2024-04-07 06:49:11] production.ERROR: Database file at path [C:\xampp\htdocs\SMC-Laravel-API\database\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from "cache") {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [C:\\xampp\\htdocs\\SMC-Laravel-API\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from \"cache\") at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('delete from \"ca...', Array, Object(Closure))
@@ -4402,7 +4402,7 @@ Did you mean one of these?
 #24 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #25 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #26 {main}
-"} 
+"}
 [2024-04-07 06:49:13] production.ERROR: Database file at path [C:\xampp\htdocs\SMC-Laravel-API\database\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from "cache") {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [C:\\xampp\\htdocs\\SMC-Laravel-API\\database\\database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: delete from \"cache\") at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('delete from \"ca...', Array, Object(Closure))
@@ -4489,7 +4489,7 @@ Did you mean one of these?
 #40 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #41 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #42 {main}
-"} 
+"}
 [2024-04-07 06:49:17] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -4537,7 +4537,7 @@ Did you mean one of these?
 #42 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #43 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #44 {main}
-"} 
+"}
 [2024-04-07 06:49:17] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -4562,7 +4562,7 @@ Did you mean one of these?
 #19 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #20 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #21 {main}
-"} 
+"}
 [2024-04-07 06:49:19] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -4610,7 +4610,7 @@ Did you mean one of these?
 #42 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #43 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #44 {main}
-"} 
+"}
 [2024-04-07 06:49:19] production.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}(NULL)
@@ -4635,7 +4635,7 @@ Did you mean one of these?
 #19 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #20 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #21 {main}
-"} 
+"}
 [2024-04-07 06:51:43] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4660,7 +4660,7 @@ Did you mean one of these?
 #19 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #20 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #21 {main}
-"} 
+"}
 [2024-04-07 06:51:43] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4697,7 +4697,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:44] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4734,7 +4734,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:45] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4771,7 +4771,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:45] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4808,7 +4808,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:45] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4845,7 +4845,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:45] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4886,7 +4886,7 @@ Did you mean one of these?
 #35 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #36 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #37 {main}
-"} 
+"}
 [2024-04-07 06:51:46] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4923,7 +4923,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:46] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4960,7 +4960,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:47] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -4997,7 +4997,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:48] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5034,7 +5034,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:48] local.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}('')
@@ -5082,7 +5082,7 @@ Did you mean one of these?
 #42 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #43 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #44 {main}
-"} 
+"}
 [2024-04-07 06:51:49] local.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}('')
@@ -5107,7 +5107,7 @@ Did you mean one of these?
 #19 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #20 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #21 {main}
-"} 
+"}
 [2024-04-07 06:51:49] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5144,7 +5144,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:49] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5181,7 +5181,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:50] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5218,7 +5218,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:50] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5255,7 +5255,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:51] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5292,7 +5292,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:51] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5329,7 +5329,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:52] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5366,7 +5366,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:52] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5403,7 +5403,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:53] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5440,7 +5440,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:54] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5477,7 +5477,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:54] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5514,7 +5514,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:55] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5551,7 +5551,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:55] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5588,7 +5588,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:56] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5625,7 +5625,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:56] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5662,7 +5662,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:57] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5699,7 +5699,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:58] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5736,7 +5736,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:59] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5773,7 +5773,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:51:59] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5810,7 +5810,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:00] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5847,7 +5847,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:00] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5884,7 +5884,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:01] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5921,7 +5921,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:01] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -5958,7 +5958,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:01] local.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}('')
@@ -6006,7 +6006,7 @@ Did you mean one of these?
 #42 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #43 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #44 {main}
-"} 
+"}
 [2024-04-07 06:52:02] local.ERROR: No application encryption key has been specified. {"exception":"[object] (Illuminate\\Encryption\\MissingAppKeyException(code: 0): No application encryption key has been specified. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Encryption\\EncryptionServiceProvider.php:83)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\helpers.php(359): Illuminate\\Encryption\\EncryptionServiceProvider->Illuminate\\Encryption\\{closure}('')
@@ -6031,7 +6031,7 @@ Did you mean one of these?
 #19 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #20 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #21 {main}
-"} 
+"}
 [2024-04-07 06:52:02] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6068,7 +6068,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:03] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6105,7 +6105,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:04] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6142,7 +6142,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:04] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6179,7 +6179,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:05] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6216,7 +6216,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:05] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6253,7 +6253,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:06] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6290,7 +6290,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:06] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6327,7 +6327,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:07] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6364,7 +6364,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:08] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6401,7 +6401,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:09] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6438,7 +6438,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:09] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6475,7 +6475,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:10] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6512,7 +6512,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:10] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6549,7 +6549,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:11] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6586,7 +6586,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:11] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6623,7 +6623,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:12] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6660,7 +6660,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:13] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6697,7 +6697,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:14] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6734,7 +6734,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:14] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6771,7 +6771,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:15] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6808,7 +6808,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:15] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6845,7 +6845,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:16] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6882,7 +6882,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:16] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6919,7 +6919,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:17] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6956,7 +6956,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:18] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -6993,7 +6993,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:19] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7030,7 +7030,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:19] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7067,7 +7067,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:20] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7104,7 +7104,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:20] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7141,7 +7141,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:21] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7178,7 +7178,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:21] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7215,7 +7215,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:22] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7252,7 +7252,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:23] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7289,7 +7289,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:24] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7326,7 +7326,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:24] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7363,7 +7363,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:25] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7400,7 +7400,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:25] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7437,7 +7437,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:26] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7474,7 +7474,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:26] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7511,7 +7511,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:27] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7548,7 +7548,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:28] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7585,7 +7585,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:29] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7622,7 +7622,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:29] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7666,7 +7666,7 @@ Did you mean one of these?
 #38 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #39 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #40 {main}
-"} 
+"}
 [2024-04-07 06:52:29] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7703,7 +7703,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:30] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7740,7 +7740,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:30] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7777,7 +7777,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:31] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7814,7 +7814,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:31] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7851,7 +7851,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:32] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7888,7 +7888,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:33] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7925,7 +7925,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:34] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7962,7 +7962,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:34] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -7999,7 +7999,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:35] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8036,7 +8036,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:36] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8073,7 +8073,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:36] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8110,7 +8110,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:36] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8147,7 +8147,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:37] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8184,7 +8184,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:38] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8221,7 +8221,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:39] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8258,7 +8258,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:39] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8295,7 +8295,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:40] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8332,7 +8332,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:40] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8369,7 +8369,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:41] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8406,7 +8406,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:41] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8443,7 +8443,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:42] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8480,7 +8480,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:42] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8517,7 +8517,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:43] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8554,7 +8554,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:44] local.ERROR: Database connection [smysql] not configured. {"exception":"[object] (InvalidArgumentException(code: 0): Database connection [smysql] not configured. at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php:188)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(151): Illuminate\\Database\\DatabaseManager->configuration('smysql')
@@ -8591,7 +8591,7 @@ Did you mean one of these?
 #31 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #32 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #33 {main}
-"} 
+"}
 [2024-04-07 06:52:45] local.ERROR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'laravel.sessions' doesn't exist (Connection: mysql, SQL: select * from `sessions` where `id` = F5AqIRbRGCCxnCqXUj6UrTL2VB4l7VAiUZwcL1ft limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S02): SQLSTATE[42S02]: Base table or view not found: 1146 Table 'laravel.sessions' doesn't exist (Connection: mysql, SQL: select * from `sessions` where `id` = F5AqIRbRGCCxnCqXUj6UrTL2VB4l7VAiUZwcL1ft limit 1) at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
@@ -8699,7 +8699,7 @@ Did you mean one of these?
 #49 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #50 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #51 {main}
-"} 
+"}
 [2024-04-07 06:52:49] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'users' already exists (Connection: mysql, SQL: create table `users` (`id` bigint unsigned not null auto_increment primary key, `name` varchar(255) not null, `email` varchar(255) not null, `email_verified_at` timestamp null, `password` varchar(255) not null, `role` enum('admin', 'super-admin', 'driver', 'manager', 'customer') not null default 'customer', `remember_token` varchar(100) null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'users' already exists (Connection: mysql, SQL: create table `users` (`id` bigint unsigned not null auto_increment primary key, `name` varchar(255) not null, `email` varchar(255) not null, `email_verified_at` timestamp null, `password` varchar(255) not null, `role` enum('admin', 'super-admin', 'driver', 'manager', 'customer') not null default 'customer', `remember_token` varchar(100) null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('create table `u...', Array, Object(Closure))
@@ -8849,7 +8849,7 @@ Did you mean one of these?
 #70 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #71 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #72 {main}
-"} 
+"}
 [2024-04-07 06:53:00] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'users' already exists (Connection: mysql, SQL: create table `users` (`id` bigint unsigned not null auto_increment primary key, `name` varchar(255) not null, `email` varchar(255) not null, `email_verified_at` timestamp null, `password` varchar(255) not null, `role` enum('admin', 'super-admin', 'driver', 'manager', 'customer') not null default 'customer', `remember_token` varchar(100) null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'users' already exists (Connection: mysql, SQL: create table `users` (`id` bigint unsigned not null auto_increment primary key, `name` varchar(255) not null, `email` varchar(255) not null, `email_verified_at` timestamp null, `password` varchar(255) not null, `role` enum('admin', 'super-admin', 'driver', 'manager', 'customer') not null default 'customer', `remember_token` varchar(100) null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('create table `u...', Array, Object(Closure))
@@ -8927,7 +8927,7 @@ Did you mean one of these?
 #34 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #35 C:\\xampp\\htdocs\\SMC-Laravel-API\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #36 {main}
-"} 
+"}
 [2024-04-07 06:53:02] local.ERROR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'laravel.sessions' doesn't exist (Connection: mysql, SQL: select * from `sessions` where `id` = ImbyHiVRCME3YsWS49T5SOu7wuIAsLYOoCp4s4sw limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S02): SQLSTATE[42S02]: Base table or view not found: 1146 Table 'laravel.sessions' doesn't exist (Connection: mysql, SQL: select * from `sessions` where `id` = ImbyHiVRCME3YsWS49T5SOu7wuIAsLYOoCp4s4sw limit 1) at C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:813)
 [stacktrace]
 #0 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(767): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
@@ -9035,4 +9035,4 @@ Did you mean one of these?
 #49 C:\\xampp\\htdocs\\SMC-Laravel-API\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
 #50 C:\\xampp\\htdocs\\SMC-Laravel-API\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #51 {main}
-"} 
+"}
