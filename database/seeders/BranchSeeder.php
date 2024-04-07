@@ -25,7 +25,8 @@ class BranchSeeder extends Seeder
             'branch_email' => 'branch@email.com',
             'branch_code' => '123',
             'branch_status' => 'Active',
-            'branch_country_id' => '1'
+            'branch_country_id' => '1',
+            'company_id'=>'1'
         ]);
     }
 }

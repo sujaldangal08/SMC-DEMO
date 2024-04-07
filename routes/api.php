@@ -15,6 +15,9 @@ Route::delete('/branch/{id}', 'App\Http\Controllers\Company\BranchController@del
 Route::post('/branch/{id}/restore', 'App\Http\Controllers\Company\BranchController@restoreBranch');
 Route::delete('/branch/{id}/delete', 'App\Http\Controllers\Company\BranchController@permanentDeleteBranch');
 
+Route::get('/company', 'App\Http\Controllers\Company\CompanyController@Company');
+Route::patch('/company/{id}', 'App\Http\Controllers\Company\CompanyController@updateCompany');
+
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
 
