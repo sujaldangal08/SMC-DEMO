@@ -33,7 +33,8 @@ class BranchFactory extends Factory
             'branch_email' => $this->faker->companyEmail,
             'branch_code' => $this->faker->randomNumber(3, true),
             'branch_status' => 'Active',
-            'branch_country_id' => $this->faker->randomNumber(2, true)
+            'branch_country_id' => $this->faker->randomNumber(2, true),
+            'company_id' => '1'
         ];
     }
 }
