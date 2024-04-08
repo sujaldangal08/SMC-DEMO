@@ -34,7 +34,7 @@ class BranchFactory extends Factory
             'branch_code' => $this->faker->randomNumber(3, true),
             'branch_status' => 'Active',
             'branch_country_id' => $this->faker->randomNumber(2, true),
-            'company_id' => '1'
+            'company_id'=>\App\Models\Company::all()->random()->id,
         ];
     }
 }
