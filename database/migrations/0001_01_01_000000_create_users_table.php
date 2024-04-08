@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId('role_id')->constrained('roles');
+            $table->foreignId('role_id')->constrained('roles')->default(4); // Default role is customer
             $table->integer('login_attempts')->default(0);
             $table->string('status')->default('active');
-            $table->string('locale')->default('en');
-            $table->string('profile_photo_')->default('profile_photos/default.jpg');
+            $table->string('image')->default('profile_photos/default.jpg');
             $table->string('phone_number')->nullable();
             $table->string('city')->nullable();
+            $table->foreignId('branch_id')->nullable()->constrained('branches');
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->string('zip_code')->nullable();

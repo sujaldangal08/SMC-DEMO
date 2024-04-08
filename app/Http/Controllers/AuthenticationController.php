@@ -94,10 +94,13 @@ class AuthenticationController extends Controller
             $request->validate([
                 'name' => 'required|min:3',
                 'email' => 'required|email|unique:users',
-                'role' => 'in:admin,customer,staff,super-admin,driver,manager'
+                'role_id' => 'required|exists:roles,id',
+                'branch_id' => 'nullable|exists:branches,id'
             ]);
 
-            echo 'User created successfully';
+            if (Role::where('id', $request->role_id)->first()->role == 'customer' && $request->has('branch_id')) {
+                return response()->json(['message' => 'You cannot assign customer to a branch'], 401);
+            }
 
             // $password = Str::random(10); Auto generate password of 10 characters
             $password = 'password'; // Default password 'password
@@ -106,6 +109,7 @@ class AuthenticationController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($password);
+            $user->role_id = $request->role_id;
             $user->save();
 
             //  Mail::to($request->email)->send(new AccountCreation($request->email, $password,));
