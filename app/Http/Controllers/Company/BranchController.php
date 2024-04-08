@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use App\Models\Branch;
+use Illuminate\Http\JsonResponse;
 
 class BranchController extends Controller
 {
