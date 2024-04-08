@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use App\Models\Branch;
-use Symfony\Component\HttpKernel\Exception\ControllerDoesNotReturnResponseException;
 
 class BranchController extends Controller
 {
@@ -51,7 +50,6 @@ class BranchController extends Controller
         ], 404);
     }
 }
-
 
     public function createBranch(Request $request): \Illuminate\Http\JsonResponse
     {

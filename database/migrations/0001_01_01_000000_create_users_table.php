@@ -17,7 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['admin', 'super-admin', 'driver', 'manager', 'customer'])->default('customer');
+            $table->integer('login_attempts')->default(0);
+            $table->string('status')->default('active');
+            $table->string('locale')->default('en');
+            $table->string('profile_photo_')->default('profile_photos/default.jpg');
+
             $table->rememberToken();
             $table->timestamps();
         });
