@@ -20,6 +20,9 @@ return new class extends Migration
             $table->foreignId('role_id')->constrained('roles');
             $table->integer('login_attempts')->default(0);
             $table->string('status')->default('active');
+            $table->string('locale')->default('en');
+            $table->string('profile_photo_')->default('profile_photos/default.jpg');
+            
             $table->rememberToken();
             $table->timestamps();
         });

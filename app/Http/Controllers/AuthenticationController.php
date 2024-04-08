@@ -185,9 +185,6 @@ class AuthenticationController extends Controller
 
             $plainTextToken = $tokenResult->plainTextToken;
 
-            // $tokenResult = $user->createToken('api-token');
-            // $plainTextToken = $tokenResult->plainTextToken;
-
             return response()->json([
                 'message' => 'Login successful',
                 'token' => $plainTextToken,
