@@ -22,7 +22,11 @@ class AuthenticationController extends Controller
             $credentials = $request->only('email', 'password');
             $user = User::where('email', $credentials['email'])->first();
 
-            if (!$user || ($user->login_attempts >= $user->role->max_login_attempts)) {
+            if (!$user) {
+                return response()->json(['message' => 'Invalid Credentials'], 401);
+            }
+
+            if ($user->login_attempts >= $user->role->max_login_attempts) {
                 $user->deactivate();
                 return response()->json(['message' => 'You account has been deactivated. Pleas contact your admin in order to activate it again'], 401);
             }

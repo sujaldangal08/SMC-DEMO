@@ -10,16 +10,20 @@ use Illuminate\Support\Str;
 
 class ProfileSettingsController extends Controller
 {
-    public function updateProfile(Request $request, int $id): JsonResponse
+    public function updateProfile(Request $request): JsonResponse
     {
         try {
+            if ($request->user()->hasRole('super-admin')) {
+                return response()->json(['message' => 'Super-Admin Cannot Access This route'], 401);
+            }
+            $id = $request->user()->id;
             $request->validate([
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email,' . $id,
-                'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-                'city' => 'string',
-                'state' => 'string',
-                'country' => 'string',
+                'name' => 'sometimes|required',
+                'email' => 'sometimes|required|email|unique:users,email,' . $id,
+                'phone_number' => 'sometimes|required|regex:/^([0-9\s\-\+\(\)]*)$/|digits:10',
+                'city' => 'sometimes|required|string',
+                'state' => 'sometimes|required|string',
+                'country' => 'sometimes|required|string',
             ]);
 
             if ($request->has('image')) {
@@ -34,16 +38,12 @@ class ProfileSettingsController extends Controller
             }
 
             $user = User::findOrFail($id);
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->phone_number = $request->phone_number;
-            $user->city = $request->city;
-            $user->state = $request->state;
-            $user->country = $request->country;
-            $user->zip_code = $request->zip_code;
-            $user->language = $request->language;
-            $user->image = $image_location;
+            $user->fill($request->only(['name', 'email', 'phone_number', 'city', 'state', 'country', 'zip_code', 'language', 'image']));
             $user->save();
+
+            $user_data = $user->only('name', 'email', 'phone_number', 'city', 'state', 'country', 'zip_code', 'language', 'image');
+
+            return response()->json(['message' => 'Profile updated successfully', 'user' => $user_data], 200);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
