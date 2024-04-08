@@ -22,7 +22,12 @@ return new class extends Migration
             $table->string('status')->default('active');
             $table->string('locale')->default('en');
             $table->string('profile_photo_')->default('profile_photos/default.jpg');
-            
+            $table->string('phone_number')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('country')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('language')->default('en');
             $table->rememberToken();
             $table->timestamps();
         });
