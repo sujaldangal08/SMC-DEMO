@@ -21,7 +21,8 @@ class Branch extends Model
         'branch_email',
         'branch_code',
         'branch_status',
-        'branch_country_id'
+        'branch_country_id',
+        'company_id'
     ];
 
 
