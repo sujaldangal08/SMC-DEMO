@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'ipp' => [
+            'driver' => 'sanctum',
+            'provider' => 'ipp',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -65,10 +70,10 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'ipp' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Backend::class,
+        ],
     ],
 
     /*
