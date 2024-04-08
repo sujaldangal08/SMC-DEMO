@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -45,5 +46,33 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function deactivate(): void
+    {
+        $this->status = 'inactive';
+        $this->save();
+    }
+
+    public function resetLoginAttempts(): void
+    {
+        $this->login_attempts = 0;
+        $this->save();
+    }
+
+    public function incrementLoginAttempts(): void
+    {
+        $this->login_attempts++;
+        $this->save();
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasRole(string $role): bool
+    { //Function role      value role assigned to role
+        return $this->role->role === $role;
     }
 }
