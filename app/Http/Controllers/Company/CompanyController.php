@@ -12,8 +12,8 @@ class CompanyController extends Controller
     public function company(): \Illuminate\Http\JsonResponse
     {
         // Fetch all companies from the database
-        Company::all();
-
+        $companies = Company::with('branches')->get();
+        dd($companies);
         // Count the total number of companies
         $CompanyCount = Company::count();
 

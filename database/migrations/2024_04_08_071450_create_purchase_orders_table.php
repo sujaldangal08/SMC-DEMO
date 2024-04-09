@@ -13,31 +13,31 @@ return new class extends Migration
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-    $table->string('purchase_order_number');
-    $table->dateTime('date');
-    $table->dateTime('delivery_date');
-    $table->text('delivery_address');
-    $table->string('attention_to');
-    $table->string('telephone');
-    $table->text('delivery_instructions');
-    $table->boolean('has_errors');
-    $table->boolean('is_discounted');
-    $table->string('reference');
-    $table->string('type');
-    $table->decimal('currency_rate', 10, 10);
-    $table->string('currency_code');
-    $table->uuid('contact_id');
-    $table->uuid('branding_theme_id');
-    $table->string('status');
-    $table->string('line_amount_types');
-    $table->decimal('sub_total', 8, 2);
-    $table->decimal('total_tax', 8, 2);
-    $table->decimal('total', 8, 2);
-    $table->dateTime('updated_date_utc');
-    $table->boolean('has_attachments');
-    $table->timestamps();
+            $table->string('purchase_order_number');
+            $table->dateTime('date');
+            $table->dateTime('delivery_date');
+            $table->text('delivery_address');
+            $table->string('attention_to');
+            $table->string('telephone');
+            $table->text('delivery_instructions');
+            $table->boolean('has_errors');
+            $table->boolean('is_discounted');
+            $table->string('reference');
+            $table->string('type');
+            $table->decimal('currency_rate', 10, 10);
+            $table->string('currency_code');
+            $table->unsignedBigInteger('contact_id');
+            $table->uuid('branding_theme_id');
+            $table->string('status');
+            $table->string('line_amount_types');
+            $table->decimal('sub_total', 8, 2);
+            $table->decimal('total_tax', 8, 2);
+            $table->decimal('total', 8, 2);
+            $table->dateTime('updated_date_utc');
+            $table->boolean('has_attachments');
+            $table->timestamps();
 
-    $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
 
 
         });
