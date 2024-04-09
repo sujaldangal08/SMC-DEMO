@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('role');
-            $table->string('max_login_attempts')->default(5);
+            $table->foreignId('contact_id')->constrained('contacts');
+            $table->string('address_type');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('auth_attempts');
+        Schema::dropIfExists('addresses');
     }
 };

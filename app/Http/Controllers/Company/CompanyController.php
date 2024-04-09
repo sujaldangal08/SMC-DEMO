@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
     public function company(): \Illuminate\Http\JsonResponse
     {
         // Fetch all companies from the database
-        Company::all();
-
+        $companies = Company::with('branches')->get();
+        dd($companies);
         // Count the total number of companies
         $CompanyCount = Company::count();
 
@@ -29,14 +30,14 @@ class CompanyController extends Controller
     {
         try { // Validate the incoming request data
             $validatedData = $request->validate([
-                'company_name' => '',
-                'company_street' => '',
-                'company_city' => '',
-                'company_state' => '',
-                'company_zip' => '',
-                'company_phone' => '',
-                'company_email' => '',
-                'company_code' => 'unique:companies,company_code',
+                'company_name' => 'string|max:255',
+                'company_street' => 'string|max:255',
+                'company_city' => 'string|max:255',
+                'company_state' => 'string|max:255',
+                'company_zip' => 'string',
+                'company_phone' => 'numeric|digits:10',
+                'company_email' => 'email',
+                'company_code' => 'sometimes|unique:branches,branch_code,' . $id,
                 'company_country_id' => ''
             ]);
 
@@ -60,6 +61,7 @@ class CompanyController extends Controller
                 'errors' => $e->errors()
             ], 400);
         }
+
     }
 
 }
