@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use App\Models\Branch;
-use Illuminate\Http\JsonResponse;
 
 class BranchController extends Controller
 {
@@ -27,6 +26,31 @@ class BranchController extends Controller
         ]);
     }
 
+    public function branchSingle($id): \Illuminate\Http\JsonResponse
+{
+    try {
+        $data = Branch::findOrFail($id);
+        return response()->json([
+            'id' => $data->id,
+            'branch_name' => $data->branch_name,
+            'branch_street' => $data->branch_street,
+            'branch_street2' => $data->branch_street2,
+            'branch_city' => $data->branch_city,
+            'branch_state' => $data->branch_state,
+            'branch_zip' => $data->branch_zip,
+            'branch_phone' => $data->branch_phone,
+            'branch_email' => $data->branch_email,
+            'branch_code' => $data->branch_code,
+            'branch_status' => $data->branch_status,
+            'branch_country_id' => $data->branch_country_id
+        ]);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'Resource not found.'
+        ], 404);
+    }
+}
+
     public function createBranch(Request $request): \Illuminate\Http\JsonResponse
     {
         try { // Validate the incoming request data
@@ -43,8 +67,6 @@ class BranchController extends Controller
                 'branch_country_id' => 'required',
                 'company_id' => 'required|exists:companies,id'
             ]);
-
-
 
             // Create a new branch record in the database
             $branch = Branch::create($validatedData);

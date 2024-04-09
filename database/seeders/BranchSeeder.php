@@ -26,6 +26,48 @@ class BranchSeeder extends Seeder
             'branch_code' => '123',
             'branch_status' => 'Active',
             'branch_country_id' => '1',
+        ]);
+
+        Branch::factory()->create([
+            'branch_name' => 'vvvvv Branch',
+            'branch_street' => '000 Test St',
+            'branch_street2' => 'Apt 1',
+            'branch_city' => 'ttt City',
+            'branch_state' => 'TS',
+            'branch_zip' => '12345',
+            'branch_phone' => '123-456-7890',
+            'branch_email' => 'branch@email.com',
+            'branch_code' => '444',
+            'branch_status' => 'Active',
+            'branch_country_id' => '1'
+        ]);
+
+        Branch::factory()->create([
+            'branch_name' => 'My Branch',
+            'branch_street' => '000 Test St',
+            'branch_street2' => 'Apt 1',
+            'branch_city' => 'ttt City',
+            'branch_state' => 'TS',
+            'branch_zip' => '12345',
+            'branch_phone' => '123-456-7890',
+            'branch_email' => 'branch@email.com',
+            'branch_code' => '50777',
+            'branch_status' => 'Active',
+            'branch_country_id' => '1'
+        ]);
+
+        Branch::factory()->create([
+            'branch_name' => 'My Branch',
+            'branch_street' => '000 Test St',
+            'branch_street2' => 'Apt 1',
+            'branch_city' => 'ttt City',
+            'branch_state' => 'TS',
+            'branch_zip' => '12345',
+            'branch_phone' => '123-456-7890',
+            'branch_email' => 'branch@email.com',
+            'branch_code' => '50777',
+            'branch_status' => 'Active',
+            'branch_country_id' => '1',
             'company_id'=>'1'
         ]);
     }
