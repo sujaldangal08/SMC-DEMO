@@ -20,4 +20,8 @@ class Company extends Model
         'company_code',
         'company_country_id'
     ];
+    public function branches() : \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Branch::class);
+    }
 }
