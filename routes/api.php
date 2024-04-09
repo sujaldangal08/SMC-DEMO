@@ -45,3 +45,4 @@ Route::post('/super-admin', [SuperAdminController::class, 'createSuperAdmin']);
 Route::get('/super-admins', [SuperAdminController::class, 'getAll']);
 
 Route::delete('/super-admin/{id}', [SuperAdminController::class, 'destroy']);
+

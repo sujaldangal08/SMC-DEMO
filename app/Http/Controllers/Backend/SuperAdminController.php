@@ -44,11 +44,10 @@ class SuperAdminController extends Controller
     public function destroy($id)
     {
         $superAdmin = Backend::find($id);
-
         if (!$superAdmin) {
             return response()->json(['message' => 'Super admin not found'], 404);
         }
         $superAdmin->delete();
-        return response()->json(['message' => 'Super admin deleted successfully'], 200);
+        return response()->json(['message' => 'Super admin moved to trash successfully'], 200);
     }
 }
