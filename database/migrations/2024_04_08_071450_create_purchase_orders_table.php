@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
+            $table->string('purchase_order_id');
             $table->string('purchase_order_number');
             $table->dateTime('date');
             $table->dateTime('delivery_date');

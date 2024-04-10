@@ -28,6 +28,12 @@ Route::patch('/company/{id}', 'App\Http\Controllers\Company\CompanyController@up
 Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
 
 
+Route::get('/sendemail/{email}', 'App\Http\Controllers\EmailController@sendEmail');
+
+Route::get('/inventory', 'App\Http\Controllers\InventoryController@inventory');
+Route::post('/inventory', 'App\Http\Controllers\InventoryController@createInventory');
+Route::patch('/inventory/{id}', 'App\Http\Controllers\InventoryController@updateInventory');
+
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
