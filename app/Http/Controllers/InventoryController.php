@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Inventory;
 
 class InventoryController extends Controller
 {
@@ -57,11 +58,12 @@ class InventoryController extends Controller
             ], 422);
         }
     }
-    public function updateInventory(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function updateInventory(Request $request, $SKU): \Illuminate\Http\JsonResponse
     {
         try {
             // Find the inventory record with the given ID
-            $inventory = Inventory::findOrFail($id);
+
+            $inventory = Inventory::where('SKU', $SKU)->firstOrFail();
 
             // Validate the incoming request data
             $validatedData = $request->validate([
@@ -73,7 +75,7 @@ class InventoryController extends Controller
                 'cost_price' => 'numeric',
                 'manufacturing' => 'string|max:255',
                 'supplier' => 'string|max:255',
-                'serial_number' => 'string|unique:inventories,serial_number,' . $inventory->id,
+                'serial_number' => 'string|unique:inventories,serial_number,' . $inventory->SKU,
             ]);
 
             // Update the inventory record with the validated data
