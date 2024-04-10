@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('line_items', function (Blueprint $table) {
                 $table->uuid('id')->primary();
-                $table->uuid('purchase_order_id');
+                $table->unsignedBigInteger('purchase_order_id');
                 $table->string('item_code');
                 $table->text('description');
                 $table->decimal('unit_amount', 8, 4);
