@@ -9,6 +9,9 @@ use App\Http\Controllers\Backend\SuperAdminController;
 use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Controllers\Settings\ProfileSettingsController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
+use App\Http\Controllers\Asset\AssetController;
+use App\Http\Controllers\Asset\InsuranceController;
+use App\Http\Controllers\Asset\MaintenanceController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -46,10 +49,39 @@ Route::get('/setting/auth-attempts', [AuthenticationSettingsController::class, '
 Route::get('/setting/auth-attempts/{id}', [AuthenticationSettingsController::class, 'getOneAttempt'])->middleware('auth:sanctum', 'role:super-admin');
 Route::patch('/setting/auth-attempts/{id}', [AuthenticationSettingsController::class, 'updateAttempts'])->middleware('auth:sanctum', 'role:super-admin');
 
-Route::post('/super-admin', [SuperAdminController::class, 'createSuperAdmin']);
-// ->middleware('auth:sanctum', 'role:super-admin');
-Route::get('/super-admins', [SuperAdminController::class, 'getAll']);
+Route::post('/super-admin', [SuperAdminController::class, 'createSuperAdmin'])->middleware('auth:sanctum', 'role:super-admin');
+Route::get('/super-admins', [SuperAdminController::class, 'getAll'])->middleware('auth:sanctum', 'role:super-admin');
 
 Route::delete('/super-admin/{id}', [SuperAdminController::class, 'destroy']);
 Route::post('/create-user', [AuthenticationController::class, 'createUser'])->middleware('auth:sanctum,', 'role:super-admin');
 Route::delete('/admins/{id}', [ProfileSettingsController::class, 'getAllSAdmin'])->middleware('auth:sanctum', 'role:super-admin');
+
+
+//Asset Module Routes 
+
+// Asset routes
+Route::get('/asset', [AssetController::class, 'getAll']);
+Route::get('/asset/{id}', [AssetController::class, 'getOne']);
+Route::post('/asset', [AssetController::class, 'createAsset']);
+Route::patch('/asset/{id}', [AssetController::class, 'updateAsset']);
+Route::delete('/asset/{id}', [AssetController::class, 'deleteAsset']);
+Route::post('/asset/restore/{id}', [AssetController::class, 'restoreAsset']);
+Route::delete('/asset/delete/{id}', [AssetController::class, 'permanentDeleteAsset']);
+
+// Insurances routes
+Route::get('/insurance', [InsuranceController::class, 'getAllInsurance']);
+Route::get('/insurance/{id}', [InsuranceController::class, 'getOneInsurance']);
+Route::post('/insurance', [InsuranceController::class, 'createInsurance']);
+Route::patch('/insurance/{id}', [InsuranceController::class, 'updateInsurance']);
+Route::delete('/insurance/{id}', [InsuranceController::class, 'deleteInsurance']);
+Route::post('/insurance/restore/{id}', [InsuranceController::class, 'restoreInsurance']);
+Route::delete('/insurance/delete/{id}', [InsuranceController::class, 'permanentDeleteInsurance']);
+
+// Maintenance routes
+Route::get('/maintenance', [MaintenanceController::class, 'getAllMaintenance']);
+Route::get('/maintenance/{id}', [MaintenanceController::class, 'getOneMaintenance']);
+Route::post('/maintenance', [MaintenanceController::class, 'createMaintenance']);
+Route::patch('/maintenance/{id}', [MaintenanceController::class, 'updateMaintenance']);
+Route::delete('/maintenance/{id}', [MaintenanceController::class, 'deleteMaintenance']);
+Route::post('/maintenance/restore/{id}', [MaintenanceController::class, 'restoreMaintenance']);
+Route::delete('/maintenance/delete/{id}', [MaintenanceController::class, 'permanentDeleteMaintenance']);
