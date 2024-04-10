@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Xero;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PurchaseOrder extends Model
+class LineItem extends Model
 {
     use HasFactory;
 }

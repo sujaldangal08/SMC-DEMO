@@ -23,4 +23,10 @@ class Contact extends Model
     {
         return $this->hasOne(Balances::class);
     }
+
+    public function purchaseOrder()
+    {
+        return $this->hasMany(PurchaseOrder::class);
+    }
+
 }

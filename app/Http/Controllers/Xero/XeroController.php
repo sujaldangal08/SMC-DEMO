@@ -7,6 +7,8 @@ use App\Models\Xero\Contact;
 use App\Models\Xero\Address;
 use App\Models\Xero\Phone;
 use App\Models\Xero\Balances;
+use App\Models\Xero\PurchaseOrder;
+use App\Models\Xero\LineItem;
 use Illuminate\Http\Request;
 
 class XeroController extends Controller
@@ -15,7 +17,7 @@ class XeroController extends Controller
     {
         // Fetch all data from the database
         $contacts = Contact::with(['addresses', 'phones', 'balances'])->get();
-
+     
         // Transform the data to match the provided JSON format
         $transformedContacts = $contacts->map(function ($contact) {
             return [
@@ -55,6 +57,68 @@ class XeroController extends Controller
             'ProviderName' => 'LaravelApp',
             'DateTimeUTC' => now()->timestamp,
             'Contacts' => $transformedContacts
+        ]);
+    }
+    public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
+    {
+
+        $contact = Contact::with(['addresses', 'phones', 'balances', 'purchaseOrder'])->first();
+        $purchaseOrder = $contact->purchaseOrder;
+
+
+        $transformedPurchaseOrder = $purchaseOrder->map(function ($purchaseOrder) {
+            return [
+                'PurchaseOrderID' => $purchaseOrder->purchase_order_id,
+                'PurchaseOrderNumber' => $purchaseOrder->purchase_order_number,
+                'DateString' => $purchaseOrder->date_string,
+                'Date' => '/Date(' . (new \DateTime($purchaseOrder->date))->getTimestamp() . '000+0000)/',
+                'DeliveryDate' => '/Date(' . (new \DateTime($purchaseOrder->delivery_date))->getTimestamp() . '000+0000)/',
+                'DeliveryAddress' => $purchaseOrder->delivery_address,
+                'AttentionTo' => $purchaseOrder->attention_to,
+                'Telephone' => $purchaseOrder->telephone,
+                'DeliveryInstructions' => $purchaseOrder->delivery_instructions,
+                'HasErrors' => $purchaseOrder->has_errors,
+                'IsDiscounted' => $purchaseOrder->is_discounted,
+                'Reference' => $purchaseOrder->reference,
+                'Type' => $purchaseOrder->type,
+                'CurrencyRate' => $purchaseOrder->currency_rate,
+                'CurrencyCode' => $purchaseOrder->currency_code,
+                'Contact' => [
+                    'ContactID' => $purchaseOrder->contact->id,
+                    'ContactStatus' => $purchaseOrder->contact->status,
+                    'Name' => $purchaseOrder->contact->name,
+                    'Addresses' => $purchaseOrder->contact->addresses,
+                    'Phones' => $purchaseOrder->contact->phones,
+                    'UpdatedDateUTC' => '/Date(' . (new \DateTime($purchaseOrder->contact->updated_at))->getTimestamp() . '000+0000)/',
+                    'ContactGroups' => $purchaseOrder->contact->contactGroups,
+                    'DefaultCurrency' => $purchaseOrder->contact->defaultCurrency,
+                    'ContactPersons' => $purchaseOrder->contact->contactPersons,
+                    'HasValidationErrors' => $purchaseOrder->contact->hasValidationErrors,
+                ],
+                'LineItems' => $purchaseOrder->line_items->map(function ($lineItem) {
+                    return [
+                        'ItemCode' => $lineItem->item_code,
+                        'Description' => $lineItem->description,
+                        'UnitAmount' => $lineItem->unit_amount,
+                        'TaxType' => $lineItem->tax_type,
+                        'TaxAmount' => $lineItem->tax_amount,
+                        'LineAmount' => $lineItem->line_amount,
+                        'AccountCode' => $lineItem->account_code,
+                        'Tracking' => $lineItem->tracking,
+                        'Quantity' => $lineItem->quantity,
+                        'LineItemID' => $lineItem->line_item_id,
+                    ];
+                }),
+            ];
+        });
+
+
+        return response()->json([
+            'Id' => '58b5344c-edf0-44ce-9e54-f5540b525888',
+            'Status' => 'OK',
+            'ProviderName' => 'LaravelApp',
+            'DateTimeUTC' => now()->timestamp,
+            'Contacts' => $transformedPurchaseOrder
         ]);
     }
 }

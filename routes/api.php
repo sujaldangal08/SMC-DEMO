@@ -2,8 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RoleAuthentication;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\Settings\AuthenticationSettingsController;
+use App\Http\Controllers\Backend\SuperAdminController;
+use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Controllers\Settings\ProfileSettingsController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
@@ -12,6 +15,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
+Route::get('/branch/{id}', 'App\Http\Controllers\Company\BranchController@branchSingle');
 Route::post('/branch', 'App\Http\Controllers\Company\BranchController@createBranch');
 Route::patch('/branch/{id}', 'App\Http\Controllers\Company\BranchController@updateBranch');
 Route::delete('/branch/{id}', 'App\Http\Controllers\Company\BranchController@deleteBranch');
@@ -21,6 +25,9 @@ Route::delete('/branch/{id}/delete', 'App\Http\Controllers\Company\BranchControl
 Route::get('/xerodata', 'App\Http\Controllers\Xero\XeroController@getXeroData');
 Route::get('/company', 'App\Http\Controllers\Company\CompanyController@Company');
 Route::patch('/company/{id}', 'App\Http\Controllers\Company\CompanyController@updateCompany');
+
+Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
+
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
@@ -38,5 +45,11 @@ Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->m
 Route::get('/setting/auth-attempts', [AuthenticationSettingsController::class, 'authAttempts'])->middleware('auth:sanctum', 'role:super-admin');
 Route::get('/setting/auth-attempts/{id}', [AuthenticationSettingsController::class, 'getOneAttempt'])->middleware('auth:sanctum', 'role:super-admin');
 Route::patch('/setting/auth-attempts/{id}', [AuthenticationSettingsController::class, 'updateAttempts'])->middleware('auth:sanctum', 'role:super-admin');
+
+Route::post('/super-admin', [SuperAdminController::class, 'createSuperAdmin']);
+// ->middleware('auth:sanctum', 'role:super-admin');
+Route::get('/super-admins', [SuperAdminController::class, 'getAll']);
+
+Route::delete('/super-admin/{id}', [SuperAdminController::class, 'destroy']);
 Route::post('/create-user', [AuthenticationController::class, 'createUser'])->middleware('auth:sanctum,', 'role:super-admin');
 Route::delete('/admins/{id}', [ProfileSettingsController::class, 'getAllSAdmin'])->middleware('auth:sanctum', 'role:super-admin');

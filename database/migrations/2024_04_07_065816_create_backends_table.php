@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('role')->default('super-admin');
             $table->string('photo')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
