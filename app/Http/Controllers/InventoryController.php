@@ -57,5 +57,48 @@ class InventoryController extends Controller
             ], 422);
         }
     }
+    public function updateInventory(Request $request, $id): \Illuminate\Http\JsonResponse
+    {
+        try {
+            // Find the inventory record with the given ID
+            $inventory = Inventory::findOrFail($id);
+
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'name' => 'string|max:255',
+                'thumbnail_image' => 'string|max:255',
+                'description' => 'string',
+                'material_type' => 'string|max:255',
+                'stock' => 'integer',
+                'cost_price' => 'numeric',
+                'manufacturing' => 'string|max:255',
+                'supplier' => 'string|max:255',
+                'serial_number' => 'string|unique:inventories,serial_number,' . $inventory->id,
+            ]);
+
+            // Update the inventory record with the validated data
+            $inventory->update($validatedData);
+
+            // Return a JSON response with the status, message, and the updated inventory data
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Inventory updated successfully',
+                'data' => $inventory
+            ]);
+        } catch (ModelNotFoundException $e) {
+            // Return a custom error response
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Inventory not found'
+            ], 404);
+        } catch (ValidationException $e) {
+            // Return a custom validation error response
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
+        }
+    }
 
 }
