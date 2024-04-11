@@ -2,10 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ImageController;
+use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Middleware\RoleAuthentication;
+use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\Settings\AuthenticationSettingsController;
 use App\Http\Controllers\Backend\SuperAdminController;
+use App\Http\Controllers\Settings\AuthenticationSettingsController;
 use App\Http\Controllers\SalesOrderController;
 use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Controllers\InventoryController;
@@ -14,6 +18,7 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\Controllers\Asset\AssetController;
 use App\Http\Controllers\Asset\InsuranceController;
 use App\Http\Controllers\Asset\MaintenanceController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -101,3 +106,13 @@ Route::delete('/maintenance/delete/{id}', [MaintenanceController::class, 'perman
 //Sales Order Routes
 Route::get('/sales-orders', [SalesOrderController::class, 'store']);
 Route::get('/sales-orders/{id}', [SalesOrderController::class, 'show']);
+
+Route::get('/email/{email}', [EmailController::class, 'sendPasswordResetLink']);
+
+// Route::post('/upload-image', [ImageController::class, 'uploadImage']);
+Route::post('/upload-image', [ImageController::class, 'uploadImage']);
+
+// Route::get('/images/{id}', 'ImageController@show');
+// Route::get('/images/{id}', [ImageController::class, 'show']);
+// Route::get('/uploads/{id}', [ImageController::class, 'getImage'])->name('image.get');
+Route::get('/images/{id}', [ImageController::class, 'getImage']);
