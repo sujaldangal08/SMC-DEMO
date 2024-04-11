@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Mail\BrevoEmail;
 
-
 class EmailController extends Controller
 {
     //
