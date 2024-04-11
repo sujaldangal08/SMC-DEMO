@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inventories', function (Blueprint $table) {
-            $table->uuid('SKU')->primary();
+            $table->id();
             $table->string('name');
             $table->string('thumbnail_image');
             $table->text('description');
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('supplier');
             $table->string('serial_number')->unique();
             $table->timestamps();
+
+
         });
     }
 
