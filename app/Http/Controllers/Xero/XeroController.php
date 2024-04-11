@@ -17,7 +17,7 @@ class XeroController extends Controller
     {
         // Fetch all data from the database
         $contacts = Contact::with(['addresses', 'phones', 'balances'])->get();
-     
+
         // Transform the data to match the provided JSON format
         $transformedContacts = $contacts->map(function ($contact) {
             return [
@@ -59,6 +59,7 @@ class XeroController extends Controller
             'Contacts' => $transformedContacts
         ]);
     }
+
     public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
     {
 
@@ -121,4 +122,5 @@ class XeroController extends Controller
             'Contacts' => $transformedPurchaseOrder
         ]);
     }
+
 }

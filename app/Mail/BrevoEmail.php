@@ -18,7 +18,8 @@ class BrevoEmail extends Mailable
     public $template;
     public $user_name;
 
-    public function __construct($subject, $body, $template = 'admin.email', $user_name)
+
+    public function __construct($subject, $body, $template = 'email.email', $user_name)
     {
         $this->subject = $subject;
         $this->body = $body;
@@ -32,5 +33,6 @@ class BrevoEmail extends Mailable
         ->with('subject', $this->subject)
         ->with('body', $this->body)
         ->with('user_name', $this->user_name);
+
     }
 }

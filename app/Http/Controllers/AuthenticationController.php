@@ -22,7 +22,11 @@ class AuthenticationController extends Controller
             $credentials = $request->only('email', 'password');
             $user = User::where('email', $credentials['email'])->first();
 
-            if (!$user || ($user->login_attempts >= $user->role->max_login_attempts)) {
+            if (!$user) {
+                return response()->json(['message' => 'Invalid Credentials'], 401);
+            }
+
+            if ($user->login_attempts >= $user->role->max_login_attempts) {
                 $user->deactivate();
                 return response()->json(['message' => 'You account has been deactivated. Pleas contact your admin in order to activate it again'], 401);
             }
@@ -94,10 +98,13 @@ class AuthenticationController extends Controller
             $request->validate([
                 'name' => 'required|min:3',
                 'email' => 'required|email|unique:users',
-                'role' => 'in:admin,customer,staff,super-admin,driver,manager'
+                'role_id' => 'required|exists:roles,id',
+                'branch_id' => 'nullable|exists:branches,id'
             ]);
 
-            echo 'User created successfully';
+            if (Role::where('id', $request->role_id)->first()->role == 'customer' && $request->has('branch_id')) {
+                return response()->json(['message' => 'You cannot assign customer to a branch'], 401);
+            }
 
             // $password = Str::random(10); Auto generate password of 10 characters
             $password = 'password'; // Default password 'password
@@ -106,6 +113,7 @@ class AuthenticationController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($password);
+            $user->role_id = $request->role_id;
             $user->save();
 
             //  Mail::to($request->email)->send(new AccountCreation($request->email, $password,));
