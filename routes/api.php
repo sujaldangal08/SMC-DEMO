@@ -2,14 +2,19 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RoleAuthentication;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\Settings\AuthenticationSettingsController;
+use App\Http\Controllers\Backend\SuperAdminController;
+use App\Http\Controllers\SalesOrderController;
+use PHPUnit\Framework\TestStatus\Success;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
+Route::get('/branch/{id}', 'App\Http\Controllers\Company\BranchController@branchSingle');
 Route::post('/branch', 'App\Http\Controllers\Company\BranchController@createBranch');
 Route::patch('/branch/{id}', 'App\Http\Controllers\Company\BranchController@updateBranch');
 Route::delete('/branch/{id}', 'App\Http\Controllers\Company\BranchController@deleteBranch');
@@ -46,3 +51,11 @@ Route::get('/setting/auth-attempts', [AuthenticationSettingsController::class, '
 Route::get('/setting/auth-attempts/{id}', [AuthenticationSettingsController::class, 'getOneAttempt'])->middleware('auth:sanctum', 'role:super-admin');
 Route::patch('/setting/auth-attempts/{id}', [AuthenticationSettingsController::class, 'updateAttempts'])->middleware('auth:sanctum', 'role:super-admin');
 
+Route::post('/super-admin', [SuperAdminController::class, 'createSuperAdmin']);
+// ->middleware('auth:sanctum', 'role:super-admin');
+Route::get('/super-admins', [SuperAdminController::class, 'getAll']);
+
+Route::delete('/super-admin/{id}', [SuperAdminController::class, 'destroy']);
+
+Route::get('/sales-orders', [SalesOrderController::class, 'store']);
+Route::get('/sales-orders/{id}', [SalesOrderController::class, 'show']);
