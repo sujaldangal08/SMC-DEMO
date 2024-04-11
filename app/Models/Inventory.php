@@ -24,7 +24,7 @@ class Inventory extends Model
 
     public function sku()
     {
-        return $this->hasOne(Sku::class, 'SKU');
+        return $this->belongsTo(Sku::class);
     }
 
 }

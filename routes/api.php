@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\Controllers\Asset\AssetController;
 use App\Http\Controllers\Asset\InsuranceController;
 use App\Http\Controllers\Asset\MaintenanceController;
+use App\Http\Controllers\InventoryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -68,7 +69,7 @@ Route::post('/create-user', [AuthenticationController::class, 'createUser'])->mi
 Route::delete('/admins/{id}', [ProfileSettingsController::class, 'getAllSAdmin'])->middleware('auth:sanctum', 'role:super-admin');
 
 
-//Asset Module Routes 
+//Asset Module Routes
 
 // Asset routes
 Route::get('/asset', [AssetController::class, 'getAll']);

@@ -16,7 +16,7 @@ class sku extends Model
 
     public function inventory()
     {
-        return $this->belongsTo(Inventory::class, 'SKU');
+        return $this->belongsTo(Inventory::class, 'inventory_id');
     }
 
     public function warehouse()
