@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use App\Models\Branch;
-use Illuminate\Http\JsonResponse;
 
 class BranchController extends Controller
 {
@@ -27,23 +26,47 @@ class BranchController extends Controller
         ]);
     }
 
+    public function branchSingle($id): \Illuminate\Http\JsonResponse
+{
+    try {
+        $data = Branch::findOrFail($id);
+        return response()->json([
+            'id' => $data->id,
+            'branch_name' => $data->branch_name,
+            'branch_street' => $data->branch_street,
+            'branch_street2' => $data->branch_street2,
+            'branch_city' => $data->branch_city,
+            'branch_state' => $data->branch_state,
+            'branch_zip' => $data->branch_zip,
+            'branch_phone' => $data->branch_phone,
+            'branch_email' => $data->branch_email,
+            'branch_code' => $data->branch_code,
+            'branch_status' => $data->branch_status,
+            'branch_country_id' => $data->branch_country_id
+        ]);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'Resource not found.'
+        ], 404);
+    }
+}
+
     public function createBranch(Request $request): \Illuminate\Http\JsonResponse
     {
         try { // Validate the incoming request data
             $validatedData = $request->validate([
-                'branch_name' => 'required',
-                'branch_street' => 'required',
-                'branch_city' => 'required',
-                'branch_state' => 'required',
-                'branch_zip' => 'required',
-                'branch_phone' => 'required',
-                'branch_email' => 'required',
+                'branch_name' => 'required|string|max:255',
+                'branch_street' => 'required|string|max:255',
+                'branch_city' => 'required|string|max:255',
+                'branch_state' => 'required|string|max:255',
+                'branch_zip' => 'required|string',
+                'branch_phone' => 'required|numeric|digits:10',
+                'branch_email' => 'required|email|unique:branches,branch_email',
                 'branch_code' => 'required | unique:branches,branch_code',
                 'branch_status' => 'required',
-                'branch_country_id' => 'required'
+                'branch_country_id' => 'required',
+                'company_id' => 'required|exists:companies,id'
             ]);
-
-
 
             // Create a new branch record in the database
             $branch = Branch::create($validatedData);
@@ -68,16 +91,17 @@ class BranchController extends Controller
     {
         try { // Validate the incoming request data
             $validatedData = $request->validate([
-                'branch_name' => '',
-                'branch_street' => '',
-                'branch_city' => '',
-                'branch_state' => '',
+                'branch_name' => 'string|max:255',
+                'branch_street' => 'string|max:255',
+                'branch_city' => 'string|max:255',
+                'branch_state' => 'string|max:255',
                 'branch_zip' => '',
-                'branch_phone' => '',
-                'branch_email' => '',
-                'branch_code' => 'unique:branches,branch_code',
+                'branch_phone' => 'numeric|digits:10',
+                'branch_email' => 'email',
+                'branch_code' => 'sometimes|unique:branches,branch_code,' . $id,
                 'branch_status' => '',
-                'branch_country_id' => ''
+                'branch_country_id' => '',
+                'company_id' => 'exists:companies,id'
             ]);
 
             // Find the branch record in the database

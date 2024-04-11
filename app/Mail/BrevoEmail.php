@@ -13,6 +13,7 @@ class BrevoEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+<<<<<<< HEAD
     /**
      * Create a new message instance.
      */
@@ -49,5 +50,26 @@ class BrevoEmail extends Mailable
     public function attachments(): array
     {
         return [];
+=======
+    public $subject;
+    public $body;
+    public $template;
+    public $user_name;
+
+    public function __construct($subject, $body, $template = 'email.email', $user_name)
+    {
+        $this->subject = $subject;
+        $this->body = $body;
+        $this->template = $template;
+        $this->user_name = $user_name;
+    }
+
+    public function build()
+    {
+        return $this->view($this->template)
+        ->with('subject', $this->subject)
+        ->with('body', $this->body)
+        ->with('employer_name', $this->user_name);
+>>>>>>> origin/main
     }
 }
