@@ -13,9 +13,9 @@ class RoleAuthentication
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $role): Response
     {
-        if (!in_array(auth()->user()->role, ['admin', 'super-admin'])) {
+        if (!$request->user()->hasRole($role)) {
             return response()->json([
                 'message' => 'Unauthorized'
             ], 401);

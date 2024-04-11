@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use App\Models\Branch;
 
@@ -25,41 +26,157 @@ class BranchController extends Controller
         ]);
     }
 
+    public function branchSingle($id): \Illuminate\Http\JsonResponse
+{
+    try {
+        $data = Branch::findOrFail($id);
+        return response()->json([
+            'id' => $data->id,
+            'branch_name' => $data->branch_name,
+            'branch_street' => $data->branch_street,
+            'branch_street2' => $data->branch_street2,
+            'branch_city' => $data->branch_city,
+            'branch_state' => $data->branch_state,
+            'branch_zip' => $data->branch_zip,
+            'branch_phone' => $data->branch_phone,
+            'branch_email' => $data->branch_email,
+            'branch_code' => $data->branch_code,
+            'branch_status' => $data->branch_status,
+            'branch_country_id' => $data->branch_country_id
+        ]);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'error' => 'Resource not found.'
+        ], 404);
+    }
+}
+
     public function createBranch(Request $request): \Illuminate\Http\JsonResponse
     {
-        // Validate the incoming request data
-        $request->validate([
-            'branch_name' => 'required',
-            'branch_street' => 'required',
-            'branch_city' => 'required',
-            'branch_state' => 'required',
-            'branch_zip' => 'required',
-            'branch_phone' => 'required',
-            'branch_email' => 'required',
-            'branch_code' => 'required',
-            'branch_status' => 'required',
-            'branch_country_id' => 'required'
-        ]);
+        try { // Validate the incoming request data
+            $validatedData = $request->validate([
+                'branch_name' => 'required|string|max:255',
+                'branch_street' => 'required|string|max:255',
+                'branch_city' => 'required|string|max:255',
+                'branch_state' => 'required|string|max:255',
+                'branch_zip' => 'required|string',
+                'branch_phone' => 'required|numeric|digits:10',
+                'branch_email' => 'required|email|unique:branches,branch_email',
+                'branch_code' => 'required | unique:branches,branch_code',
+                'branch_status' => 'required',
+                'branch_country_id' => 'required',
+                'company_id' => 'required|exists:companies,id'
+            ]);
 
-        // Create a new branch record in the database
-        $branch = Branch::create([
-            'branch_name' => $request->branch_name,
-            'branch_street' => $request->branch_street,
-            'branch_city' => $request->branch_city,
-            'branch_state' => $request->branch_state,
-            'branch_zip' => $request->branch_zip,
-            'branch_phone' => $request->branch_phone,
-            'branch_email' => $request->branch_email,
-            'branch_code' => $request->branch_code,
-            'branch_status' => $request->branch_status,
-            'branch_country_id' => $request->branch_country_id
-        ]);
+            // Create a new branch record in the database
+            $branch = Branch::create($validatedData);
 
-        // Return a JSON response with the status, message, and the newly created branch data
+            // Return a JSON response with the status, message, and the newly created branch data
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Branch created successfully',
+                'data' => $branch
+            ]);
+        } catch (ValidationException $e) {
+            // Return a custom validation error response
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 400);
+        }
+    }
+
+    public function updateBranch(Request $request, $id): \Illuminate\Http\JsonResponse
+    {
+        try { // Validate the incoming request data
+            $validatedData = $request->validate([
+                'branch_name' => 'string|max:255',
+                'branch_street' => 'string|max:255',
+                'branch_city' => 'string|max:255',
+                'branch_state' => 'string|max:255',
+                'branch_zip' => '',
+                'branch_phone' => 'numeric|digits:10',
+                'branch_email' => 'email',
+                'branch_code' => 'sometimes|unique:branches,branch_code,' . $id,
+                'branch_status' => '',
+                'branch_country_id' => '',
+                'company_id' => 'exists:companies,id'
+            ]);
+
+            // Find the branch record in the database
+            $branch = Branch::findOrFail($id);
+
+            // Update the branch record with the validated data
+            $branch->update($validatedData);
+
+            // Return a JSON response with the status, message, and the updated branch data
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Branch updated successfully',
+                'data' => $branch
+            ]);
+        } catch (ValidationException $e) {
+            // Return a custom validation error response
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to Update: Validation error',
+                'errors' => $e->errors()
+            ], 400);
+        }
+    }
+
+    public function deleteBranch($id): \Illuminate\Http\JsonResponse
+    {
+        // Find the branch record in the database
+        $branch = Branch::findOrFail($id);
+
+        // Delete the branch record
+        $branch->delete();
+
+        // Return a JSON response with the status and message
         return response()->json([
             'status' => 'success',
-            'message' => 'Branch created successfully',
-            'data' => $branch
+            'message' => 'Branch deleted successfully'
         ]);
+    }
+
+    public function restoreBranch($id): \Illuminate\Http\JsonResponse
+    {
+        // Find the branch record in the database
+        $branch = Branch::withTrashed()->findOrFail($id);
+
+        // Restore the branch record
+        $branch->restore();
+
+        // Return a JSON response with the status and message
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Branch recovered successfully'
+        ]);
+    }
+
+    public function permanentDeleteBranch($id): \Illuminate\Http\JsonResponse
+    {
+        // Find the soft deleted branch record in the database
+        $branch = Branch::onlyTrashed()->where('id', $id)->first();
+
+        // Check if the branch record exists
+        if ($branch) {
+            // Permanently delete the soft deleted branch record
+            $branch->forceDelete();
+
+            // Return a JSON response with the status and message
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Branch permanently deleted successfully!'
+            ]);
+        } else {
+            // Return a JSON response with the status and message
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No deleted branch found with the given ID'
+            ]);
+        }
     }
 }
