@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image');
             $table->string('asset_type');
             $table->text('meta');
+            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
