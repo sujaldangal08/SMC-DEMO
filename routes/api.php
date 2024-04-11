@@ -8,6 +8,7 @@ use App\Http\Controllers\Settings\AuthenticationSettingsController;
 use App\Http\Controllers\Backend\SuperAdminController;
 use App\Http\Controllers\SalesOrderController;
 use PHPUnit\Framework\TestStatus\Success;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\Settings\ProfileSettingsController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\Controllers\Asset\AssetController;
