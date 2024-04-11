@@ -7,28 +7,34 @@ use App\Models\Inventory;
 use App\Models\Warehouse;
 use App\Models\sku;
 
-
 class InventoryController extends Controller
 {
-    //
+    // Method to get inventory details
     public function inventory() :\Illuminate\Http\JsonResponse
     {
-        // Fetch all inventories from the database
-        Inventory::all();
+        // Define SKU ID
+        $skuId = 1;
 
-        // Count the total number of inventories
-        $InventoryCount = Inventory::count();
+        // Get all SKU
+        $sku = sku::all();
 
-        // Return a JSON response with the status, message, total number of inventories, and the inventory data
+        // Get inventory details for the given SKU ID
+        $inventory = Inventory::where('SKU_id', $skuId)->get();
+
+        // Get warehouse details for the given SKU ID
+        $warehouse = Warehouse::where('SKU_id', $skuId)->get();
+
+        // Return the response in JSON format
         return response()->json([
             'status' => 'success',
             'message' => 'Inventories retrieved successfully',
-            'total' => $InventoryCount,
-            'data' => Inventory::all()
+            'SKU' => $sku,
+            'Inventory' =>  $inventory,
+            'Warehouse' => $warehouse
         ]);
     }
 
-
+    // Method to get warehouse details
     public function warehouse(): \Illuminate\Http\JsonResponse
     {
         $warehouseData = Warehouse::with(['sku'])->get();
@@ -38,7 +44,6 @@ class InventoryController extends Controller
 
         try {
             // Fetch all warehouse data from the database
-
 
             // Return a JSON response with the status, message, and the warehouse data
             return response()->json([
@@ -54,9 +59,12 @@ class InventoryController extends Controller
             ], 500);
         }
     }
+
+    // Method to create a new inventory
     public function createInventory(Request $request): \Illuminate\Http\JsonResponse
     {
-        try { // Validate the incoming request data
+        try {
+            // Validate the incoming request data
             $validatedData = $request->validate([
                 'SKU' => 'required|string|max:255',
                 'name' => 'required|string|max:255',
@@ -88,41 +96,51 @@ class InventoryController extends Controller
             ], 422);
         }
     }
+
+    // Method to update an existing inventory
     public function updateInventory(Request $request, $SKU)
-{
-    try {
-        $validatedData = $request->validate([
-            'name' => 'string',
-            'thumbnail_image' => 'string',
-            'description' => 'string',
-            'material_type' => 'string',
-            'stock' => 'integer',
-            'cost_price' => 'numeric',
-            'manufacturing' => 'string',
-            'supplier' => 'string',
-            'serial_number' => 'string|unique:inventories,serial_number,' . $SKU . ',SKU',
-        ]);
+    {
+        try {
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'name' => 'string',
+                'thumbnail_image' => 'string',
+                'description' => 'string',
+                'material_type' => 'string',
+                'stock' => 'integer',
+                'cost_price' => 'numeric',
+                'manufacturing' => 'string',
+                'supplier' => 'string',
+                'serial_number' => 'string|unique:inventories,serial_number,' . $SKU . ',SKU',
+            ]);
 
-        $inventory = Inventory::where('SKU', $SKU)->firstOrFail();
-        $inventory->update($validatedData);
+            // Get the inventory details for the given SKU
+            $inventory = Inventory::where('SKU', $SKU)->firstOrFail();
 
-        return response()->json($inventory, 200);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Validation error',
-            'errors' => $e->errors()
-        ], 422);
-         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Inventory not found',
-        ], 404);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Something went wrong',
-        ], 500);
+            // Update the inventory details
+            $inventory->update($validatedData);
+
+            // Return the updated inventory details
+            return response()->json($inventory, 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Return a custom validation error response
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Return a custom error response if the inventory is not found
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Inventory not found',
+            ], 404);
+        } catch (\Exception $e) {
+            // Return a JSON response if something goes wrong
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong',
+            ], 500);
+        }
     }
-}
 }

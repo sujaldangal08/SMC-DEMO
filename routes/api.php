@@ -69,7 +69,7 @@ Route::post('/create-user', [AuthenticationController::class, 'createUser'])->mi
 Route::delete('/admins/{id}', [ProfileSettingsController::class, 'getAllSAdmin'])->middleware('auth:sanctum', 'role:super-admin');
 
 
-//Asset Module Routes 
+//Asset Module Routes
 
 // Asset routes
 Route::get('/asset', [AssetController::class, 'getAll']);

@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('skus', function (Blueprint $table) {
+        Schema::create('xero_data', function (Blueprint $table) {
             $table->id();
-            $table->string('SKU');
+            $table->text('access_token');
+            $table->text('refresh_token');
+            $table->text('tanent_id');
+            $table->string('token_type');
+            $table->string('token_expires_in');
             $table->timestamps();
-
-
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('skus');
+        Schema::dropIfExists('xero_data');
     }
 };
