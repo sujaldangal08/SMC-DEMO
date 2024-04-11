@@ -14,13 +14,15 @@ class sku extends Model
         'inventory_id'
     ];
 
-    public function inventory()
+
+public function warehouse(): \Illuminate\Database\Eloquent\Relations\HasOne
 {
-    return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
+    return $this->hasOne(Warehouse::class);
 }
 
-public function warehouses()
+public function inventory(): \Illuminate\Database\Eloquent\Relations\HasOne
 {
-    return $this->belongsToMany(Warehouse::class, 'sku_warehouse', 'sku_id', 'warehouse_id');
+    return $this->hasOne(Inventory::class);
 }
+
 }

@@ -31,10 +31,13 @@ class InventoryController extends Controller
 
     public function warehouse(): \Illuminate\Http\JsonResponse
     {
+        $warehouseData = Warehouse::with(['sku'])->get();
+
+
+            dd($warehouseData);
+
         try {
             // Fetch all warehouse data from the database
-            $warehouseData = sku::all();
-            dd($warehouseData);
 
 
             // Return a JSON response with the status, message, and the warehouse data

@@ -10,7 +10,7 @@ class Inventory extends Model
     use HasFactory;
     protected $primaryKey = 'SKU';
     protected $fillable = [
-        'SKU',
+        'SKU_id',
         'name',
         'thumbnail_image',
         'description',
@@ -22,10 +22,10 @@ class Inventory extends Model
         'serial_number',
     ];
 
-    public function sku()
-{
-    return $this->hasOne(Sku::class, 'inventory_id', 'id');
-}
+    public function sku(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(sku::class);
+    }
 
 
 }
