@@ -37,6 +37,11 @@ class InventoryController extends Controller
     // Method to get warehouse details
     public function warehouse(): \Illuminate\Http\JsonResponse
     {
+        $warehouseData = Warehouse::with(['sku'])->get();
+
+
+            dd($warehouseData);
+
         try {
             // Fetch all warehouse data from the database
 
