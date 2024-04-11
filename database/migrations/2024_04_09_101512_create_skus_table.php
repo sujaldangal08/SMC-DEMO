@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('skus', function (Blueprint $table) {
-            $table->string('SKU')->primary();
-            $table->unsignedBigInteger('inventory_id');
-            $table->foreign('inventory_id')->references('id')->on('inventories');
+            $table->id();
+            $table->string('SKU');
+            
             $table->timestamps();
 
 

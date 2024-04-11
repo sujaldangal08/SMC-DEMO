@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('manufacturing');
             $table->string('supplier');
             $table->string('serial_number')->unique();
+            $table->unsignedBigInteger('SKU_id');
+            $table->foreign('SKU_id')->references('id')->on('skus')->onDelete('cascade');
             $table->timestamps();
 
 
