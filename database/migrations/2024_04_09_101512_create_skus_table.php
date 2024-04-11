@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('skus', function (Blueprint $table) {
             $table->id();
             $table->string('SKU');
-            
             $table->timestamps();
 
 

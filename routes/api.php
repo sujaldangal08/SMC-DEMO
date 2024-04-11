@@ -14,7 +14,6 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\Controllers\Asset\AssetController;
 use App\Http\Controllers\Asset\InsuranceController;
 use App\Http\Controllers\Asset\MaintenanceController;
-use App\Http\Controllers\InventoryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();

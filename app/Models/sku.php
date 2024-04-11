@@ -14,13 +14,13 @@ class sku extends Model
         'inventory_id'
     ];
 
-    public function inventory()
-{
-    return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
-}
+    public function warehouses()
+    {
+        return $this->hasMany(Warehouse::class, 'SKU_id');
+    }
 
-public function warehouses()
-{
-    return $this->belongsToMany(Warehouse::class, 'sku_warehouse', 'sku_id', 'warehouse_id');
-}
+    public function inventory()
+    {
+        return $this->hasOne(Inventory::class, 'SKU_id');
+    }
 }

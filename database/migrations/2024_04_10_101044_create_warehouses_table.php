@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('location');
             $table->unsignedBigInteger('SKU_id');
-
             $table->foreign('SKU_id')->references('id')->on('skus')->onDelete('cascade');
             $table->timestamps();
         });

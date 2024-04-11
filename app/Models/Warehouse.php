@@ -9,9 +9,8 @@ class Warehouse extends Model
 {
     use HasFactory;
 
-    public function skus()
+    public function sku()
 {
-    return $this->belongsToMany(Sku::class, 'sku_warehouse', 'warehouse_id', 'sku_id');
+    return $this->belongsTo(sku::class, 'SKU_id');
 }
-
 }
