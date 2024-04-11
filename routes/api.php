@@ -53,9 +53,7 @@ Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 // Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware(RoleAuthentication::class);
 Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware('auth:sanctum');
-<<<<<<< HEAD
 
-=======
 Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
 
 
@@ -104,4 +102,3 @@ Route::delete('/maintenance/delete/{id}', [MaintenanceController::class, 'perman
 //Sales Order Routes
 Route::get('/sales-orders', [SalesOrderController::class, 'store']);
 Route::get('/sales-orders/{id}', [SalesOrderController::class, 'show']);
->>>>>>> 7c871f14e66e95035b06fd4f6ad2800cab39714a
