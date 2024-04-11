@@ -54,6 +54,7 @@ Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 // Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware(RoleAuthentication::class);
 Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware('auth:sanctum');
+
 Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
 
 
@@ -70,7 +71,7 @@ Route::post('/create-user', [AuthenticationController::class, 'createUser'])->mi
 Route::delete('/admins/{id}', [ProfileSettingsController::class, 'getAllSAdmin'])->middleware('auth:sanctum', 'role:super-admin');
 
 
-//Asset Module Routes 
+//Asset Module Routes
 
 // Asset routes
 Route::get('/asset', [AssetController::class, 'getAll']);
