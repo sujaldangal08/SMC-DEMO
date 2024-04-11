@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\Controllers\Asset\AssetController;
 use App\Http\Controllers\Asset\InsuranceController;
 use App\Http\Controllers\Asset\MaintenanceController;
+use App\Http\Controllers\Schedule\PickupController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -101,3 +102,14 @@ Route::delete('/maintenance/delete/{id}', [MaintenanceController::class, 'perman
 //Sales Order Routes
 Route::get('/sales-orders', [SalesOrderController::class, 'store']);
 Route::get('/sales-orders/{id}', [SalesOrderController::class, 'show']);
+
+// Schedule Module Routes
+
+// Pickup Schedule routes
+Route::get('/schedule/pickup', [PickupController::class, 'index']);
+Route::get('/schedule/pickup/{id}', [PickupController::class, 'show']);
+Route::post('/schedule/pickup', [PickupController::class, 'store']);
+Route::patch('/schedule/pickup/{id}', [PickupController::class, 'update']);
+Route::delete('/schedule/pickup/{id}', [PickupController::class, 'destroy']);
+Route::post('/schedule/pickup/restore/{id}', [PickupController::class, 'restore']);
+Route::delete('/schedule/pickup/delete/{id}', [PickupController::class, 'permanentDelete']);

@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Inventory;
 use App\Models\Warehouse;
 use App\Models\sku;
+use Illuminate\Validation\ValidationException;
 
 
 class InventoryController extends Controller
 {
     //
-    public function inventory() :\Illuminate\Http\JsonResponse
+    public function inventory(): \Illuminate\Http\JsonResponse
     {
         // Fetch all inventories from the database
         Inventory::all();
@@ -86,40 +87,40 @@ class InventoryController extends Controller
         }
     }
     public function updateInventory(Request $request, $SKU)
-{
-    try {
-        $validatedData = $request->validate([
-            'name' => 'string',
-            'thumbnail_image' => 'string',
-            'description' => 'string',
-            'material_type' => 'string',
-            'stock' => 'integer',
-            'cost_price' => 'numeric',
-            'manufacturing' => 'string',
-            'supplier' => 'string',
-            'serial_number' => 'string|unique:inventories,serial_number,' . $SKU . ',SKU',
-        ]);
+    {
+        try {
+            $validatedData = $request->validate([
+                'name' => 'string',
+                'thumbnail_image' => 'string',
+                'description' => 'string',
+                'material_type' => 'string',
+                'stock' => 'integer',
+                'cost_price' => 'numeric',
+                'manufacturing' => 'string',
+                'supplier' => 'string',
+                'serial_number' => 'string|unique:inventories,serial_number,' . $SKU . ',SKU',
+            ]);
 
-        $inventory = Inventory::where('SKU', $SKU)->firstOrFail();
-        $inventory->update($validatedData);
+            $inventory = Inventory::where('SKU', $SKU)->firstOrFail();
+            $inventory->update($validatedData);
 
-        return response()->json($inventory, 200);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Validation error',
-            'errors' => $e->errors()
-        ], 422);
-         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Inventory not found',
-        ], 404);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Something went wrong',
-        ], 500);
+            return response()->json($inventory, 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Inventory not found',
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Something went wrong',
+            ], 500);
+        }
     }
-}
 }

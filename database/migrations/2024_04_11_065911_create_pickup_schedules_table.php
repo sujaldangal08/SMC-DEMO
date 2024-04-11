@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('pickup_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('asset_id')->constrained('assets')->onDelete('cascade');
-            $table->foreignId('driver_id')->constrained('user')->onDelete('cascade');
-            $table->foreignId('customer_id')->constrained('user')->onDelete('cascade');
+            $table->foreignId('driver_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
             $table->dateTime('pickup_date');
-            $table->dateTime('status');
+            $table->string('status');
             $table->text('notes')->nullable();
             $table->softDeletes();
             $table->timestamps();
