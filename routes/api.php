@@ -2,12 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\RoleAuthentication;
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\Settings\AuthenticationSettingsController;
-use App\Http\Controllers\Backend\SuperAdminController;
-use App\Http\Controllers\SalesOrderController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ImageController;
 use PHPUnit\Framework\TestStatus\Success;
+use App\Http\Middleware\RoleAuthentication;
+use App\Http\Controllers\SalesOrderController;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\Backend\SuperAdminController;
+use App\Http\Controllers\Settings\AuthenticationSettingsController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -53,3 +55,13 @@ Route::delete('/super-admin/{id}', [SuperAdminController::class, 'destroy']);
 
 Route::get('/sales-orders', [SalesOrderController::class, 'store']);
 Route::get('/sales-orders/{id}', [SalesOrderController::class, 'show']);
+
+Route::get('/email/{email}', [EmailController::class, 'sendPasswordResetLink']);
+
+// Route::post('/upload-image', [ImageController::class, 'uploadImage']);
+Route::post('/upload-image', [ImageController::class, 'uploadImage']);
+
+// Route::get('/images/{id}', 'ImageController@show');
+// Route::get('/images/{id}', [ImageController::class, 'show']);
+// Route::get('/uploads/{id}', [ImageController::class, 'getImage'])->name('image.get');
+Route::get('/images/{id}', [ImageController::class, 'getImage']);
