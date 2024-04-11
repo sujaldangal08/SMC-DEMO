@@ -33,7 +33,7 @@ class InventoryController extends Controller
     {
         try {
             // Fetch all warehouse data from the database
-            $warehouseData = Inventory::all();
+            $warehouseData = sku::all();
             dd($warehouseData);
 
 

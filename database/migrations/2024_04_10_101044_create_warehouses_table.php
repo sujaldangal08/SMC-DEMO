@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
             $table->string('location');
-            $table->uuid('SKU_id');
+            $table->unsignedBigInteger('SKU_id');
 
-            $table->foreign('SKU_id')->references('SKU')->on('skus')->onDelete('cascade');
+            $table->foreign('SKU_id')->references('id')->on('skus')->onDelete('cascade');
             $table->timestamps();
         });
     }
