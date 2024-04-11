@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('sales_orders', function (Blueprint $table) {
             $table->id();
+            $table->string('invoice_id')->unique();
+            $table->string('invoice_number');
+            $table->string('reference');
+            $table->decimal('amount_due', 10, 2);
+            $table->decimal('amount_paid', 10, 2);
+            $table->decimal('amount_credited', 10, 2);
+            $table->unsignedBigInteger('contact_id');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->timestamps();
         });
     }

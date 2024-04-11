@@ -6,6 +6,7 @@ use App\Http\Middleware\RoleAuthentication;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\Settings\AuthenticationSettingsController;
 use App\Http\Controllers\Backend\SuperAdminController;
+use App\Http\Controllers\SalesOrderController;
 use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Controllers\Settings\ProfileSettingsController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
@@ -31,6 +32,12 @@ Route::patch('/company/{id}', 'App\Http\Controllers\Company\CompanyController@up
 
 Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
 
+
+Route::get('/sendemail/{email}', 'App\Http\Controllers\EmailController@sendEmail');
+
+Route::get('/inventory', 'App\Http\Controllers\InventoryController@inventory');
+Route::post('/inventory', 'App\Http\Controllers\InventoryController@createInventory');
+Route::patch('/inventory/{id}', 'App\Http\Controllers\InventoryController@updateInventory');
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
@@ -85,3 +92,6 @@ Route::patch('/maintenance/{id}', [MaintenanceController::class, 'updateMaintena
 Route::delete('/maintenance/{id}', [MaintenanceController::class, 'deleteMaintenance']);
 Route::post('/maintenance/restore/{id}', [MaintenanceController::class, 'restoreMaintenance']);
 Route::delete('/maintenance/delete/{id}', [MaintenanceController::class, 'permanentDeleteMaintenance']);
+
+Route::get('/sales-orders', [SalesOrderController::class, 'store']);
+Route::get('/sales-orders/{id}', [SalesOrderController::class, 'show']);
