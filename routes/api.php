@@ -18,3 +18,4 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware(
 Route::post('/create-user', [AuthenticationController::class, 'createUser'])->middleware('auth:sanctum,', 'role'); // middleware that are to be used are separated by a comma                                // \/ This is the middleware that is to be used
 // Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware(RoleAuthentication::class);
 Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware('auth:sanctum');
+
