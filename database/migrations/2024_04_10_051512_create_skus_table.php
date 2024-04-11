@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('warehouses', function (Blueprint $table) {
-            $table->id();
-            $table->string('location');
-            $table->uuid('SKU_id');
-
-            $table->foreign('SKU_id')->references('SKU')->on('skus')->onDelete('cascade');
+        Schema::create('skus', function (Blueprint $table) {
+            $table->string('SKU')->primary();
+            $table->unsignedBigInteger('inventory_id');
+            $table->foreign('inventory_id')->references('id')->on('inventories');
             $table->timestamps();
+
+
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('warehouses');
+        Schema::dropIfExists('skus');
     }
 };

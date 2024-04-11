@@ -22,9 +22,9 @@ class Inventory extends Model
         'serial_number',
     ];
 
-    public function warehouse():\illuminate\Database\Eloquent\Relations\HasOne
+    public function sku()
     {
-        return $this->hasOne(Warehouse::class);
+        return $this->hasOne(Sku::class, 'SKU');
     }
 
 }
