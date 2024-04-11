@@ -93,5 +93,6 @@ Route::delete('/maintenance/{id}', [MaintenanceController::class, 'deleteMainten
 Route::post('/maintenance/restore/{id}', [MaintenanceController::class, 'restoreMaintenance']);
 Route::delete('/maintenance/delete/{id}', [MaintenanceController::class, 'permanentDeleteMaintenance']);
 
+//Sales Order Routes
 Route::get('/sales-orders', [SalesOrderController::class, 'store']);
 Route::get('/sales-orders/{id}', [SalesOrderController::class, 'show']);
