@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Inventory;
 use App\Models\Warehouse;
 use App\Models\Sku;
+use Illuminate\Validation\ValidationException;
+
 
 class InventoryController extends Controller
 {
     // Method to get inventory details
-    public function inventory() :\Illuminate\Http\JsonResponse
+    public function inventory(): \Illuminate\Http\JsonResponse
     {
         // Define SKU ID
         $skuId = 1;
@@ -40,7 +42,7 @@ class InventoryController extends Controller
         $warehouseData = Warehouse::with(['sku'])->get();
 
 
-            dd($warehouseData);
+        dd($warehouseData);
 
         try {
             // Fetch all warehouse data from the database

@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assets', function (Blueprint $table) {
+        Schema::create('pickup_requests', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('image');
-            $table->string('asset_type');
-            $table->text('meta');
-            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade')->nullable();
-            $table->softDeletes();
+            $table->foreignId('pickup_schedule_id')->constrained('pickup_schedules');
+            $table->string('material_type');
+            $table->string('n_bins');
+            $table->string('bin_type');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assets');
+        Schema::dropIfExists('pickup_requests');
     }
 };
