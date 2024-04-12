@@ -37,7 +37,6 @@ Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurcha
 Route::get('/sendemail/{email}', 'App\Http\Controllers\EmailController@sendEmail');
 
 Route::get('/inventory', [InventoryController::class, 'inventory']);
-Route::get('/sku/{sku}', [InventoryController::class, 'inventoryBySKU']);
 Route::get('/warehouse', [InventoryController::class, 'warehouse']);
 Route::post('/inventory', [InventoryController::class, 'inventory']);
 Route::patch('/inventory/{SKU}', [InventoryController::class, 'updateInventory']);

@@ -11,8 +11,12 @@ class sku extends Model
 
     protected $fillable = [
         'SKU',
-        'inventory_id'
+        'name',
+        'barcode',
+        'tags',
+        'status',
     ];
+
 
     public function inventory()
 {
