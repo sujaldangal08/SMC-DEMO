@@ -11,26 +11,45 @@ class PickupSchedule extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'route_id',
         'driver_id',
-        'customer_id',
         'asset_id',
+        'customer_id',
         'pickup_date',
         'status',
-        'notes'
+        'notes',
+        'n_bins',
+        'tare_weight',
+        'image',
+        'coordinates'
     ];
 
-    public function asset()
+    public function route()
     {
-        return $this->belongsTo(Asset::class);
+        return $this->hasOne(Route::class);
     }
 
     public function driver()
     {
-        return $this->belongsTo(User::class, 'driver_id');
+        return $this->hasOne(User::class);
+    }
+
+    public function asset()
+    {
+        return $this->hasOne(Asset::class);
     }
 
     public function customer()
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->hasOne(User::class);
+    }
+
+
+    protected function casts(): array
+    {
+        return [
+            'coordinates' => 'array',
+            'image' => 'array'
+        ];
     }
 }

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pickup_requests', function (Blueprint $table) {
+        Schema::create('routes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pickup_schedule_id')->constrained('pickup_schedules');
-            $table->string('material_type');
-            $table->string('n_bins');
-            $table->string('bin_type');
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->string('status')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pickup_requests');
+        Schema::dropIfExists('routes');
     }
 };

@@ -17,6 +17,7 @@ use App\Http\Controllers\Asset\SkuController;
 use App\Http\Controllers\Asset\WarehouseController;
 use App\Http\Controllers\Asset\MaintenanceController;
 use App\Http\Controllers\Schedule\PickupController;
+use App\Http\Controllers\Schedule\RouteController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -121,6 +122,15 @@ Route::get('/sales-orders', [SalesOrderController::class, 'store']);
 Route::get('/sales-orders/{id}', [SalesOrderController::class, 'show']);
 
 // Schedule Module Routes
+
+// Routes for scheduling
+Route::get('/route', [RouteController::class, 'index']);
+Route::get('/route/{id}', [RouteController::class, 'show']);
+Route::post('/route', [RouteController::class, 'store']);
+Route::patch('/route/{id}', [RouteController::class, 'update']);
+Route::delete('/route/{id}', [RouteController::class, 'delete']);
+Route::post('/route/restore/{id}', [RouteController::class, 'restore']);
+Route::delete('/route/delete/{id}', [RouteController::class, 'permanentDelete']);
 
 // Pickup Schedule routes
 Route::get('/schedule/pickup', [PickupController::class, 'index']);

@@ -75,4 +75,9 @@ class User extends Authenticatable
     { //Function role      value role assigned to role
         return $this->role->role === $role;
     }
+
+    public function schedule()
+    {
+        return $this->hasMany(PickSchedule::class);
+    }
 }
