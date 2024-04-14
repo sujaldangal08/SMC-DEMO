@@ -26,22 +26,22 @@ class PickupSchedule extends Model
 
     public function route()
     {
-        return $this->hasOne(Route::class);
+        return $this->belongsTo(Route::class);
     }
 
     public function driver()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function asset()
     {
-        return $this->hasOne(Asset::class);
+        return $this->belongsTo(Asset::class);
     }
 
     public function customer()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
 
