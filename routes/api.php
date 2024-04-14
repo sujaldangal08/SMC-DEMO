@@ -4,25 +4,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleAuthentication;
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\Settings\AuthenticationSettingsController;
+use App\Http\Controllers\Settings\{AuthenticationSettingsController, ProfileSettingsController};
 use App\Http\Controllers\SalesOrderController;
 use PHPUnit\Framework\TestStatus\Success;
-use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\Settings\ProfileSettingsController;
+use App\Http\Controllers\Inventory\{InventoryController, SkuController, WarehouseController};
 use Symfony\Component\HttpKernel\Profiler\Profile;
-use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\Asset\AssetController;
-use App\Http\Controllers\Asset\InsuranceController;
-use App\Http\Controllers\Asset\SkuController;
-use App\Http\Controllers\Asset\WarehouseController;
-use App\Http\Controllers\Asset\MaintenanceController;
-use App\Http\Controllers\Schedule\PickupController;
-use App\Http\Controllers\Schedule\RouteController;
+use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
+use App\Http\Controllers\Schedule\{PickupController, RouteController};
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+// User routes
+Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetreiveDriver');
+
+// Company Branch Routes
 Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
 Route::get('/branch/{id}', 'App\Http\Controllers\Company\BranchController@branchSingle');
 Route::post('/branch', 'App\Http\Controllers\Company\BranchController@createBranch');
@@ -31,12 +28,12 @@ Route::delete('/branch/{id}', 'App\Http\Controllers\Company\BranchController@del
 Route::post('/branch/{id}/restore', 'App\Http\Controllers\Company\BranchController@restoreBranch');
 Route::delete('/branch/{id}/delete', 'App\Http\Controllers\Company\BranchController@permanentDeleteBranch');
 
-Route::get('/xerodata', 'App\Http\Controllers\Xero\XeroController@getXeroData');
-Route::get('/company', 'App\Http\Controllers\Company\CompanyController@Company');
 Route::patch('/company/{id}', 'App\Http\Controllers\Company\CompanyController@updateCompany');
+Route::get('/company', 'App\Http\Controllers\Company\CompanyController@Company');
 
+// xero routes
+Route::get('/xerodata', 'App\Http\Controllers\Xero\XeroController@getXeroData');
 Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
-
 
 Route::get('/sendemail/{email}', 'App\Http\Controllers\EmailController@sendEmail');
 
