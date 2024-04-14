@@ -80,4 +80,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(PickSchedule::class);
     }
+
+    public function delivery()
+    {
+        return $this->hasMany(Delivery::class);
+    }
 }

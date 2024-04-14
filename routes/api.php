@@ -10,14 +10,15 @@ use App\Http\Controllers\SalesOrderController;
 use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Controllers\Settings\ProfileSettingsController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
-use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\Inventory\InventoryController;
+use App\Http\Controllers\Inventory\WarehouseController;
+use App\Http\Controllers\Inventory\SkuController;
 use App\Http\Controllers\Asset\AssetController;
 use App\Http\Controllers\Asset\InsuranceController;
-use App\Http\Controllers\Asset\SkuController;
-use App\Http\Controllers\Asset\WarehouseController;
 use App\Http\Controllers\Asset\MaintenanceController;
 use App\Http\Controllers\Schedule\PickupController;
 use App\Http\Controllers\Schedule\RouteController;
+use App\Http\Controllers\Schedule\DeliveryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -49,18 +50,18 @@ Route::post('/inventory/restore/{id}', [InventoryController::class, 'restoreInve
 Route::delete('/inventory/delete/{id}', [InventoryController::class, 'permanentDeleteInventory']);
 
 // Warehouse routes
-Route::get('/warehouse', [InventoryController::class, 'warehouse']);
-Route::post('/warehouse', [InventoryController::class, 'createWarehouse']);
-Route::patch('/warehouse/{id}', [InventoryController::class, 'updateWarehouse']);
-Route::delete('/warehouse/{id}', [InventoryController::class, 'deleteWarehouse']);
-Route::post('/warehouse/restore/{id}', [InventoryController::class, 'restoreWarehouse']);
-Route::delete('/warehouse/delete/{id}', [InventoryController::class, 'permanentDeleteWarehouse']);
+Route::get('/warehouse', [WarehouseController::class, 'warehouse']);
+Route::post('/warehouse', [WarehouseController::class, 'createWarehouse']);
+Route::patch('/warehouse/{id}', [WarehouseController::class, 'updateWarehouse']);
+Route::delete('/warehouse/{id}', [WarehouseController::class, 'deleteWarehouse']);
+Route::post('/warehouse/restore/{id}', [WarehouseController::class, 'restoreWarehouse']);
+Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'permanentDeleteWarehouse']);
 
 
 // SKU routes
-Route::get('/sku', [InventoryController::class, 'sku']);
-Route::post('/sku', [InventoryController::class, 'createSku']);
-Route::patch('/sku/{id}', [InventoryController::class, 'updateSku']);
+Route::get('/sku', [SkuController::class, 'sku']);
+Route::post('/sku', [SkuController::class, 'createSku']);
+Route::patch('/sku/{id}', [SkuController::class, 'updateSku']);
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
