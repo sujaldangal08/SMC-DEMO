@@ -35,4 +35,9 @@ class Asset extends Model
     {
         return $this->hasMany(Maintenance::class);
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(PickSchedule::class);
+    }
 }

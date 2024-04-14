@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('serial_number')->unique();
             $table->unsignedBigInteger('SKU_id');
             $table->foreign('SKU_id')->references('id')->on('skus')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
 
 

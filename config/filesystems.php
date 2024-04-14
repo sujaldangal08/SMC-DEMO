@@ -38,11 +38,8 @@ return [
 
         'public' => [
             'driver' => 'local',
-            // 'root' => storage_path('app/public'),
-            // 'url' => env('APP_URL').'/storage',
-            'root' => public_path('uploads'), // Define the root path where images will be stored
-            'url' => env('APP_URL').'/uploads', // Define the URL for accessing the images
-
+            'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],

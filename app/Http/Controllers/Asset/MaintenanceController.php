@@ -88,7 +88,6 @@ class MaintenanceController extends Controller
                 'contact_meta' => 'array',
                 'service_date' => 'date'
             ]);
-            // $request->dd();
 
             $maintenance = Maintenance::findOrFail($id);
 

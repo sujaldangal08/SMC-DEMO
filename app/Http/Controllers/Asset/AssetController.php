@@ -55,21 +55,23 @@ class AssetController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'asset_type' => 'required',
-            'meta' => 'required|array'
+            'meta' => 'required|array',
+            'branch_id' => 'required|exists:branches,id'
         ]);
 
-        // $image = $request->file('image');
-        // $imageName = time() . '.' . $image->extension();
-        // $image->move(public_path('uploads/assets'), $imageName);
-        // $destinationPath = 'uploads/assets/' . $imageName;
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->extension();
+        $image->move(public_path('uploads/assets'), $imageName);
+        $destinationPath = 'uploads/assets/' . $imageName;
 
         $asset = new Asset();
         $asset->title = $request->title;
-        // $asset->image = $destinationPath;
+        $asset->image = $destinationPath;
         $asset->asset_type = $request->asset_type;
         $asset->meta = $request->meta;
+        $asset->branch_id = $request->branch_id;
         $asset->save();
 
         return response()->json([
@@ -86,7 +88,8 @@ class AssetController extends Controller
                 'title' => 'sometimes|required',
                 'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'asset_type' => 'sometimes|required',
-                'meta' => 'sometimes|required|array'
+                'meta' => 'sometimes|required|array',
+                'branch_id' => 'exists:branches,id'
             ]);
 
             $asset = Asset::findOrFail($id);
@@ -107,6 +110,7 @@ class AssetController extends Controller
             $asset->title = $request->title ?? $asset->title;
             $asset->asset_type = $request->asset_type ?? $asset->asset_type;
             $asset->meta = $meta;
+            $asset->branch_id = $request->branch_id ?? $asset->branch_id;
             $asset->save();
 
             return response()->json([

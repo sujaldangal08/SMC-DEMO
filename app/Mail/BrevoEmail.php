@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Mail;
+
+
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,7 +19,6 @@ class BrevoEmail extends Mailable
     public $template;
     public $user_name;
 
-
     public function __construct($subject, $body, $template = 'email.email', $user_name)
     {
         $this->subject = $subject;
@@ -32,7 +32,6 @@ class BrevoEmail extends Mailable
         return $this->view($this->template)
         ->with('subject', $this->subject)
         ->with('body', $this->body)
-        ->with('user_name', $this->user_name);
-
+        ->with('employer_name', $this->user_name);
     }
 }

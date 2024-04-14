@@ -2,21 +2,22 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmailController;
-use App\Http\Controllers\ImageController;
-use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Middleware\RoleAuthentication;
-use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\Backend\SuperAdminController;
 use App\Http\Controllers\Settings\AuthenticationSettingsController;
+use App\Http\Controllers\SalesOrderController;
+use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\Settings\ProfileSettingsController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\Asset\AssetController;
 use App\Http\Controllers\Asset\InsuranceController;
+use App\Http\Controllers\Asset\SkuController;
+use App\Http\Controllers\Asset\WarehouseController;
 use App\Http\Controllers\Asset\MaintenanceController;
-
+use App\Http\Controllers\Schedule\PickupController;
+use App\Http\Controllers\Schedule\RouteController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -39,13 +40,27 @@ Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurcha
 
 Route::get('/sendemail/{email}', 'App\Http\Controllers\EmailController@sendEmail');
 
+// Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
-Route::get('/sku/{sku}', [InventoryController::class, 'inventoryBySKU']);
+Route::post('/inventory', [InventoryController::class, 'createInventory']);
+Route::patch('/inventory/{id}', [InventoryController::class, 'updateInventory']);
+Route::delete('/inventory/{id}', [InventoryController::class, 'deleteInventory']);
+Route::post('/inventory/restore/{id}', [InventoryController::class, 'restoreInventory']);
+Route::delete('/inventory/delete/{id}', [InventoryController::class, 'permanentDeleteInventory']);
+
+// Warehouse routes
 Route::get('/warehouse', [InventoryController::class, 'warehouse']);
-Route::post('/inventory', [InventoryController::class, 'inventory']);
-Route::patch('/inventory/{SKU}', [InventoryController::class, 'updateInventory']);
+Route::post('/warehouse', [InventoryController::class, 'createWarehouse']);
+Route::patch('/warehouse/{id}', [InventoryController::class, 'updateWarehouse']);
+Route::delete('/warehouse/{id}', [InventoryController::class, 'deleteWarehouse']);
+Route::post('/warehouse/restore/{id}', [InventoryController::class, 'restoreWarehouse']);
+Route::delete('/warehouse/delete/{id}', [InventoryController::class, 'permanentDeleteWarehouse']);
 
 
+// SKU routes
+Route::get('/sku', [InventoryController::class, 'sku']);
+Route::post('/sku', [InventoryController::class, 'createSku']);
+Route::patch('/sku/{id}', [InventoryController::class, 'updateSku']);
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
@@ -56,6 +71,7 @@ Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 // Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware(RoleAuthentication::class);
 Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware('auth:sanctum');
+
 Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
 
 
@@ -105,12 +121,22 @@ Route::delete('/maintenance/delete/{id}', [MaintenanceController::class, 'perman
 Route::get('/sales-orders', [SalesOrderController::class, 'store']);
 Route::get('/sales-orders/{id}', [SalesOrderController::class, 'show']);
 
-Route::get('/email/{email}', [EmailController::class, 'sendPasswordResetLink']);
+// Schedule Module Routes
 
-// Route::post('/upload-image', [ImageController::class, 'uploadImage']);
-Route::post('/upload-image', [ImageController::class, 'uploadImage']);
+// Routes for scheduling
+Route::get('/route', [RouteController::class, 'index']);
+Route::get('/route/{id}', [RouteController::class, 'show']);
+Route::post('/route', [RouteController::class, 'store']);
+Route::patch('/route/{id}', [RouteController::class, 'update']);
+Route::delete('/route/{id}', [RouteController::class, 'delete']);
+Route::post('/route/restore/{id}', [RouteController::class, 'restore']);
+Route::delete('/route/delete/{id}', [RouteController::class, 'permanentDelete']);
 
-// Route::get('/images/{id}', 'ImageController@show');
-// Route::get('/images/{id}', [ImageController::class, 'show']);
-// Route::get('/uploads/{id}', [ImageController::class, 'getImage'])->name('image.get');
-Route::get('/images/{id}', [ImageController::class, 'getImage']);
+// Pickup Schedule routes
+Route::get('/schedule/pickup', [PickupController::class, 'index']);
+Route::get('/schedule/pickup/{id}', [PickupController::class, 'show']);
+Route::post('/schedule/pickup', [PickupController::class, 'store']);
+Route::patch('/schedule/pickup/{id}', [PickupController::class, 'update']);
+Route::delete('/schedule/pickup/{id}', [PickupController::class, 'destroy']);
+Route::post('/schedule/pickup/restore/{id}', [PickupController::class, 'restore']);
+Route::delete('/schedule/pickup/delete/{id}', [PickupController::class, 'permanentDelete']);

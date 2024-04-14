@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Inventory;
 use App\Models\Warehouse;
-use App\Models\Sku;
+use App\Models\sku;
 
 class InventoryController extends Controller
 {
@@ -14,12 +14,16 @@ class InventoryController extends Controller
     {
         // Define SKU ID
         $skuId = 1;
+
         // Get all SKU
-        $sku = Sku::all();
+        $sku = sku::all();
+
         // Get inventory details for the given SKU ID
         $inventory = Inventory::where('SKU_id', $skuId)->get();
+
         // Get warehouse details for the given SKU ID
         $warehouse = Warehouse::where('SKU_id', $skuId)->get();
+
         // Return the response in JSON format
         return response()->json([
             'status' => 'success',
@@ -29,10 +33,14 @@ class InventoryController extends Controller
             'Warehouse' => $warehouse
         ]);
     }
+
     // Method to get warehouse details
     public function warehouse(): \Illuminate\Http\JsonResponse
     {
         $warehouseData = Warehouse::with(['sku'])->get();
+
+
+            dd($warehouseData);
 
         try {
             // Fetch all warehouse data from the database

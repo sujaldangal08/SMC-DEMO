@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('skus', function (Blueprint $table) {
             $table->id();
             $table->string('SKU');
+            $table->string('name');
+            $table->string('barcode');
+            $table->string('tags');
+            $table->string('status');
             $table->timestamps();
-
-
-        });
+       });
     }
 
     /**
