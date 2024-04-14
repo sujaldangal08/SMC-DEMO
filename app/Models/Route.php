@@ -24,4 +24,25 @@ class Route extends Model
     {
         return $this->hasMany(PickupSchedule::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($route) {
+            if ($route->status === 'full') {
+                $newRoute = $route->replicate();
+                $newRoute->status = 'pending';
+                $newRoute->push();
+
+                foreach ($route->schedule->where('status', '!=', 'done') as $schedule) {
+                    $schedule->status = 'changed';
+                    $newSchedule = $schedule->replicate();
+                    $newSchedule->route_id = $newRoute->id;
+                    $newSchedule->status = 'pending';
+                    $newSchedule->save();
+                }
+            }
+        });
+    }
 }

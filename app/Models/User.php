@@ -80,4 +80,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(PickupSchedule::class);
     }
+
+    // This function is used to get all users with a specific role from the database it is a query scope function
+    public function scopeWithRole($query, $role)
+    {
+        return $query->whereHas('role', function ($query) use ($role) {
+            $query->where('role', $role);
+        });
+    }
 }
