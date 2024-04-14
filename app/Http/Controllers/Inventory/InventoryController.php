@@ -46,7 +46,7 @@ class InventoryController extends Controller
         $data = $request->validate([
             'SKU_id' => 'required|integer',
             'name' => 'required|string',
-            'thumbnail_image' => 'required|string',
+            'thumbnail_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|string',
             'material_type' => 'required|string',
             'stock' => 'required|integer',
@@ -55,6 +55,15 @@ class InventoryController extends Controller
             'supplier' => 'required|string',
             'serial_number' => 'required|string'
         ]);
+
+        // Handle the image upload
+        if ($request->hasFile('thumbnail_image')) {
+            $image = $request->file('thumbnail_image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('uploads/inventory'), $imageName);
+            $data['thumbnail_image'] = 'uploads/inventory/' . $imageName;
+        }
+
 
         // Create a new inventory with the validated data
         $inventory = Inventory::create($data);
@@ -75,7 +84,7 @@ class InventoryController extends Controller
       // Validate the request data
         $data = $request->validate([
             'name' => 'sometimes|required|string',
-            'thumbnail_image' => 'sometimes|required|string',
+            'thumbnail_image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'sometimes|required|string',
             'material_type' => 'sometimes|required|string',
             'stock' => 'sometimes|required|integer',
@@ -87,7 +96,15 @@ class InventoryController extends Controller
         ]);
 
         // Find the inventory by its ID
-        $inventory = Inventory::find($id);
+        $inventory = Inventory::findOrFail($id);
+
+        //Handle image upload
+        if ($request->hasFile('thumbnail_image')) {
+            $image = $request->file('thumbnail_image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('uploads/inventory'), $imageName);
+            $data['thumbnail_image'] = 'uploads/inventory/' . $imageName;
+        }
 
         if (!$inventory) {
             return response()->json([
