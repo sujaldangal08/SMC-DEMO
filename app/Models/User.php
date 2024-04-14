@@ -87,4 +87,9 @@ class User extends Authenticatable
             $q->where('role', $role);
         });
     }
+
+    public function delivery()
+    {
+        return $this->hasMany(Delivery::class);
+    }
 }
