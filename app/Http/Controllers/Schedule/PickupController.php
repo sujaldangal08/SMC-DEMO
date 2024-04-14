@@ -65,13 +65,14 @@ class PickupController extends Controller
                 'pickup_date' => 'required|date',
                 'status' => 'nullable|string',
                 'notes' => 'nullable',
-                'n_bins' => 'required|integer',
-                'tare_weight' => 'string',
-                'image' => 'mime:jpeg,png,jpg,pdf',
-                'coordinates' => 'array',
+                'n_bins' => 'nullable|integer',
+                'tare_weight' => 'nullable|string',
+                'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
+                'coordinates' => 'nullable|array',
             ]);
 
             $schedule = PickupSchedule::create($validatedRequest);
+            //TODO: Implement notification to related parties after the schedule is created
             $route = $schedule->route()->first();
             $driver = $schedule->driver()->first();
             $customer = $schedule->customer()->first();
@@ -113,6 +114,7 @@ class PickupController extends Controller
             ]);
 
             $schedule->update($validatedRequest);
+            //TODO: Implement notification to related parties after the schedule is updated
             $route = $schedule->route()->first();
             $driver = $schedule->driver()->first();
             $customer = $schedule->customer()->first();
