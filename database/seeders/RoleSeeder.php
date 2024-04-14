@@ -14,23 +14,23 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         DB::table('roles')->insert([
-            'name' => 'admin',
+            'role' => 'admin',
             'max_login_attempts' => 5,
         ]);
         DB::table('roles')->insert([
-            'name' => 'driver',
+            'role' => 'driver',
             'max_login_attempts' => 5,
         ]);
         DB::table('roles')->insert([
-            'name' => 'manager',
+            'role' => 'manager',
             'max_login_attempts' => 5,
         ]);
         DB::table('roles')->insert([
-            'name' => 'customer',
+            'role' => 'customer',
             'max_login_attempts' => 5,
         ]);
         DB::table('roles')->insert([
-            'name' => 'staff',
+            'role' => 'staff',
             'max_login_attempts' => 5,
         ]);
     }

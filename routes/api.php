@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Controllers\Inventory\{InventoryController, SkuController, WarehouseController};
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
-use App\Http\Controllers\Schedule\{PickupController, RouteController};
+use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController};
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -18,6 +18,9 @@ Route::get('/user', function (Request $request) {
 
 // User routes
 Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetreiveDriver');
+Route::get('/managers', 'App\Http\Controllers\Utility\UserController@RetreiveManager');
+Route::get('/users', 'App\Http\Controllers\Utility\UserController@RetreiveUser');
+Route::get('/admins', 'App\Http\Controllers\Utility\UserController@RetreiveAdmin');
 
 // Company Branch Routes
 Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
@@ -137,3 +140,9 @@ Route::patch('/schedule/pickup/{id}', [PickupController::class, 'update']);
 Route::delete('/schedule/pickup/{id}', [PickupController::class, 'destroy']);
 Route::post('/schedule/pickup/restore/{id}', [PickupController::class, 'restore']);
 Route::delete('/schedule/pickup/delete/{id}', [PickupController::class, 'permanentDelete']);
+
+// Delivery Schedule routes
+Route::post('/schedule/delivery', [DeliveryController::class, 'createDelivery']);
+Route::patch('/schedule/delivery/{id}', [DeliveryController::class, 'updateDelivery']);
+
+

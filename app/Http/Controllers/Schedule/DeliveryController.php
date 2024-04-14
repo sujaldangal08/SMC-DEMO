@@ -4,43 +4,30 @@ namespace App\Http\Controllers\Schedule;
 
 use App\Http\Controllers\Controller;
 use App\Models\Delivery;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DeliveryController extends Controller
 {
-    // Delivery
-    // Method to get delivery details
-    public function delivery(): \Illuminate\Http\JsonResponse
-    {
-        // Define delivery ID
-        $deliveryId = 1;
-
-        // Get delivery details for the given delivery ID
-        $delivery = Delivery::where('delivery_id', $deliveryId)->get();
-
-        // Return the response in JSON format
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Delivery retrieved successfully',
-            'Delivery' => $delivery
-        ]);
-    }
-
     // Method to insert delivery
     public function createDelivery(Request $request): \Illuminate\Http\JsonResponse
     {
         // Validate the request data
         $data = $request->validate([
-            'delivery_id' => 'required|integer',
-            'delivery_date' => 'required|date',
-            'delivery_time' => 'required|string',
-            'delivery_address' => 'required|string',
+            'status' => 'required|string',
+            'truck_id' => 'required|integer|exists:assets,id',
+            'driver_id' => 'required|integer|exists:users,id',
+            'customer_id' => 'required|integer|exists:users,id',
+            'delivery_location' => 'required|string',
+            'delivery_start_date' => 'required|date',
+            'delivery_end_date' => 'required|date',
+            'delivery_start_time' => 'required|string',
+            'delivery_end_time' => 'required|string',
+            'delivery_file' => 'required|string',
+            'delivery_interval' => 'required|string',
             'delivery_status' => 'required|string',
-            'delivery_driver' => 'required|string',
-            'delivery_vehicle' => 'required|string',
-            'delivery_company' => 'required|string'
+            'delivery_notes' => 'required|string',
         ]);
-
         // Create a new delivery with the validated data
         $delivery = Delivery::create($data);
 
@@ -57,14 +44,19 @@ class DeliveryController extends Controller
     {
         // Validate the request data
         $data = $request->validate([
-            'delivery_id' => 'required|integer',
-            'delivery_date' => 'required|date',
-            'delivery_time' => 'required|string',
-            'delivery_address' => 'required|string',
-            'delivery_status' => 'required|string',
-            'delivery_driver' => 'required|string',
-            'delivery_vehicle' => 'required|string',
-            'delivery_company' => 'required|string'
+            'status' => 'string',
+            'truck_id' => 'integer|exists:assets,id',
+            'driver_id' => 'integer|exists:users,id',
+            'customer_id' => 'integer|exists:users,id',
+            'delivery_location' => 'string',
+            'delivery_start_date' => 'date',
+            'delivery_end_date' => 'date',
+            'delivery_start_time' => 'string',
+            'delivery_end_time' => 'string',
+            'delivery_file' => 'string',
+            'delivery_interval' => 'string',
+            'delivery_status' => 'string',
+            'delivery_notes' => 'string',
         ]);
 
         // Find the delivery by ID

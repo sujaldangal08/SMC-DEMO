@@ -80,4 +80,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(PickupSchedule::class);
     }
+
+    public function scopeHasRole($query, $role)
+    {
+        return $query->whereHas('role', function ($q) use ($role) {
+            $q->where('role', $role);
+        });
+    }
 }
