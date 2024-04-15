@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('zip_code')->nullable();
             $table->string('language')->default('en');
+            $table->string('tfa_secret')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
