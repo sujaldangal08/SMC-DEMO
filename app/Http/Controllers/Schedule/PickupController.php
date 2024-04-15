@@ -8,9 +8,12 @@ use Illuminate\Http\JsonResponse;
 use App\Models\PickupSchedule;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Rule;
+use App\Traits\ValidatesRoles;
 
 class PickupController extends Controller
 {
+    use ValidatesRoles;
+
     public function index(): JsonResponse
     {
         try {
@@ -60,11 +63,12 @@ class PickupController extends Controller
             $validatedRequest =  $request->validate([
                 'route_id' => 'exists:routes,id',
                 'asset_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
-                'driver_id' => [Rule::exists('users', 'id')->where('role_id', 2)],
-                'customer_id' => ['required', Rule::exists('users', 'id')->where('role_id', 4)],
+                'driver_id' => ['nullable', $this->roleRule('driver')],
+                'customer_id' => ['required', $this->roleRule('customer')],
                 'pickup_date' => 'required|date',
-                'status' => 'nullable|string',
+                'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
+                'material_type' => 'nullable|string',
                 'n_bins' => 'nullable|integer',
                 'tare_weight' => 'nullable|string',
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
@@ -102,15 +106,16 @@ class PickupController extends Controller
             $validatedRequest =  $request->validate([
                 'route_id' => 'exists:routes,id',
                 'asset_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
-                'driver_id' => [Rule::exists('users', 'id')->where('role_id', 2)],
-                'customer_id' => [Rule::exists('users', 'id')->where('role_id', 4)],
-                'pickup_date' => 'date',
-                'status' => 'nullable|string',
+                'driver_id' => ['nullable', $this->roleRule('driver')],
+                'customer_id' => ['nullable', $this->roleRule('customer')],
+                'pickup_date' => 'nullable|date',
+                'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
-                'n_bins' => 'integer',
-                'tare_weight' => 'string',
-                'image' => 'mime:jpeg,png,jpg,pdf',
-                'coordinates' => 'array',
+                'material_type' => 'nullable|string',
+                'n_bins' => 'nullable|integer',
+                'tare_weight' => 'nullable|string',
+                'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
+                'coordinates' => 'nullable|array',
             ]);
 
             $schedule->update($validatedRequest);

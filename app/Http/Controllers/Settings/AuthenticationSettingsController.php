@@ -10,8 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthenticationSettingsController extends Controller
 {
-    public function authAttempts(): JsonResponse
-    { 
+    public function authAttempts(): JsonResponse    {
         try {
             $authAttempts = Role::select('role', 'max_login_attempts')->get();
             return response()->json(['auth_attempts' => $authAttempts], 200);
