@@ -18,6 +18,7 @@ use App\Http\Controllers\Asset\WarehouseController;
 use App\Http\Controllers\Asset\MaintenanceController;
 use App\Http\Controllers\Schedule\PickupController;
 use App\Http\Controllers\Schedule\RouteController;
+use App\Http\Controllers\Ticket\TicketController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -140,3 +141,12 @@ Route::patch('/schedule/pickup/{id}', [PickupController::class, 'update']);
 Route::delete('/schedule/pickup/{id}', [PickupController::class, 'destroy']);
 Route::post('/schedule/pickup/restore/{id}', [PickupController::class, 'restore']);
 Route::delete('/schedule/pickup/delete/{id}', [PickupController::class, 'permanentDelete']);
+
+//Ticket Module Routes
+Route::get('/ticket', [TicketController::class, 'index']);
+Route::get('/ticket/{id}', [TicketController::class, 'show']);
+Route::post('/ticket', [TicketController::class, 'store']);
+Route::patch('/ticket/{id}', [TicketController::class, 'update']);
+Route::delete('/ticket/{id}', [TicketController::class, 'delete']);
+Route::post('/ticket/restore/{id}', [TicketController::class, 'restore']);
+Route::get('/ticket/delete/{id}', [TicketController::class, 'permanentDelete']);

@@ -26,3 +26,4 @@ Homestead.json
 .phpunit.result.cache
 
 storage/logs/*.log
+.vscode/
