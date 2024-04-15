@@ -146,4 +146,8 @@ Route::delete('/schedule/pickup/delete/{id}', [PickupController::class, 'permane
 Route::post('/schedule/delivery', [DeliveryController::class, 'createDelivery']);
 Route::patch('/schedule/delivery/{id}', [DeliveryController::class, 'updateDelivery']);
 
+// 2fa test routes
+Route::get('/checkfa/{userID}', [AuthenticationController::class, 'twoFactorGenerate']);
+Route::post('/verifyfa', [AuthenticationController::class, 'verify2FACode']);
+
 

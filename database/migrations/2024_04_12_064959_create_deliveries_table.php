@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
+            $table->string('status')->default('pending');
             $table->unsignedBigInteger('truck_id');
             $table->unsignedBigInteger('driver_id');
             $table->unsignedBigInteger('customer_id');
             $table->string('delivery_location');
             $table->string('delivery_start_date');
             $table->string('delivery_end_date');
-            $table->string('delivery_start_time');
+            $table->string('delivery_ start_time');
             $table->string('delivery_end_time');
             $table->string('delivery_file');
             $table->string('delivery_interval');
