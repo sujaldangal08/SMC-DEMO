@@ -60,7 +60,7 @@ class RouteController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string',
                 'description' => 'required|string',
-                'status' => 'required|in:active,inactive,pending'
+                'status' => 'required|in:active,inactive,pending,full'
             ]);
 
             $route = Route::create($validatedData);
@@ -85,7 +85,7 @@ class RouteController extends Controller
             $validatedData = $request->validate([
                 'name' => 'string',
                 'description' => 'string',
-                'status' => 'in:active,inactive,done,pending'
+                'status' => 'in:active,inactive,done,pending,full'
             ]);
 
             $route->update($validatedData);
