@@ -1,15 +1,13 @@
 <?php
 
+use App\Http\Controllers\Authentication\OAuthController;
 use App\Http\Controllers\Backend\SuperAdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\RoleAuthentication;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\Settings\{AuthenticationSettingsController, ProfileSettingsController};
 use App\Http\Controllers\SalesOrderController;
-use PHPUnit\Framework\TestStatus\Success;
 use App\Http\Controllers\Inventory\{InventoryController, SkuController, WarehouseController};
-use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
 use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController};
 use App\Http\Controllers\Ticket\TicketController;
@@ -150,6 +148,9 @@ Route::patch('/schedule/delivery/{id}', [DeliveryController::class, 'updateDeliv
 // 2fa test routes
 Route::get('/checkfa/{userID}', [AuthenticationController::class, 'twoFactorGenerate']);
 Route::post('/verifyfa', [AuthenticationController::class, 'verify2FACode']);
+
+// OAuth for Google
+Route::post('/oauth/google', [OAuthController::class, 'OAuthRecieve']);
 
 
 //Ticket Module Routes
