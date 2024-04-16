@@ -16,6 +16,7 @@ class Ticket extends Model
         'customer_id',
         'route_id',
         'material',
+        'full_bin_weight',
         'next_truck_weight',
         'tare_bin',
         'gross_weight',

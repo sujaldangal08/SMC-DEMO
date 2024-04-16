@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use App\Models\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ValidatesRoles;
 
 class RouteController extends Controller
 {
+    use ValidatesRoles;
     public function index(): JsonResponse
     {
         try {
@@ -60,6 +62,7 @@ class RouteController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string',
                 'description' => 'required|string',
+                'driver_id' => ['required|exists:user,id', $this->roleRule('driver')], // 'driver_id' => 'required|exists:users,id
                 'status' => 'required|in:active,inactive,pending,full'
             ]);
 
@@ -85,7 +88,8 @@ class RouteController extends Controller
             $validatedData = $request->validate([
                 'name' => 'string',
                 'description' => 'string',
-                'status' => 'in:active,inactive,done,pending,full'
+                'status' => 'in:active,inactive,done,pending,full',
+                'driver_id' => ['required|exists:user,id', $this->roleRule('driver')], // 'driver_id' => 'exists:users,id
             ]);
 
             $route->update($validatedData);
