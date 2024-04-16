@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BrevoEmail;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use App\Mail\AccountCreation;
 use App\Models\Backend;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use App\Models\Role;
-use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FA\Google2FA;
 use BaconQrCode\Writer;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -153,31 +151,27 @@ class AuthenticationController extends Controller
 
     public function forgotPassword(Request $request): JsonResponse
     {
-        try {
-            $request->validate([
-                'email' => 'required|email'
-            ]);
+       try {
+                $request->validate([
+                    'email' => 'required|email|exists:users,email'
+                ]);
 
-            $user = User::where('email', $request->email)->first();
+                $user = User::where('email', $request->email)->first();
 
-            if (!$user) {
-                return response()->json(['message' => 'User not found'], 404);
-            }
+                $otp = rand(100000, 999999);
+                $user->otp = Hash::make($otp);
+                $user->save();
+                $fullname = $user->name;
+                $subject = 'OTP for password reset';
+                $message = $otp;
+                \Mail::to($request->email)->send(new BrevoEmail($subject, $message, 'email.email', ['user_name' => $fullname]));
 
-            // Generate a token
-            $token = Str::random(60);
+                    return response()->json(['message' => 'OTP sent to your email']);
 
-            // Save it in the database
-            $user->password_reset_token = hash('sha256', $token);
-            $user->save();
-
-            // Send the token to the user's email...
-            // You can use Laravel's built-in Mail feature to do this.
-
-            return response()->json(['message' => 'Reset link sent to your email']);
-        } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()], 400);
-        }
+       }
+         catch (\Exception $e) {
+              return response()->json(['exception' => $e->getMessage()], 400);
+         }
     }
 
     // This is a separate login moult for the backend users
