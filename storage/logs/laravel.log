@@ -12286,3 +12286,65 @@ Did you mean one of these?
 #40 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
 #41 {main}
 "} 
+[2024-04-15 13:16:22] local.ERROR: Client error: `GET https://oauth2.googleapis.com/tokeninfo?id_token=1234` resulted in a `400 Bad Request` response:
+{
+  "error": "invalid_token",
+  "error_description": "Invalid Value"
+}
+
+ {"exception":"[object] (GuzzleHttp\\Exception\\ClientException(code: 400): Client error: `GET https://oauth2.googleapis.com/tokeninfo?id_token=1234` resulted in a `400 Bad Request` response:
+{
+  \"error\": \"invalid_token\",
+  \"error_description\": \"Invalid Value\"
+}
+
+ at /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/guzzle/src/Exception/RequestException.php:113)
+[stacktrace]
+#0 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/guzzle/src/Middleware.php(72): GuzzleHttp\\Exception\\RequestException::create(Object(GuzzleHttp\\Psr7\\Request), Object(GuzzleHttp\\Psr7\\Response), NULL, Array, NULL)
+#1 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/promises/src/Promise.php(209): GuzzleHttp\\Middleware::GuzzleHttp\\{closure}(Object(GuzzleHttp\\Psr7\\Response))
+#2 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/promises/src/Promise.php(158): GuzzleHttp\\Promise\\Promise::callHandler(1, Object(GuzzleHttp\\Psr7\\Response), NULL)
+#3 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/promises/src/TaskQueue.php(52): GuzzleHttp\\Promise\\Promise::GuzzleHttp\\Promise\\{closure}()
+#4 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/promises/src/Promise.php(251): GuzzleHttp\\Promise\\TaskQueue->run(true)
+#5 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/promises/src/Promise.php(227): GuzzleHttp\\Promise\\Promise->invokeWaitFn()
+#6 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/promises/src/Promise.php(272): GuzzleHttp\\Promise\\Promise->waitIfPending()
+#7 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/promises/src/Promise.php(229): GuzzleHttp\\Promise\\Promise->invokeWaitList()
+#8 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/promises/src/Promise.php(69): GuzzleHttp\\Promise\\Promise->waitIfPending()
+#9 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/guzzle/src/Client.php(189): GuzzleHttp\\Promise\\Promise->wait()
+#10 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/guzzlehttp/guzzle/src/ClientTrait.php(44): GuzzleHttp\\Client->request('GET', 'https://oauth2....', Array)
+#11 /Users/nujan/Work/Herd/SMC-Laravel-API/app/Http/Controllers/Authentication/OAuthController.php(21): GuzzleHttp\\Client->get('https://oauth2....', Array)
+#12 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(46): App\\Http\\Controllers\\Authentication\\OAuthController->OAuthRecieve(Object(Illuminate\\Http\\Request))
+#13 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Routing/Route.php(260): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\Authentication\\OAuthController), 'OAuthRecieve')
+#14 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Routing/Route.php(206): Illuminate\\Routing\\Route->runController()
+#15 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Routing/Router.php(806): Illuminate\\Routing\\Route->run()
+#16 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#17 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#18 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#19 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#20 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Routing/Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#21 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Routing/Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#22 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Routing/Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#23 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Routing/Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#24 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#25 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#26 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#27 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#28 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#29 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#30 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#31 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#32 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#33 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(62): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#37 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#38 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#39 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#40 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#41 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#42 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#43 /Users/nujan/Work/Herd/SMC-Laravel-API/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1168): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#44 /Users/nujan/Work/Herd/SMC-Laravel-API/public/index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#45 /Applications/Herd.app/Contents/Resources/valet/server.php(151): require('/Users/nujan/Wo...')
+#46 {main}
+"} 
