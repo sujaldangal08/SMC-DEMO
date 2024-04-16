@@ -14,24 +14,23 @@ class BrevoEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject;
     public $body;
     public $template;
-    public $user_name;
+    public $data;
 
-    public function __construct($subject, $body, $template = 'email.email', $user_name)
+    public function __construct($subject, $body, $template = 'email.email', $data)
     {
         $this->subject = $subject;
         $this->body = $body;
         $this->template = $template;
-        $this->user_name = $user_name;
+        $this->data = $data;
     }
 
     public function build()
     {
         return $this->view($this->template)
-        ->with('subject', $this->subject)
-        ->with('body', $this->body)
-        ->with('employer_name', $this->user_name);
+            ->with('subject', $this->subject)
+            ->with('body', $this->body)
+            ->with($this->data);
     }
 }
