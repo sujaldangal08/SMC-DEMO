@@ -20,10 +20,6 @@ use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use Carbon\Carbon;
 
-
-
-
-
 class AuthenticationController extends Controller
 {
     public function login(Request $request): JsonResponse
@@ -225,18 +221,23 @@ class AuthenticationController extends Controller
             if (!$user) {
                 return response()->json(['message' => 'User not found'], 404);
             }
-
-            // Generate a token
-            $token = Str::random(60);
-
-            // Save it in the database
-            $user->password_reset_token = hash('sha256', $token);
+            $otp = rand(100000, 999999);
+            $user->otp = $otp;
+            $user->otp_expiry = Carbon::now()->addMinutes(5);
             $user->save();
+            $username = $user->name;
 
-            // Send the token to the user's email...
-            // You can use Laravel's built-in Mail feature to do this.
+            $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first(); // Replace 1 with the ID of the email template you want to fetch
+            $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
+            $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
 
-            return response()->json(['message' => 'Reset link sent to your email']);
+            // Create a new instance of the mailable and pass the email template to it
+            $mailable = new EmailTemplate($username, $subject, $template_type, $otp);
+
+            // Send the email
+            Mail::to($user->email)->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
+
+            return response()->json(['message' => 'OTP sent to your email']);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
