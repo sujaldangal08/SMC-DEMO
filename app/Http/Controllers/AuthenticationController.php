@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\BrevoEmail;
+use App\Mail\EmailTemplate;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Backend;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use App\Models\Role;
@@ -17,6 +18,11 @@ use BaconQrCode\Writer;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use Carbon\Carbon;
+
+
+
+
 
 class AuthenticationController extends Controller
 {
@@ -80,20 +86,80 @@ class AuthenticationController extends Controller
 
             $user->save();
 
-            $tokenResult = $user->createToken('api-token');
-            $token = $tokenResult->accessToken;
-            $token->expires_at = now()->addHours(1); // Token expires in 1 hour
-            $token->save();
+            $otp = rand(100000, 999999);
+            $user->otp =$otp;
 
-            $plainTextToken = $tokenResult->plainTextToken;
+            // Set otp_expiry to be 5 minutes from now
+            $user->otp_expiry = Carbon::now()->addMinutes(5);
+            $username = $request->name;
 
-            return response()->json(['message' => 'Account created successfully', 'token' => $plainTextToken], 201);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
+
+
+            $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first(); // Replace 1 with the ID of the email template you want to fetch
+            $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
+            $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
+
+            // Create a new instance of the mailable and pass the email template to it
+            $mailable = new EmailTemplate($username, $subject, $template_type, $otp);
+
+            // Send the email
+            Mail::to('soviamdr@gmail.com')->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
+
+
+            $user->save();
+
+            return response()->json(['message' => 'Account created successfully, please check your email for the OTP'], 201);
+
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()()], 400);
+            return response()->json(['exception' => $e->getMessage()], 400);
+        }
+
+            // $tokenResult = $user->createToken('api-token');
+            // $token = $tokenResult->accessToken;
+            // $token->expires_at = now()->addHours(1); // Token expires in 1 hour
+            // $token->save();
+
+            // $plainTextToken = $tokenResult->plainTextToken;
+
+        //     return response()->json(['message' => 'Account created successfully', 'token' => $plainTextToken], 201);
+        // } catch (ValidationException $e) {
+        //     return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
+
+    }
+
+    public function verifyOtp(Request $request): JsonResponse
+    {
+        // Fetch the user record based on the email provided in the request
+        $checkUser = User::where('email', $request->email)->first();
+
+        // Get the current time and convert it to a Unix timestamp
+        $now = Carbon::now()->format('Y-m-d H:i:s');
+        $second = strtotime($now);
+
+        // Convert the OTP expiry time to a Unix timestamp
+        $secondTwo = strtotime($checkUser->OTP_expiry);
+
+        // Check if the current time is greater than or equal to the OTP expiry time
+        if($second >= $secondTwo){
+            // If the OTP has expired, return a JSON response with an error message
+            return response()->json(['message' => 'OTP has expired'], 401);
+        } elseif($checkUser->OTP === $request->otp) {
+            // If the OTP provided in the request matches the OTP stored in the user record,
+            // set the email_verified_at field to the current time,
+            // set the otp field to null,
+            // and save the changes to the user record
+            $checkUser->email_verified_at = Carbon::now();
+            $checkUser->otp = null;
+            $checkUser->save();
+
+                return response()->json(['message' => 'OTP verified successfully']);
+        } else {
+            // If the OTP provided in the request does not match the OTP stored in the user record,
+            // return a JSON response with an error message
+            return response()->json(['message' => 'Invalid OTP'], 401);
         }
     }
+
 
     public function createUser(Request $request): JsonResponse
     {
@@ -151,24 +217,31 @@ class AuthenticationController extends Controller
 
     public function forgotPassword(Request $request): JsonResponse
     {
-       try {
-                $request->validate([
-                    'email' => 'required|email|exists:users,email'
-                ]);
+        try {
+            $request->validate([
+                'email' => 'required|email'
+            ]);
 
-                $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
 
-                $otp = rand(100000, 999999);
-                $user->otp = Hash::make($otp);
-                $user->save();
-                $fullname = $user->name;
-                $subject = 'OTP for password reset';
-                $message = $otp;
-            return response()->json(['message' => 'OTP sent successfully']);
-       }
-         catch (\Exception $e) {
-              return response()->json(['exception' => $e->getMessage()], 400);
-         }
+            if (!$user) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
+
+            // Generate a token
+            $token = Str::random(60);
+
+            // Save it in the database
+            $user->password_reset_token = hash('sha256', $token);
+            $user->save();
+
+            // Send the token to the user's email...
+            // You can use Laravel's built-in Mail feature to do this.
+
+            return response()->json(['message' => 'Reset link sent to your email']);
+        } catch (\Exception $e) {
+            return response()->json(['exception' => $e->getMessage()], 400);
+        }
     }
 
     // This is a separate login moult for the backend users
