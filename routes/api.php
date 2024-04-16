@@ -38,7 +38,7 @@ Route::get('/company', 'App\Http\Controllers\Company\CompanyController@Company')
 Route::get('/xerodata', 'App\Http\Controllers\Xero\XeroController@getXeroData');
 Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
 
-Route::get('/sendemail/{email}', 'App\Http\Controllers\EmailController@sendEmail');
+Route::get('/sendemail', 'App\Http\Controllers\EmailController@sendEmail');
 
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
@@ -66,6 +66,7 @@ Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
 Route::post('/register', [AuthenticationController::class, 'register']);
+Route::post('/verify-otp', [AuthenticationController::class, 'verifyOtp']);
 
 
 Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
