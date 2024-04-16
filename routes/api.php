@@ -10,6 +10,7 @@ use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Inventory\{InventoryController, SkuController, WarehouseController};
 use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
 use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController};
+use App\Http\Controllers\Ticket\TicketController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -48,18 +49,18 @@ Route::post('/inventory/restore/{id}', [InventoryController::class, 'restoreInve
 Route::delete('/inventory/delete/{id}', [InventoryController::class, 'permanentDeleteInventory']);
 
 // Warehouse routes
-Route::get('/warehouse', [InventoryController::class, 'warehouse']);
-Route::post('/warehouse', [InventoryController::class, 'createWarehouse']);
-Route::patch('/warehouse/{id}', [InventoryController::class, 'updateWarehouse']);
-Route::delete('/warehouse/{id}', [InventoryController::class, 'deleteWarehouse']);
-Route::post('/warehouse/restore/{id}', [InventoryController::class, 'restoreWarehouse']);
-Route::delete('/warehouse/delete/{id}', [InventoryController::class, 'permanentDeleteWarehouse']);
+Route::get('/warehouse', [WarehouseController::class, 'warehouse']);
+Route::post('/warehouse', [WarehouseController::class, 'createWarehouse']);
+Route::patch('/warehouse/{id}', [WarehouseController::class, 'updateWarehouse']);
+Route::delete('/warehouse/{id}', [WarehouseController::class, 'deleteWarehouse']);
+Route::post('/warehouse/restore/{id}', [WarehouseController::class, 'restoreWarehouse']);
+Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'permanentDeleteWarehouse']);
 
 
 // SKU routes
-Route::get('/sku', [InventoryController::class, 'sku']);
-Route::post('/sku', [InventoryController::class, 'createSku']);
-Route::patch('/sku/{id}', [InventoryController::class, 'updateSku']);
+Route::get('/sku', [SkuController::class, 'sku']);
+Route::post('/sku', [SkuController::class, 'createSku']);
+Route::patch('/sku/{id}', [SkuController::class, 'updateSku']);
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
@@ -152,3 +153,11 @@ Route::post('/verifyfa', [AuthenticationController::class, 'verify2FACode']);
 Route::post('/oauth/google', [OAuthController::class, 'OAuthRecieve']);
 
 
+//Ticket Module Routes
+Route::get('/ticket', [TicketController::class, 'index']);
+Route::get('/ticket/{id}', [TicketController::class, 'show']);
+Route::post('/ticket', [TicketController::class, 'store']);
+Route::patch('/ticket/{id}', [TicketController::class, 'update']);
+Route::delete('/ticket/{id}', [TicketController::class, 'delete']);
+Route::post('/ticket/restore/{id}', [TicketController::class, 'restore']);
+Route::get('/ticket/delete/{id}', [TicketController::class, 'permanentDelete']);
