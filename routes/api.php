@@ -66,6 +66,7 @@ Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
 Route::post('/register', [AuthenticationController::class, 'register']);
+Route::post('/verify-otp', [AuthenticationController::class, 'verifyOtp']);
 
 
 Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');

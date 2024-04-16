@@ -19,6 +19,12 @@ use BaconQrCode\Writer;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use App\Mail\BrevoEmail;
+use Carbon\Carbon;
+
+
+
+
 
 class AuthenticationController extends Controller
 {
@@ -82,20 +88,64 @@ class AuthenticationController extends Controller
 
             $user->save();
 
-            $tokenResult = $user->createToken('api-token');
-            $token = $tokenResult->accessToken;
-            $token->expires_at = now()->addHours(1); // Token expires in 1 hour
-            $token->save();
+            $otp = rand(100000, 999999);
+            $user->otp =$otp;
 
-            $plainTextToken = $tokenResult->plainTextToken;
+            // Set otp_expiry to be 5 minutes from now
+            $user->otp_expiry = Carbon::now()->addMinutes(5);
 
-            return response()->json(['message' => 'Account created successfully', 'token' => $plainTextToken], 201);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
+            $subject='OTP for verification';
+            $message=$otp;
+            $fullname = $request->name;
+            \Mail::to($request->email)->send(new BrevoEmail($subject, $message, 'email.email', ['user_name' => $fullname]));
+
+            $user->save();
+
+            return response()->json(['message' => 'Account created successfully, please check your email for the OTP'], 201);
+
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()()], 400);
+            return response()->json(['exception' => $e->getMessage()], 400);
+        }
+
+            // $tokenResult = $user->createToken('api-token');
+            // $token = $tokenResult->accessToken;
+            // $token->expires_at = now()->addHours(1); // Token expires in 1 hour
+            // $token->save();
+
+            // $plainTextToken = $tokenResult->plainTextToken;
+
+        //     return response()->json(['message' => 'Account created successfully', 'token' => $plainTextToken], 201);
+        // } catch (ValidationException $e) {
+        //     return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
+
+    }
+
+
+    public function verifyOtp(Request $request): JsonResponse
+    {
+        $checkUser = User::where('email', $request->email)->first();
+        // $encOTP = Hash::make($checkUser->otp);
+
+        $userkoOTP = $request->OTP;
+        $now = Carbon::now()->format('Y-m-d H:i:s');
+        $second = strtotime($now);
+
+       $secondTwo = strtotime($checkUser->OTP_expiry);
+
+       if($second >= $secondTwo){
+        return response()->json(['message' => 'OTP has expired'], 401);
+    }elseif($userkoOTP !== $checkUser->OTP){
+        return response()->json(['message' => 'Invalid OTP'], 401);
+    }else{
+        $checkUser->email_verified_at = Carbon::now();
+        $checkUser->OTP = null;
+        $checkUser->save();
+
+            return response()->json(['message' => 'OTP verified successfully']);
+
         }
     }
+
 
     public function createUser(Request $request): JsonResponse
     {
