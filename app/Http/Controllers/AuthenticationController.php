@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmailTemplate;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use App\Mail\AccountCreation;
 use App\Models\Backend;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use App\Models\Role;
-use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FA\Google2FA;
 use BaconQrCode\Writer;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use App\Mail\BrevoEmail;
 use Carbon\Carbon;
 
 
@@ -93,18 +91,12 @@ class AuthenticationController extends Controller
 
             // Set otp_expiry to be 5 minutes from now
             $user->otp_expiry = Carbon::now()->addMinutes(5);
-
-            $subject='OTP for verification';
-            $message=$otp;
-            $fullname = $request->name;
+            $username = $request->name;
 
 
-            
+
             $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first(); // Replace 1 with the ID of the email template you want to fetch
-
-            $username = 'John Doe'; // Replace 'John Doe' with the actual username
             $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
-            $otp=1234;
             $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
 
             // Create a new instance of the mailable and pass the email template to it
