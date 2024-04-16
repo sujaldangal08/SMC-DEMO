@@ -97,7 +97,22 @@ class AuthenticationController extends Controller
             $subject='OTP for verification';
             $message=$otp;
             $fullname = $request->name;
-            \Mail::to($request->email)->send(new BrevoEmail($subject, $message, 'email.email', ['user_name' => $fullname]));
+
+
+            
+            $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first(); // Replace 1 with the ID of the email template you want to fetch
+
+            $username = 'John Doe'; // Replace 'John Doe' with the actual username
+            $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
+            $otp=1234;
+            $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
+
+            // Create a new instance of the mailable and pass the email template to it
+            $mailable = new EmailTemplate($username, $subject, $template_type, $otp);
+
+            // Send the email
+            Mail::to('soviamdr@gmail.com')->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
+
 
             $user->save();
 
@@ -120,31 +135,36 @@ class AuthenticationController extends Controller
 
     }
 
-
     public function verifyOtp(Request $request): JsonResponse
     {
+        // Fetch the user record based on the email provided in the request
         $checkUser = User::where('email', $request->email)->first();
-        // $encOTP = Hash::make($checkUser->otp);
 
+        // Get the current time and convert it to a Unix timestamp
         $now = Carbon::now()->format('Y-m-d H:i:s');
         $second = strtotime($now);
 
-       $secondTwo = strtotime($checkUser->OTP_expiry);
+        // Convert the OTP expiry time to a Unix timestamp
+        $secondTwo = strtotime($checkUser->OTP_expiry);
 
-//        dd($checkUser->OTP, $request->otp);
+        // Check if the current time is greater than or equal to the OTP expiry time
+        if($second >= $secondTwo){
+            // If the OTP has expired, return a JSON response with an error message
+            return response()->json(['message' => 'OTP has expired'], 401);
+        } elseif($checkUser->OTP === $request->otp) {
+            // If the OTP provided in the request matches the OTP stored in the user record,
+            // set the email_verified_at field to the current time,
+            // set the otp field to null,
+            // and save the changes to the user record
+            $checkUser->email_verified_at = Carbon::now();
+            $checkUser->otp = null;
+            $checkUser->save();
 
-       if($second >= $secondTwo){
-        return response()->json(['message' => 'OTP has expired'], 401);
-    }elseif($checkUser->OTP === $request->otp){
-           $checkUser->email_verified_at = Carbon::now();
-           $checkUser->otp = null;
-           $checkUser->save();
-
-           return response()->json(['message' => 'OTP verified successfully']);
-
-    }else{
-           return response()->json(['message' => 'Invalid OTP'], 401);
-
+                return response()->json(['message' => 'OTP verified successfully']);
+        } else {
+            // If the OTP provided in the request does not match the OTP stored in the user record,
+            // return a JSON response with an error message
+            return response()->json(['message' => 'Invalid OTP'], 401);
         }
     }
 

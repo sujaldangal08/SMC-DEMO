@@ -4,22 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Mail\BrevoEmail;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EmailTemplate;
 
 class EmailController extends Controller
 {
     //
 
-public function sendEmail($email, $otp)
-{
-    $subject = 'OTP for verificaton';
-    $message = 'this is otp';
-    $fullname = 'Sovia';
-    \Mail::to($email)->send(new BrevoEmail($subject, $message, 'email.email', ['user_name' => $fullname, 'otp' => $otp]));
 
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Email sent successfully'
-    ]);
-}
+
+    public function sendEmail()
+    {
+        // Fetch the email template from the database
+        $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first(); // Replace 1 with the ID of the email template you want to fetch
+
+        $username = 'John Doe'; // Replace 'John Doe' with the actual username
+        $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
+        $otp=1234;
+        $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
+
+        // Create a new instance of the mailable and pass the email template to it
+        $mailable = new EmailTemplate($username, $subject, $template_type, $otp);
+
+        // Send the email
+        Mail::to('soviamdr@gmail.com')->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
+
+        return response()->json(['message' => 'Email sent successfully']);
+    }
+
 
 }
