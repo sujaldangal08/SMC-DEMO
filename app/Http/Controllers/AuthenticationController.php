@@ -126,22 +126,24 @@ class AuthenticationController extends Controller
         $checkUser = User::where('email', $request->email)->first();
         // $encOTP = Hash::make($checkUser->otp);
 
-        $userkoOTP = $request->OTP;
         $now = Carbon::now()->format('Y-m-d H:i:s');
         $second = strtotime($now);
 
        $secondTwo = strtotime($checkUser->OTP_expiry);
 
+//        dd($checkUser->OTP, $request->otp);
+
        if($second >= $secondTwo){
         return response()->json(['message' => 'OTP has expired'], 401);
-    }elseif($userkoOTP !== $checkUser->OTP){
-        return response()->json(['message' => 'Invalid OTP'], 401);
-    }else{
-        $checkUser->email_verified_at = Carbon::now();
-        $checkUser->OTP = null;
-        $checkUser->save();
+    }elseif($checkUser->OTP === $request->otp){
+           $checkUser->email_verified_at = Carbon::now();
+           $checkUser->otp = null;
+           $checkUser->save();
 
-            return response()->json(['message' => 'OTP verified successfully']);
+           return response()->json(['message' => 'OTP verified successfully']);
+
+    }else{
+           return response()->json(['message' => 'Invalid OTP'], 401);
 
         }
     }
