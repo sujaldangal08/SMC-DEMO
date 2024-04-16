@@ -164,10 +164,7 @@ class AuthenticationController extends Controller
                 $fullname = $user->name;
                 $subject = 'OTP for password reset';
                 $message = $otp;
-                \Mail::to($request->email)->send(new BrevoEmail($subject, $message, 'email.email', ['user_name' => $fullname]));
-
-                    return response()->json(['message' => 'OTP sent to your email']);
-
+            return response()->json(['message' => 'OTP sent successfully']);
        }
          catch (\Exception $e) {
               return response()->json(['exception' => $e->getMessage()], 400);
