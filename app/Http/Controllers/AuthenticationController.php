@@ -93,8 +93,6 @@ class AuthenticationController extends Controller
             $user->otp_expiry = Carbon::now()->addMinutes(5);
             $username = $request->name;
 
-
-
             $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first(); // Replace 1 with the ID of the email template you want to fetch
             $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
             $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
@@ -103,7 +101,7 @@ class AuthenticationController extends Controller
             $mailable = new EmailTemplate($username, $subject, $template_type, $otp);
 
             // Send the email
-            Mail::to('soviamdr@gmail.com')->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
+            Mail::to($user->ensureCastsAreStringValuesmail)->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
 
 
             $user->save();
