@@ -25,8 +25,13 @@ class WarehouseController extends Controller
     // Method to insert warehouse
     public function createWarehouse(Request $request) :\Illuminate\Http\JsonResponse
     {
-        $warehouseLocation = $request->input('location');
-        $skuString = $request->input('sku_id');
+        $validatedData = $request->validate([
+            'location' => 'required|max:255',
+            'sku_id' => 'required|max:255|exists:skus,SKU',
+        ]);
+
+        $warehouseLocation = $validatedData['location'];
+        $skuString = $validatedData['sku_id'];
 
         // Find the SKU by its string
         $sku = Sku::where('SKU', $skuString)->first();

@@ -22,7 +22,7 @@ class EmailTemplate extends Mailable
     public $username;
 
 
-    public function __construct($username, $subject, $template_type, $otp)
+    public function __construct($username, $subject, $template_type, $otp = null)
     {
         $this->username = $username;
         $this->subject = $subject;
@@ -71,7 +71,7 @@ public function build()
     $emailTemplate = \App\Models\EmailTemplate::where('template_type', $this->template_type)->first();
 
     // Use the data from the email template to build the email
-    return $this->view('email.email') // Replace 'emails.template' with the actual view for your email template
+    return $this->view('email.email') 
         ->with('subject', $this->subject)
         ->with([
             'logo' => $emailTemplate->logo,
@@ -88,8 +88,11 @@ public function build()
             'footer_text' => $emailTemplate->footer_text,
             'color' => $emailTemplate->color,
             'username' => $this->username,
+            'template_type' => $this->template_type,
             'otp' => $this->otp,
-            'is_otp' => $emailTemplate->is_otp,
         ]);
+
+
+
 }
 }
