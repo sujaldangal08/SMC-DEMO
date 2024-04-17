@@ -20,7 +20,7 @@ stages:
           steps:
             - task: SSH@0
               inputs:
-                sshEndpoint: 'shikshya-prod'
+                sshEndpoint: 'smc-dev'
                 runOptions: 'inline'
                 inline: |
                   # Use phpenv to switch PHP version to 8.3
