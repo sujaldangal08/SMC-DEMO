@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('asset_id')->constrained('assets')->cascadeOnDelete()->nullable();
             $table->foreignId('customer_id')->constrained('users')->cascadeOnDelete()->nullable();
             $table->date('pickup_date');
-            $table->enum('status', ['pending', 'active', 'inactive', 'done', 'unloading', 'schedule'])->default('pending');
+            $table->enum('status', ['pending', 'active', 'inactive', 'done', 'unloading', 'full', 'cancelled'])->default('pending');
             $table->string('notes')->nullable();
             $table->string('material_type')->nullable();
             $table->string('n_bins')->nullable();

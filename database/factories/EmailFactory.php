@@ -36,7 +36,6 @@ class EmailFactory extends Factory
                 $table->string('footer_link');
                 $table->string('footer_text');
                 $table->string('color');
-                $table->boolean('is_otp')->default(false); //Boolean indicating if it's an OTP or not
                 $table->string('template_type');
                 $table->timestamps();
             })

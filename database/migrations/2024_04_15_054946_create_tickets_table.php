@@ -18,7 +18,9 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('users');
             $table->foreignId('route_id')->constrained('routes')->nullable(); //For automation of ticket generation for schedule
             $table->string('material');
-            $table->integer('next_truck_weight'); //comes from the machine
+            $table->integer('initial_truck_weight')->nullable(); //comes from the machine
+            $table->integer('full_bin_weight')->nullable();
+            $table->integer('next_truck_weight')->nullable(); //comes from the machine
             $table->integer('tare_bin'); //comes from the machine
             $table->integer('gross_weight'); //comes from the machine
             $table->string('notes')->nullable();
@@ -26,9 +28,9 @@ return new class extends Migration
             $table->enum('weighing_type', ['bridge', 'pallet']);
             $table->enum('ticked_type', ['direct', 'schedule'])->default('direct');
             $table->string('lot_number');
-            $table->string('ticket_number')->unique();
-            $table->timestamp('in_time')->nullable();;
-            $table->timestamp('out_time')->nullable();;
+            $table->string('ticket_number');
+            $table->timestamp('in_time');
+            $table->timestamp('out_time');
             $table->softDeletes();
             $table->timestamps();
         });

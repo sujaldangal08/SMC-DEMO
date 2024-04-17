@@ -56,15 +56,16 @@ class InsuranceController extends Controller
     {
         try {
             $request->validate([
-                'asset_id' => 'required|exists:assets,id',
+                'asset_id' => 'required|integer|exists:assets,id',
                 'insurance_type' => 'required|string',
                 'provider' => 'required|string',
-                'amount' => 'required|string',
+                'amount' => 'required|numeric',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date',
                 'purchase_date' => 'required|date',
-                'attachment' => 'required',
-                'contact_meta' => 'required'
+                'attachment' => 'required|file',
+                'contact_meta' => 'required|array'
+
             ]);
 
             $attachments = [];
@@ -106,15 +107,15 @@ class InsuranceController extends Controller
         try {
             $insurance = Insurance::findOrFail($id);
             $request->validate([
-                'asset_id' => 'sometimes|exists:assets,id',
-                'insurance_type' => 'sometimes|string',
-                'provider' => 'sometimes|string',
-                'amount' => 'sometimes|string',
-                'start_date' => 'sometimes|date',
-                'end_date' => 'sometimes|date',
-                'purchase_date' => 'sometimes|date',
-                'attachment' => 'sometimes',
-                'contact_meta' => 'sometimes'
+                'asset_id' => 'sometimes|integer|exists:assets,id',
+            'insurance_type' => 'sometimes|string',
+            'provider' => 'sometimes|string',
+            'amount' => 'sometimes|numeric',
+            'start_date' => 'sometimes|date',
+            'end_date' => 'sometimes|date',
+            'purchase_date' => 'sometimes|date',
+            'attachment' => 'sometimes|file',
+            'contact_meta' => 'sometimes|array'
             ]);
 
             $attachments = [];

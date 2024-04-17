@@ -53,17 +53,17 @@
 										</tr>
                     <tr>
 											<td style="padding-bottom: 10px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="subTitle">
-												<h4 class="text" style="color:#666;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0">Dear {!! $username !!}, @if($is_otp==1) Your OTP is @endif</h4>
+												<h4 class="text" style="color:#666;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0">Dear {!! $username !!}, @if($template_type=='otp') Your OTP is @elseif($template_type=="welcome")Welcome, you have been registered to ShotCoder Tech @endif</h4>
 											</td>
 										</tr>
 										<tr>
 											<td style="padding-bottom: 25px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
-                                                @if($is_otp==1)
-                                                <h2 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:28px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:10px;margin:0; background-color: #3185362b; border-radius: 10px; width: 150px; letter-spacing: 5px;">{!! $otp !!}</h2>
+                                                @if($template_type=='otp')
+                                                <h2 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:28px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:10px;margin:0; background-color: #3185362b; border-radius: 10px; width: 150px; letter-spacing: 5px;">{!! $otp !!}</p></h2>
                                                 @else
 												<img src="{!! $icon !!}" width="200">
                                                 @endif
-                                                @if($is_otp==1)
+                                                @if($template_type=='otp')
                                                 @else
                         <h2 style="color:#2B332C;font-family:Poppins,Helvetica,Arial,sans-serif;">{!! $title !!}</h2>
                                                 @endif

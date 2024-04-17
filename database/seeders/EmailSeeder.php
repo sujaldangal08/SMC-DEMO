@@ -29,7 +29,6 @@ class EmailSeeder extends Seeder
             'footer_link' => 'Example Link',
             'footer_text' => 'Example Footer Text',
             'color' => '2ab463',
-            'is_otp' => false,
             'template_type' => 'Delivery Confirmation',
             'created_at' => now(),
             'updated_at' => now(),
