@@ -71,7 +71,7 @@ public function build()
     $emailTemplate = \App\Models\EmailTemplate::where('template_type', $this->template_type)->first();
 
     // Use the data from the email template to build the email
-    return $this->view('email.email') // Replace 'emails.template' with the actual view for your email template
+    return $this->view('email.email') 
         ->with('subject', $this->subject)
         ->with([
             'logo' => $emailTemplate->logo,

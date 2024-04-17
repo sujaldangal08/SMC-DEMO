@@ -54,11 +54,12 @@ class AssetController extends Controller
     public function createAsset(Request $request): JsonResponse
     {
         $request->validate([
-            'title' => 'required',
+            'title' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'asset_type' => 'required',
+            'asset_type' => 'required|string|max:255',
             'meta' => 'required|array',
-            'branch_id' => 'required|exists:branches,id'
+            'branch_id' => 'required|integer|exists:branches,id'
+
         ]);
 
         $image = $request->file('image');
@@ -85,11 +86,11 @@ class AssetController extends Controller
     {
         try {
             $request->validate([
-                'title' => 'sometimes|required',
+                'title' => 'sometimes|required|string|max:255',
                 'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'asset_type' => 'sometimes|required',
+                'asset_type' => 'sometimes|required|string|max:255',
                 'meta' => 'sometimes|required|array',
-                'branch_id' => 'exists:branches,id'
+                'branch_id' => 'sometimes|required|integer|exists:branches,id'
             ]);
 
             $asset = Asset::findOrFail($id);

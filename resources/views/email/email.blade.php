@@ -53,7 +53,7 @@
 										</tr>
                     <tr>
 											<td style="padding-bottom: 10px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="subTitle">
-												<h4 class="text" style="color:#666;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0">Dear {!! $username !!}, @if($template_type=='otp') Your OTP is @elseif($template_type=="welcome")Welcome @endif</h4>
+												<h4 class="text" style="color:#666;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0">Dear {!! $username !!}, @if($template_type=='otp') Your OTP is @elseif($template_type=="welcome")Welcome, you have been registered to ShotCoder Tech @endif</h4>
 											</td>
 										</tr>
 										<tr>

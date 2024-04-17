@@ -34,11 +34,14 @@ class AuthenticationController extends Controller
 
             if ($user->login_attempts >= $user->role->max_login_attempts) {
                 $user->deactivate();
-                return response()->json(['message' => 'You account has been deactivated. Pleas contact your admin in order to activate it again'], 401);
+                return response()->json(['message' => 'You account has been deactivated. Please contact your admin in order to activate it again'], 401);
             }
 
             if (auth()->attempt($credentials)) {
                 $user->resetLoginAttempts();
+                if ($user->role->role === 'customer' && $user->email_verified_at === null) {
+                    return response()->json(['message' => 'Please verify your email'], 401);
+                }
 
                 $tokenResult = $request->user()->createToken('api-token');
                 $token = $tokenResult->accessToken;
@@ -51,6 +54,8 @@ class AuthenticationController extends Controller
                     'message' => 'Login successful',
                     'token' => $plainTextToken,
                 ]);
+            }else {
+                dd(auth()->getLastAttempted());
             }
             $user->incrementLoginAttempts();
             return response()->json([
@@ -73,7 +78,10 @@ class AuthenticationController extends Controller
             ],[
             'password.required' => 'The password field is required.',
             'password.min' => 'The password must be at least 8 characters.',
-            'password.regex' => 'The password must include at least one uppercase letter, one lowercase letter, one number, and one special character.'
+            'password.regex' => 'The password must include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+            'confirm_password.required' => 'The confirmation password field is required.',
+            'confirm_password.same' => 'The confirmation password must match the password.',
+
             ]);
 
             $role = Role::where('role', 'customer')->first();
@@ -92,14 +100,16 @@ class AuthenticationController extends Controller
             $username = $request->name;
 
             $welcomeTemplate = \App\Models\EmailTemplate::where('template_type', 'welcome')->first();
+            if (!$welcomeTemplate) {
+                return response()->json(['message' => 'Welcome Email Template not found'], 404);
+            }
             $subjectWelcome = $welcomeTemplate->subject; // Retrieve the subject from the emailTemplate model
             $welcome_type = $welcomeTemplate->template_type; // Retrieve the template type from the emailTemplate model
 
             $mailableWelcome = new EmailTemplate($username, $subjectWelcome, $welcome_type);
-            Mail::to($user->email)->send($mailableWelcome); // Replace 'recipient@example.com' with the recipient's email address
+            Mail::to($user->email)->send($mailableWelcome);
 
-
-            $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first(); // Replace 1 with the ID of the email template you want to fetch
+            $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first();
             $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
             $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
 
@@ -132,13 +142,13 @@ class AuthenticationController extends Controller
         $second = strtotime($now);
 
         // Convert the OTP expiry time to a Unix timestamp
-        $secondTwo = strtotime($checkUser->OTP_expiry);
+        $secondTwo = strtotime($checkUser->otp_expiry);
 
         // Check if the current time is greater than or equal to the OTP expiry time
         if($second >= $secondTwo){
             // If the OTP has expired, return a JSON response with an error message
             return response()->json(['message' => 'OTP has expired'], 401);
-        } elseif($checkUser->OTP === $request->otp) {
+        } elseif($checkUser->otp === $request->otp) {
             // If the OTP provided in the request matches the OTP stored in the user record,
             $checkUser->email_verified_at = Carbon::now();// set the email_verified_at field to the current time
             $checkUser->otp = null;// set the otp field to null
