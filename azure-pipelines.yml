@@ -23,8 +23,6 @@ stages:
                 sshEndpoint: 'smc-development'
                 runOptions: 'inline'
                 inline: |
-                  # Use phpenv to switch PHP version to 8.3
-                  phpenv global 8.3
 
                   # Kill the serve process if it's running
                   sudo pkill -f 'php artisan serve'
