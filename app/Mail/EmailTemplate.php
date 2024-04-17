@@ -22,7 +22,7 @@ class EmailTemplate extends Mailable
     public $username;
 
 
-    public function __construct($username, $subject, $template_type, $otp)
+    public function __construct($username, $subject, $template_type, $otp = null)
     {
         $this->username = $username;
         $this->subject = $subject;
@@ -88,8 +88,11 @@ public function build()
             'footer_text' => $emailTemplate->footer_text,
             'color' => $emailTemplate->color,
             'username' => $this->username,
+            'template_type' => $this->template_type,
             'otp' => $this->otp,
-            'is_otp' => $emailTemplate->is_otp,
         ]);
+
+
+
 }
 }

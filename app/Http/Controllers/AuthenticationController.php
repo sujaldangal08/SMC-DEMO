@@ -68,8 +68,12 @@ class AuthenticationController extends Controller
             $request->validate([
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'password' => 'required|min:6',
+                'password' => 'required|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
                 'confirm_password' => 'required|same:password'
+            ],[
+            'password.required' => 'The password field is required.',
+            'password.min' => 'The password must be at least 8 characters.',
+            'password.regex' => 'The password must include at least one uppercase letter, one lowercase letter, one number, and one special character.'
             ]);
 
             $role = Role::where('role', 'customer')->first();
@@ -80,8 +84,6 @@ class AuthenticationController extends Controller
             $user->role_id = $role->id;
             $user->password = Hash::make($request->password);
 
-            $user->save();
-
             $otp = rand(100000, 999999);
             $user->otp =$otp;
 
@@ -89,35 +91,34 @@ class AuthenticationController extends Controller
             $user->otp_expiry = Carbon::now()->addMinutes(5);
             $username = $request->name;
 
+            $welcomeTemplate = \App\Models\EmailTemplate::where('template_type', 'welcome')->first();
+            $subjectWelcome = $welcomeTemplate->subject; // Retrieve the subject from the emailTemplate model
+            $welcome_type = $welcomeTemplate->template_type; // Retrieve the template type from the emailTemplate model
+
+            $mailableWelcome = new EmailTemplate($username, $subjectWelcome, $welcome_type);
+            Mail::to($user->email)->send($mailableWelcome); // Replace 'recipient@example.com' with the recipient's email address
+
+
             $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first(); // Replace 1 with the ID of the email template you want to fetch
             $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
             $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
 
-            // Create a new instance of the mailable and pass the email template to it
             $mailable = new EmailTemplate($username, $subject, $template_type, $otp);
+            Mail::to($user->email)->send($mailable);
 
-            // Send the email
-            Mail::to($user->ensureCastsAreStringValuesmail)->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
 
 
             $user->save();
 
             return response()->json(['message' => 'Account created successfully, please check your email for the OTP'], 201);
 
-        } catch (\Exception $e) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->validator->errors()], 400);
+        }catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
 
-            // $tokenResult = $user->createToken('api-token');
-            // $token = $tokenResult->accessToken;
-            // $token->expires_at = now()->addHours(1); // Token expires in 1 hour
-            // $token->save();
 
-            // $plainTextToken = $tokenResult->plainTextToken;
-
-        //     return response()->json(['message' => 'Account created successfully', 'token' => $plainTextToken], 201);
-        // } catch (ValidationException $e) {
-        //     return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
 
     }
 
@@ -139,14 +140,25 @@ class AuthenticationController extends Controller
             return response()->json(['message' => 'OTP has expired'], 401);
         } elseif($checkUser->OTP === $request->otp) {
             // If the OTP provided in the request matches the OTP stored in the user record,
-            // set the email_verified_at field to the current time,
-            // set the otp field to null,
-            // and save the changes to the user record
-            $checkUser->email_verified_at = Carbon::now();
-            $checkUser->otp = null;
+            $checkUser->email_verified_at = Carbon::now();// set the email_verified_at field to the current time
+            $checkUser->otp = null;// set the otp field to null
+            // $tokenResult = $user->createToken('api-token');
+            // $token = $tokenResult->accessToken;
+
+            // $token->expires_at = now()->addHours(1); // Token expires in 1 hour
+            // $token->save();
+
+            // $plainTextToken = $tokenResult->plainTextToken;
+
+
             $checkUser->save();
 
+
                 return response()->json(['message' => 'OTP verified successfully']);
+
+        //     return response()->json(['message' => 'Account created successfully', 'token' => $plainTextToken], 201);
+        // } catch (ValidationException $e) {
+        //     return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
         } else {
             // If the OTP provided in the request does not match the OTP stored in the user record,
             // return a JSON response with an error message
