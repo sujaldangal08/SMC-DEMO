@@ -10,7 +10,7 @@ use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Inventory\{InventoryController, SkuController, WarehouseController};
 use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
 use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController};
-use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\Ticket\{TicketController, WastageController};
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -158,7 +158,17 @@ Route::post('/oauth/google', [OAuthController::class, 'OAuthRecieve']);
 Route::get('/ticket', [TicketController::class, 'index']);
 Route::get('/ticket/{id}', [TicketController::class, 'show']);
 Route::post('/ticket', [TicketController::class, 'store']);
-Route::patch('/ticket/{id}', [TicketController::class, 'update']);
-Route::delete('/ticket/{id}', [TicketController::class, 'delete']);
-Route::post('/ticket/restore/{id}', [TicketController::class, 'restore']);
-Route::get('/ticket/delete/{id}', [TicketController::class, 'permanentDelete']);
+Route::put('/ticket/{ticketNumber}', [TicketController::class, 'update']);
+Route::delete('/ticket/{ticketNumber}', [TicketController::class, 'delete']);
+Route::post('/ticket/restore/{ticketNumber}', [TicketController::class, 'restore']);
+Route::get('/ticket/delete/{ticketNumber}', [TicketController::class, 'permanentDelete']);
+
+
+//Wastage Mode Routes
+Route::get('/waste', [WastageController::class, 'index']);
+Route::get('/waste/{id}', [WastageController::class, 'show']);
+Route::post('/waste', [WastageController::class, 'store']);
+Route::patch('/waste/{id}', [WastageController::class, 'update']);
+Route::delete('/waste/{id}', [WastageController::class, 'delete']);
+Route::post('/waste/restore/{id}', [WastageController::class, 'restore']);
+Route::delete('/waste/delete/{id}', [WastageController::class, 'permanentDelete']);

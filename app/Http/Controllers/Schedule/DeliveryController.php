@@ -6,18 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Models\Delivery;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Traits\ValidatesRoles;
+use Illuminate\Validation\Rule;
 
 class DeliveryController extends Controller
 {
+    use ValidatesRoles;
     // Method to insert delivery
     public function createDelivery(Request $request): \Illuminate\Http\JsonResponse
     {
         // Validate the request data
         $data = $request->validate([
             'status' => 'required|string',
-            'truck_id' => 'required|integer|exists:assets,id',
-            'driver_id' => 'required|integer|exists:users,id',
-            'customer_id' => 'required|integer|exists:users,id',
+            'truck_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+            'driver_id' => ['required', $this->roleRule('driver')],
+            'customer_id' => ['required', $this->roleRule('customer')],
             'delivery_location' => 'required|string',
             'delivery_start_date' => 'required|date',
             'delivery_end_date' => 'required|date',
@@ -45,9 +48,9 @@ class DeliveryController extends Controller
         // Validate the request data
         $data = $request->validate([
             'status' => 'string',
-            'truck_id' => 'integer|exists:assets,id',
-            'driver_id' => 'integer|exists:users,id',
-            'customer_id' => 'integer|exists:users,id',
+            'truck_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+            'driver_id' => ['nullable', $this->roleRule('driver')],
+            'customer_id' => ['required', $this->roleRule('customer')],
             'delivery_location' => 'string',
             'delivery_start_date' => 'date',
             'delivery_end_date' => 'date',

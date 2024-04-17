@@ -45,6 +45,11 @@ class Ticket extends Model
         return $this->belongsTo(Route::class);
     }
 
+    public function wastes()
+    {
+        return $this->hasOne(Waste::class);
+    }
+
     protected function casts(): array
     {
         return [
