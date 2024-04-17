@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('routes', function (Blueprint $table) {
+        Schema::create('wastes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('driver_id')->constrained('users');
-            $table->string('description')->nullable();
-            $table->enum('status', ['pending', 'active', 'done', 'unloading', 'full', 'cancelled'])->default('pending');
+            $table->foreignId('ticket_id')->constrained('tickets')->onDelete('cascade');
+            // $table->foreignId('ticket_number')->references('ticket_number')->on('tickets')->onDelete('cascade');
+            $table->integer('quantity');
+            $table->string('image');
+            $table->string('notes')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('routes');
+        Schema::dropIfExists('wastes');
     }
 };

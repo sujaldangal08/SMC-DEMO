@@ -16,6 +16,7 @@ class Ticket extends Model
         'customer_id',
         'route_id',
         'material',
+        'full_bin_weight',
         'next_truck_weight',
         'tare_bin',
         'gross_weight',
@@ -42,6 +43,11 @@ class Ticket extends Model
     public function route()
     {
         return $this->belongsTo(Route::class);
+    }
+
+    public function wastes()
+    {
+        return $this->hasOne(Waste::class);
     }
 
     protected function casts(): array

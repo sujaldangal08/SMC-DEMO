@@ -36,7 +36,7 @@ class Route extends Model
                 $newRoute->push();
 
                 foreach ($route->schedule->where('status', '!=', 'done') as $schedule) {
-                    $schedule->status = 'changed';
+                    $schedule->status = ' ';
                     $newSchedule = $schedule->replicate();
                     $newSchedule->route_id = $newRoute->id;
                     $newSchedule->status = 'pending';
