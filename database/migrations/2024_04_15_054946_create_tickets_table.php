@@ -27,8 +27,8 @@ return new class extends Migration
             $table->enum('ticked_type', ['direct', 'schedule'])->default('direct');
             $table->string('lot_number');
             $table->string('ticket_number')->unique();
-            $table->timestamp('in_time');
-            $table->timestamp('out_time');
+            $table->timestamp('in_time')->nullable();;
+            $table->timestamp('out_time')->nullable();;
             $table->softDeletes();
             $table->timestamps();
         });

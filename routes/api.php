@@ -11,6 +11,7 @@ use App\Http\Controllers\Inventory\{InventoryController, SkuController, Warehous
 use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
 use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController};
 use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\Report\ReportController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -162,3 +163,9 @@ Route::patch('/ticket/{id}', [TicketController::class, 'update']);
 Route::delete('/ticket/{id}', [TicketController::class, 'delete']);
 Route::post('/ticket/restore/{id}', [TicketController::class, 'restore']);
 Route::get('/ticket/delete/{id}', [TicketController::class, 'permanentDelete']);
+
+Route::get('/deliveries/total', [ReportController::class, 'getTotalDeliveries']);
+Route::get('/pickups/total', [ReportController::class, 'getTotalPickups']);
+Route::get('/tickets/total', [ReportController::class, 'getTotalTickets']);
+Route::get('/users/total', [ReportController::class, 'getTotalUsers']);
+Route::get('/assets/total', [ReportController::class, 'getTotalAssets']);
