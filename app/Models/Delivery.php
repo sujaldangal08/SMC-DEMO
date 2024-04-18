@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// This model is just a placeholder for the delivery model
 class Delivery extends Model
 {
     use HasFactory;

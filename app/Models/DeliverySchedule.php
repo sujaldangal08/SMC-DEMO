@@ -27,6 +27,7 @@ class DeliverySchedule extends Model
         'meta'
     ];
 
+    // Using cast to convert the coordinates, materials, and amount to an array for easy manipulation
     protected function casts(): array
     {
         return [
