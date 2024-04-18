@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('delivery_location');
             $table->string('delivery_start_date');
             $table->string('delivery_end_date');
-            $table->string('delivery_ start_time');
+            $table->string('delivery_start_time');
             $table->string('delivery_end_time');
             $table->string('delivery_file');
             $table->string('delivery_interval');
