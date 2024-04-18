@@ -9,6 +9,12 @@ use App\Models\User;
 
 class OAuthController extends Controller
 {
+    /**
+     * This method is used to handle the OAuth token received from the client.
+     *
+     * @param Request $request The incoming HTTP request containing the OAuth token.
+     * @return \Illuminate\Http\JsonResponse Returns a JSON response indicating whether the authentication was successful or not.
+     */
     public function OAuthRecieve(Request $request)
     {
         // Get the token from the request
@@ -41,19 +47,19 @@ class OAuthController extends Controller
             ], 401);
         }
         else {
-                // The user exists, authenticate them with Laravel Sanctum
-                $tokenResult = $checkuser->createToken('api-token');
-                $token = $tokenResult->token;
-                $token->expires_at = now()->addHours(1); // Token expires in 1 hour
-                $token->save();
+            // The user exists, authenticate them with Laravel Sanctum
+            $tokenResult = $checkuser->createToken('api-token');
+            $token = $tokenResult->accessToken;
+            $token->expires_at = now()->addHours(1); // Token expires in 1 hour
+            $token->save();
 
-                $plainTextToken = $tokenResult->plainTextToken;
+            $plainTextToken = $tokenResult->plainTextToken;
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Authenticated',
-                    'token' => $plainTextToken,
-                ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Authenticated',
+                'token' => $plainTextToken,
+            ]);
         }
     }
 }
