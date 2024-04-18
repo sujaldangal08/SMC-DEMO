@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Schedule;
 
 use App\Http\Controllers\Controller;
 use App\Models\Delivery;
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\ValidatesRoles;
 use Illuminate\Validation\Rule;
