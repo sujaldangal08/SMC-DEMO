@@ -9,7 +9,7 @@ use App\Http\Controllers\Settings\{AuthenticationSettingsController, ProfileSett
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Inventory\{InventoryController, SkuController, WarehouseController};
 use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
-use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController};
+use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController, DeliveryScheduleController};
 use App\Http\Controllers\Ticket\{TicketController, WastageController};
 use App\Http\Controllers\Report\{ReportController};
 
@@ -142,6 +142,15 @@ Route::patch('/schedule/pickup/{id}', [PickupController::class, 'update']);
 Route::delete('/schedule/pickup/{id}', [PickupController::class, 'destroy']);
 Route::post('/schedule/pickup/restore/{id}', [PickupController::class, 'restore']);
 Route::delete('/schedule/pickup/delete/{id}', [PickupController::class, 'permanentDelete']);
+
+//Delivery Plan Routes
+Route::get('/delivery', [DeliveryScheduleController::class, 'index']);
+Route::get('/delivery/{id}', [DeliveryScheduleController::class, 'show']);
+Route::post('/delivery', [DeliveryScheduleController::class, 'store']);
+Route::patch('/delivery/{id}', [DeliveryScheduleController::class, 'update']);
+Route::delete('/delivery/{id}', [DeliveryScheduleController::class, 'destroy']);
+Route::post('/delivery/restore/{id}', [DeliveryScheduleController::class, 'restore']);
+Route::delete('/delivery/delete/{id}', [DeliveryScheduleController::class, 'permanentDelete']);
 
 // Delivery Schedule routes
 Route::post('/schedule/delivery', [DeliveryController::class, 'createDelivery']);
