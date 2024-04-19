@@ -57,8 +57,6 @@ class AuthenticationController extends Controller
                     'message' => 'Login successful',
                     'token' => $plainTextToken,
                 ]);
-            }else {
-                dd(auth()->getLastAttempted());
             }
             $user->incrementLoginAttempts();
             return response()->json([

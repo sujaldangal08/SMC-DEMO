@@ -181,9 +181,12 @@ Route::delete('/waste/{id}', [WastageController::class, 'delete']);
 Route::post('/waste/restore/{id}', [WastageController::class, 'restore']);
 Route::delete('/waste/delete/{id}', [WastageController::class, 'permanentDelete']);
 
-
+//  Counting the total number of deliveries, pickups, tickets, users, and assets and single out the specific ones
 Route::get('/deliveries/totalorspecific', [ReportController::class, 'getTotalDeliveries']);
 Route::get('/pickups/totalorspecific', [ReportController::class, 'getTotalPickups']);
 Route::get('/tickets/totalorspecific', [ReportController::class, 'getTotalTickets']);
 Route::get('/users/totalorspecific', [ReportController::class, 'getTotalUsers']);
 Route::get('/assets/totalorspecific', [ReportController::class, 'getTotalAssets']);
+
+// Logged in user details
+Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('auth:sanctum');
