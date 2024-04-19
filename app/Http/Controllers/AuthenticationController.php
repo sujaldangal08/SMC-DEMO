@@ -153,7 +153,7 @@ class AuthenticationController extends Controller
 
 
             $checkUser->save();
-            return response()->json(['message' => 'OTP verified successfully, you are now registered. Please login to continue'], 200);
+            return response()->json(['message' => 'OTP verified successfully. Please login to continue'], 200);
         } else {
             // If the OTP provided in the request does not match the OTP stored in the user record,
             // return a JSON response with an error message
