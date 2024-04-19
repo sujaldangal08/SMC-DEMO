@@ -135,7 +135,7 @@ class ReportController extends Controller {
 
     public function fetchData( Request $request ) {
         $user = $request->user();
-        // Check if the user has the 'customer' role.
+        // Check if the user has the designated role.
         if ( $user->hasRole( 'customer' ) ) {
             $data = Delivery::where( 'id', $user->id )
             ->with( [ 'scheduledPickups', 'tickets' ] )
