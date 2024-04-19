@@ -53,8 +53,10 @@ class XeroController extends Controller
         $accessToken = $responseBody['access_token'];
         $refreshToken = $responseBody['refresh_token'];
 
+        $xeroConnect = XeroConnect::first();
+
         // Save the data to the XeroConnect model
-        XeroConnect::update([
+        $xeroConnect->update([
             'id_token' => $responseBody['id_token'],
             'access_token' => $accessToken,
             'expires_in' => $responseBody['expires_in'],
@@ -86,7 +88,6 @@ class XeroController extends Controller
         ]);
 
         $responseBody = json_decode((string) $response->getBody(), true);
-
         $xeroConnect->update([
             'access_token' => $responseBody['access_token'],
             'expires_in' => $responseBody['expires_in'],
@@ -116,8 +117,9 @@ class XeroController extends Controller
         $responseBody = json_decode((string) $response->getBody(), true);
 
         // Save the data to the XeroTenant model
+        $xeroTenant = XeroTenant::first();
         foreach ($responseBody as $tenant) {
-            XeroTenant::update([
+            $xeroTenant->update([
                 'connection_id' => $tenant['id'],
                 'authEventId' => $tenant['authEventId'],
                 'tenantId' => $tenant['tenantId'],
