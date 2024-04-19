@@ -14,7 +14,7 @@ class EmailSeeder extends Seeder
     public function run(): void
     {
         //
-        DB::table('email_templates')->insert([
+        DB::table('email_templates')->insert([[
             'subject' => 'Example Subject',
             'logo' => 'https://i.ibb.co/5Tf8VcN/Untitled-design-4.png',
             'top_link' => null,
@@ -32,6 +32,44 @@ class EmailSeeder extends Seeder
             'template_type' => 'Delivery Confirmation',
             'created_at' => now(),
             'updated_at' => now(),
+        ],[
+            'subject' => 'welcome',
+            'logo' => 'https://i.ibb.co/5Tf8VcN/Untitled-design-4.png',
+            'top_link' => null,
+            'top_text' => 'Visit Website',
+            'title' => 'Lorem Ipsum',
+            'emessage' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
+            'icon' => 'https://i.ibb.co/tHXcmVS/Black-and-White-Minimalist-Typographic-Recycling-Business-Logo.png',
+            'buttons' => 'Click here',
+            'button_link' => null,
+            'footer_address' => 'Example Address',
+            'footer_message' => 'Example Footer Message',
+            'footer_link' => 'Example Link',
+            'footer_text' => 'Example Footer Text',
+            'color' => '2ab463',
+            'template_type' => 'welcome',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],[
+            'subject' => 'otp',
+            'logo' => 'https://i.ibb.co/5Tf8VcN/Untitled-design-4.png',
+            'top_link' => null,
+            'top_text' => 'Visit Website',
+            'title' => 'Lorem Ipsum',
+            'emessage' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
+            'icon' => 'https://i.ibb.co/tHXcmVS/Black-and-White-Minimalist-Typographic-Recycling-Business-Logo.png',
+            'buttons' => 'Click here',
+            'button_link' => null,
+            'footer_address' => 'Example Address',
+            'footer_message' => 'Example Footer Message',
+            'footer_link' => 'Example Link',
+            'footer_text' => 'Example Footer Text',
+            'color' => '2ab463',
+            'template_type' => 'otp',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]
         ]);
+
     }
 }

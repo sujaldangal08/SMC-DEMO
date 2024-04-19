@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Create delivery_schedules table schema which will store the delivery schedules
         Schema::create('delivery_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constraint('users');

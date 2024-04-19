@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DeliverySchedule;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse; 
 use App\Traits\ValidatesRoles;
 use Illuminate\Validation\Rule;
 
@@ -16,6 +16,7 @@ class DeliveryScheduleController extends Controller
     public function index(): JsonResponse
     {
         try {
+            // Retrieve all delivery schedules
             $schedule = DeliverySchedule::all();
             return response()->json([
                 'status' => 'success',
@@ -34,13 +35,14 @@ class DeliveryScheduleController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
+            // Retrieve a single delivery schedule 
             $schedule = DeliverySchedule::findOrFail($id);
             return response()->json([
                 'status' => 'success',
                 'message' => 'Delivery schedule retrieved successfully',
                 'schedule' => $schedule
             ], 200);
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) { // More specific exception
             return response()->json([
                 'status' => 'error',
                 'message' => 'Delivery schedule not found',
@@ -57,17 +59,18 @@ class DeliveryScheduleController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
+            // Validate the request data
             $validatedData = $request->validate([
-                'customer_id' => ['required', $this->roleRule('customer')],
-                'driver_id' => ['nullable', $this->roleRule('driver')],
+                'customer_id' => ['required', $this->roleRule('customer')], //Using the roleRule method from the ValidatesRoles trait
+                'driver_id' => ['nullable', $this->roleRule('driver')],// Using the roleRule method from the ValidatesRoles trait
                 'truck_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'coordinates' => 'required|array',
                 'materials' => 'required|array',
-                'amount' => ['required', 'array', 'size:' . count($request->input('materials'))],
+                'amount' => ['required', 'array', 'size:' . count($request->input('materials'))], // Validate the amount array based on the number of materials
                 'n_trips' => 'required|integer',
                 'interval' => 'required|integer',
                 'start_date' => 'required|date',
-                'status' => 'required|in:pending,completed,cancelled',
+                'status' => 'required|in:pending,completed,cancelled', // Validate the status based on the given options
                 'delivery_notes' => 'nullable|string',
                 'meta' => 'nullable|array'
             ]);
@@ -75,7 +78,7 @@ class DeliveryScheduleController extends Controller
             $totalDays = $validatedData['n_trips'] * $validatedData['interval'];
             $validatedData['end_date'] = date('Y-m-d', strtotime($validatedData['start_date'] . ' + ' . $totalDays . ' days'));
 
-            $schedule = DeliverySchedule::create($validatedData);
+            $schedule = DeliverySchedule::create($validatedData); // Create a new delivery schedule based on the validated data
             return response()->json([
                 'status' => 'success',
                 'message' => 'Delivery schedule created successfully',
@@ -93,6 +96,7 @@ class DeliveryScheduleController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         try {
+            // Validate the request data according to the database schema and logic
             $validatedData = $request->validate([
                 'customer_id' => ['nullable', $this->roleRule('customer')],
                 'driver_id' => ['nullable', $this->roleRule('driver')],
@@ -113,7 +117,7 @@ class DeliveryScheduleController extends Controller
                 $totalDays = $validatedData['n_trips'] * $validatedData['interval'];
                 $validatedData['end_date'] = date('Y-m-d', strtotime($validatedData['start_date'] . ' + ' . $totalDays . ' days'));
             }
-
+            // Find the delivery schedule by ID and update the schedule
             $schedule = DeliverySchedule::findOrFail($id);
             $schedule->update($validatedData);
             return response()->json([
@@ -121,7 +125,7 @@ class DeliveryScheduleController extends Controller
                 'message' => 'Delivery schedule updated successfully',
                 'schedule' => $schedule
             ], 200);
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) { // More specific exception for model not found
             return response()->json([
                 'status' => 'error',
                 'message' => 'Delivery schedule not found'
@@ -135,6 +139,7 @@ class DeliveryScheduleController extends Controller
         }
     }
 
+    // Method to delete a delivery schedule
     public function destroy(int $id): JsonResponse
     {
         try {
@@ -158,6 +163,7 @@ class DeliveryScheduleController extends Controller
         }
     }
 
+    // Method to restore a soft-deleted delivery schedule
     public function restore(int $id): JsonResponse
     {
         try {
@@ -181,6 +187,8 @@ class DeliveryScheduleController extends Controller
         }
     }
 
+    // Method to permanently delete a delivery schedule from the database 
+    // This action is irreversible
     public function permanentDelete(int $id): JsonResponse
     {
         try {
