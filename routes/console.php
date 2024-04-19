@@ -43,5 +43,6 @@ Schedule::call(function () {
 })->everyMinute();
 
 
-
-
+Schedule::command('app:make-delivery-trips')
+    ->dailyAt('00:00')
+    ->appendOutputTo(storage_path('logs/delivery-trips.log'));

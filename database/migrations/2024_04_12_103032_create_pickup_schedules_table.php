@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('route_id')->constrained('routes')->cascadeOnDelete()->nullable();
             $table->foreignId('driver_id')->constrained('users')->cascadeOnDelete()->nullable();
             $table->foreignId('asset_id')->constrained('assets')->cascadeOnDelete()->nullable();
-            $table->foreignId('customer_id')->constrained('users')->cascadeOnDelete()->nullable();
+            $table->foreignId('customer_id')->constrained('users')->cascadeOnDelete();
             $table->date('pickup_date');
             $table->enum('status', ['pending', 'active', 'inactive', 'done', 'unloading', 'full', 'cancelled'])->default('pending');
             $table->string('notes')->nullable();

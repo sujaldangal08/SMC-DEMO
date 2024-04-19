@@ -181,3 +181,7 @@ Route::patch('/waste/{id}', [WastageController::class, 'update']);
 Route::delete('/waste/{id}', [WastageController::class, 'delete']);
 Route::post('/waste/restore/{id}', [WastageController::class, 'restore']);
 Route::delete('/waste/delete/{id}', [WastageController::class, 'permanentDelete']);
+
+
+//Test Route
+Route::get('123', [DeliveryScheduleController::class, 'deliveryDate']);
