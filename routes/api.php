@@ -11,6 +11,7 @@ use App\Http\Controllers\Inventory\{InventoryController, SkuController, Warehous
 use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
 use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController, DeliveryScheduleController};
 use App\Http\Controllers\Ticket\{TicketController, WastageController};
+use App\Http\Controllers\Report\{ReportController};
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -162,7 +163,6 @@ Route::post('/verifyfa', [AuthenticationController::class, 'verify2FACode']);
 // OAuth for Google
 Route::post('/oauth/google', [OAuthController::class, 'OAuthRecieve']);
 
-
 //Ticket Module Routes
 Route::get('/ticket', [TicketController::class, 'index']);
 Route::get('/ticket/{id}', [TicketController::class, 'show']);
@@ -172,7 +172,6 @@ Route::delete('/ticket/{ticketNumber}', [TicketController::class, 'delete']);
 Route::post('/ticket/restore/{ticketNumber}', [TicketController::class, 'restore']);
 Route::get('/ticket/delete/{ticketNumber}', [TicketController::class, 'permanentDelete']);
 
-
 //Wastage Mode Routes
 Route::get('/waste', [WastageController::class, 'index']);
 Route::get('/waste/{id}', [WastageController::class, 'show']);
@@ -181,3 +180,13 @@ Route::patch('/waste/{id}', [WastageController::class, 'update']);
 Route::delete('/waste/{id}', [WastageController::class, 'delete']);
 Route::post('/waste/restore/{id}', [WastageController::class, 'restore']);
 Route::delete('/waste/delete/{id}', [WastageController::class, 'permanentDelete']);
+
+//  Counting the total number of deliveries, pickups, tickets, users, and assets and single out the specific ones
+Route::get('/deliveries/totalorspecific', [ReportController::class, 'getTotalDeliveries']);
+Route::get('/pickups/totalorspecific', [ReportController::class, 'getTotalPickups']);
+Route::get('/tickets/totalorspecific', [ReportController::class, 'getTotalTickets']);
+Route::get('/users/totalorspecific', [ReportController::class, 'getTotalUsers']);
+Route::get('/assets/totalorspecific', [ReportController::class, 'getTotalAssets']);
+
+// Logged in user details
+Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('auth:sanctum');

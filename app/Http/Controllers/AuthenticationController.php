@@ -54,8 +54,6 @@ class AuthenticationController extends Controller
                     'redirect' => '/verifyfa',
                     'user_id' => $user->id,  // Pass user id to use in the next request
                 ]);
-            }else {
-                dd(auth()->getLastAttempted());
             }
             $user->incrementLoginAttempts();
             return response()->json([
