@@ -9,10 +9,66 @@ use App\Models\Xero\Phone;
 use App\Models\Xero\Balances;
 use App\Models\Xero\PurchaseOrder;
 use App\Models\Xero\LineItem;
+use App\Models\Xero\XeroConnect;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class XeroController extends Controller
 {
+
+    public function xeroConnect(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    {
+        $query = http_build_query([
+            'response_type' => 'code',
+            'client_id' => env('XERO_CLIENT_ID'),
+            'redirect_uri' => env('XERO_REDIRECT_URI'),
+            'scope' => 'email profile openid accounting.settings accounting.transactions accounting.contacts offline_access', // Adjust scope as needed
+        ]);
+
+        return redirect('https://login.xero.com/identity/connect/authorize?' . $query);
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function xeroCallback(Request $request)
+    {
+        $code = $request->query('code');
+
+        $client = new Client();
+        $response = $client->post('https://identity.xero.com/connect/token', [
+            'form_params' => [
+                'grant_type' => 'authorization_code',
+                'client_id' => env('XERO_CLIENT_ID'),
+                'client_secret' => env('XERO_CLIENT_SECRET'),
+                'redirect_uri' => env('XERO_REDIRECT_URI'),
+                'code' => $code,
+            ],
+        ]);
+
+        $responseBody = json_decode((string) $response->getBody(), true);
+
+        $accessToken = $responseBody['access_token'];
+        $refreshToken = $responseBody['refresh_token'];
+
+        // Save the data to the XeroConnect model
+        XeroConnect::create([
+            'id_token' => $responseBody['id_token'],
+            'access_token' => $accessToken,
+            'expires_in' => $responseBody['expires_in'],
+            'token_type' => $responseBody['token_type'],
+            'refresh_token' => $refreshToken,
+            'scope' => $responseBody['scope'],
+        ]);
+
+        return response()->json([
+            'message' => 'Successfully connected to Xero',
+            'access_token' => $accessToken,
+            'refresh_token' => $refreshToken,
+        ]);
+    }
+
     public function getXeroData(): \Illuminate\Http\JsonResponse
     {
         // Fetch all data from the database

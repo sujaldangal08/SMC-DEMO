@@ -37,8 +37,8 @@ Route::get('/company', 'App\Http\Controllers\Company\CompanyController@Company')
 // xero routes
 Route::get('/xerodata', 'App\Http\Controllers\Xero\XeroController@getXeroData');
 Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
-
-Route::get('/sendemail', 'App\Http\Controllers\EmailController@sendEmail');
+Route::get('/xero/connect', 'App\Http\Controllers\Xero\XeroController@xeroConnect');
+Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallback');
 
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
