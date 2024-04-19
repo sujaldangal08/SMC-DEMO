@@ -40,6 +40,8 @@ Route::get('/xerodata', 'App\Http\Controllers\Xero\XeroController@getXeroData');
 Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
 Route::get('/xero/connect', 'App\Http\Controllers\Xero\XeroController@xeroConnect');
 Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallback');
+Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
+Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
@@ -64,7 +66,7 @@ Route::post('/sku', [SkuController::class, 'createSku']);
 Route::patch('/sku/{id}', [SkuController::class, 'updateSku']);
 
 Route::post('/login', [AuthenticationController::class, 'login']);
-Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
+Route::post('/backend-login', [AuthenticationController::class, 'backendLogin']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/verify-otp', [AuthenticationController::class, 'verifyOtp']);
