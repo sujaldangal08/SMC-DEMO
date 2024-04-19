@@ -57,7 +57,7 @@ class XeroController extends Controller
             'ProviderName' => 'LaravelApp',
             'DateTimeUTC' => now()->timestamp,
             'Contacts' => $transformedContacts
-        ]);
+        ], 200);
     }
 
     public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
@@ -120,7 +120,7 @@ class XeroController extends Controller
             'ProviderName' => 'LaravelApp',
             'DateTimeUTC' => now()->timestamp,
             'Contacts' => $transformedPurchaseOrder
-        ]);
+        ], 200);
     }
 
 }

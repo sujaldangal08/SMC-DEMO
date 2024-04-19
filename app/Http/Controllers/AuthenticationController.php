@@ -153,7 +153,7 @@ class AuthenticationController extends Controller
 
 
             $checkUser->save();
-            return response()->json(['message' => 'OTP verified successfully, you are now registered. Please login to continue']);
+            return response()->json(['message' => 'OTP verified successfully, you are now registered. Please login to continue'], 200);
         } else {
             // If the OTP provided in the request does not match the OTP stored in the user record,
             // return a JSON response with an error message
@@ -205,7 +205,7 @@ class AuthenticationController extends Controller
     {
         try {
             $request->user()->tokens()->delete();
-            return response()->json(['message' => 'Logout successful']);
+            return response()->json(['message' => 'Logout successful'], 200);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
@@ -213,7 +213,7 @@ class AuthenticationController extends Controller
 
     public function dashboard(): JsonResponse
     {
-        return response()->json(['message' => 'Dashboard']);
+        return response()->json(['message' => 'Dashboard'], 200);
     }
 
     public function forgotPassword(Request $request): JsonResponse
@@ -244,7 +244,7 @@ class AuthenticationController extends Controller
             // Send the email
             Mail::to($user->email)->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
 
-            return response()->json(['message' => 'OTP sent to your email']);
+            return response()->json(['message' => 'OTP sent to your email'], 200);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
@@ -272,7 +272,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'message' => 'Login successful',
                 'token' => $plainTextToken,
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
@@ -328,7 +328,7 @@ class AuthenticationController extends Controller
     {
         $otp = $request->input('otp');
         $request->validate([
-            'otp' => 'required|numeric',
+            'otp' => 'required|regex:/^[0-9]{3}\s[0-9]{3}$/',
             'user' => 'required|integer',
         ]);
 
@@ -358,11 +358,11 @@ class AuthenticationController extends Controller
             return response()->json([
                 'message' => '2FA code verified successfully',
                 'token' => $plainTextToken,
-            ]);
+            ], 200);
         } else {
             return response()->json(['message' => 'Invalid 2FA code'], 400);
         }
-          
+
     }
 
 }

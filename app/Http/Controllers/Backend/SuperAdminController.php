@@ -29,7 +29,7 @@ class SuperAdminController extends Controller
                 'status' => 'success',
                 'message' => 'Super admin created successfully!',
                 'data' => $user
-            ]);
+            ], 201);
         }catch(\Illuminate\Validation\ValidationException $e){
             return response()->json(['error'=>$e->validator->errors()->getMessages()]);
         }

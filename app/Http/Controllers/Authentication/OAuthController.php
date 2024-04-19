@@ -59,7 +59,7 @@ class OAuthController extends Controller
                 'status' => 'success',
                 'message' => 'Authenticated',
                 'token' => $plainTextToken,
-            ]);
+            ], 200);
         }
     }
 }

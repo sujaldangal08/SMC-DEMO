@@ -23,12 +23,12 @@ class RouteController extends Controller
                 'message' => 'All routes fetched successfully',
                 'total' => $routes->count(),
                 'data' => $routes
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -42,7 +42,7 @@ class RouteController extends Controller
                 'message' => 'Route fetched successfully',
                 'data' => $route,
                 'pickup' => $pickup
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -52,7 +52,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -72,12 +72,12 @@ class RouteController extends Controller
                 'status' => 'success',
                 'message' => 'Route created successfully',
                 'data' => $route
-            ]);
+            ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -90,6 +90,8 @@ class RouteController extends Controller
                 'description' => 'string',
                 'status' => 'in:active,inactive,done,pending,full',
                 'driver_id' => ['required|exists:user,id', $this->roleRule('driver')], // 'driver_id' => 'exists:users,id
+            ], [
+                'driver_id.exists' => 'The selected driver is invalid'
             ]);
 
             $route->update($validatedData);
@@ -98,7 +100,7 @@ class RouteController extends Controller
                 'status' => 'success',
                 'message' => 'Route updated successfully',
                 'data' => $route
-            ]);
+            ]   , 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -108,7 +110,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -121,7 +123,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Route deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -131,7 +133,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -144,7 +146,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Route restored successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -154,7 +156,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -167,7 +169,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Route permanently deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -177,7 +179,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ],  500);
         }
     }
 }

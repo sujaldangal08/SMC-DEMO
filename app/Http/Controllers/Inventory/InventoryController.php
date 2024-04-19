@@ -37,7 +37,7 @@ class InventoryController extends Controller
             'SKU' => $sku,
             'Inventory' =>  $inventory,
             'Warehouse' => $warehouse
-        ]);
+        ], 200);
     }
 
     // Method to insert inventory
@@ -74,7 +74,7 @@ class InventoryController extends Controller
             'status' => 'success',
             'message' => 'Inventory inserted successfully',
             'data' => $inventory
-        ]);
+        ], 201);
     }
 
     // Method to update inventory
@@ -121,7 +121,7 @@ class InventoryController extends Controller
             'status' => 'success',
             'message' => 'Inventory updated successfully',
             'data' => $inventory
-        ]);
+        ], 200);
     }
 
     // Method to delete inventory
@@ -143,7 +143,7 @@ class InventoryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Inventory deleted successfully',
-        ]);
+        ], 200);
     }
 
     // Method to restore inventory
@@ -165,7 +165,7 @@ class InventoryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Inventory restored successfully',
-        ]);
+        ], 200);
     }
 
     // Method to    delete inventory permanently
@@ -187,7 +187,7 @@ class InventoryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Inventory permanently deleted',
-        ]);
+        ], 200);
     }
 
 }
