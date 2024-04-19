@@ -9,6 +9,17 @@ class XeroTenant extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'connection_id',
+        'authEventId',
+        'tenantId',
+        'tenantType',
+        'tenantName',
+        'xero_connect_id',
+        'createdDateUtc',
+        'updatedDateUtc',
+    ];
+
     public function tenants()
     {
         return $this->hasMany(XeroTenant::class);

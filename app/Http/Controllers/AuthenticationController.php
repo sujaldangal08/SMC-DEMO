@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\EmailTemplate;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -93,7 +94,7 @@ class AuthenticationController extends Controller
             $user->password = Hash::make($request->password);
 
             $otp = rand(100000, 999999);
-            $user->otp =$otp;
+            $user->otp = $otp;
 
             // Set otp_expiry to be 5 minutes from now
             $user->otp_expiry = Carbon::now()->addMinutes(5);
@@ -146,7 +147,7 @@ class AuthenticationController extends Controller
         if($second >= $secondTwo){
             // If the OTP has expired, return a JSON response with an error message
             return response()->json(['message' => 'OTP has expired'], 401);
-        } elseif($checkUser->otp === $request->otp) {
+        } elseif(Crypt::decryptString($checkUser->otp) === $request->otp) {
             // If the OTP provided in the request matches the OTP stored in the user record,
             $checkUser->email_verified_at = Carbon::now();// set the email_verified_at field to the current time
             $checkUser->otp = null;// set the otp field to null
@@ -229,7 +230,7 @@ class AuthenticationController extends Controller
                 return response()->json(['message' => 'User not found'], 404);
             }
             $otp = rand(100000, 999999);
-            $user->otp = $otp;
+            $user->otp = Crypt::encryptString($otp);
             $user->otp_expiry = Carbon::now()->addMinutes(5);
             $user->save();
             $username = $user->name;
@@ -362,7 +363,7 @@ class AuthenticationController extends Controller
         } else {
             return response()->json(['message' => 'Invalid 2FA code'], 400);
         }
-          
+
     }
 
 }
