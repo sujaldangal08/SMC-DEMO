@@ -54,7 +54,7 @@ class XeroController extends Controller
         $refreshToken = $responseBody['refresh_token'];
 
         // Save the data to the XeroConnect model
-        XeroConnect::create([
+        XeroConnect::update([
             'id_token' => $responseBody['id_token'],
             'access_token' => $accessToken,
             'expires_in' => $responseBody['expires_in'],
@@ -117,7 +117,7 @@ class XeroController extends Controller
 
         // Save the data to the XeroTenant model
         foreach ($responseBody as $tenant) {
-            XeroTenant::create([
+            XeroTenant::update([
                 'connection_id' => $tenant['id'],
                 'authEventId' => $tenant['authEventId'],
                 'tenantId' => $tenant['tenantId'],
