@@ -23,7 +23,7 @@ class TicketController extends Controller
             'message' => 'All tickets fetched successfully',
             'total' => $ticket->count(),
             'data' => $ticket
-        ]);
+        ], 200);
     }
 
     public function show(string $ticketNumber): JsonResponse
@@ -35,7 +35,7 @@ class TicketController extends Controller
                 'status' => 'success',
                 'message' => 'Ticket fetched successfully',
                 'data' => $ticket,
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -45,7 +45,7 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
     //Manual Entry of Ticket
@@ -121,9 +121,9 @@ class TicketController extends Controller
                 'status' => 'success',
                 'message' => 'Ticket created successfully',
                 'data' => $tickets
-            ]);
+            ], 201);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
 
@@ -199,7 +199,7 @@ class TicketController extends Controller
                 'status' => 'success',
                 'message' => 'Ticket updated successfully',
                 'data' => $tickets
-            ]);
+            ], 201);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -221,17 +221,17 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Ticket not found'
-            ]);
+            ],  404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -243,17 +243,17 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket restored successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Ticket not found'
-            ]);
+            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -270,12 +270,12 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Ticket not found'
-            ]);
+            ],  404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 }
