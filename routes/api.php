@@ -159,7 +159,7 @@ Route::post('/schedule/delivery', [DeliveryController::class, 'createDelivery'])
 Route::patch('/schedule/delivery/{id}', [DeliveryController::class, 'updateDelivery']);
 
 // 2fa test routes
-Route::get('/2fa/generate/{userID}', [AuthenticationController::class, 'twoFactorGenerate']);
+Route::post('/2fa/generate', [AuthenticationController::class, 'twoFactorGenerate']);
 Route::post('/2fa/verify', [AuthenticationController::class, 'verify2FACode']);
 Route::post('/2fa/disable', [AuthenticationController::class, 'disable2FA']);
 
