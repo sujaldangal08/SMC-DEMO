@@ -367,4 +367,17 @@ class AuthenticationController extends Controller
 
     }
 
+    public function disable2FA(Request $request): JsonResponse
+    {
+        $request->validate([
+            'user' => 'required|integer',
+        ]);
+
+        $user = User::where('id',  $request->user)->first();
+        $user->tfa_secret = null;
+        $user->save();
+
+        return response()->json(['message' => '2FA disabled successfully'], 200);
+    }
+
 }

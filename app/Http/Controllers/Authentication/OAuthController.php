@@ -18,7 +18,7 @@ class OAuthController extends Controller
      * @return JsonResponse Returns a JSON response indicating whether the authentication was successful or not.
      * @throws GuzzleException
      */
-    public function OAuthRecieve(Request $request)
+    public function OAuthReceive(Request $request)
     {
         // Get the token from the request
         $token = $request->token;
