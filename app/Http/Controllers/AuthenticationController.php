@@ -286,7 +286,7 @@ class AuthenticationController extends Controller
         }else{
             $google2fa = new Google2FA();
             $companyName = env('APP_NAME');
-            $companyEmail = 'nujan@shotcoder.com';
+            $companyEmail = $user->email;
             $secretKey = $google2fa->generateSecretKey();
 
             // Save the secret key to the user's record
@@ -323,11 +323,12 @@ class AuthenticationController extends Controller
 
     }
 
-    public function verify2FACode(User &$user, Request $request): JsonResponse
+    public function verify2FACode(Request $request): JsonResponse
     {
-        $otp = $request->input('otp');
+//        $otp = $request->input('otp');
+
         $request->validate([
-            'otp' => 'required|regex:/^[0-9]{3}\s[0-9]{3}$/',
+            'otp' => 'required|regex:/^[0-9]{6}$/', // OTP must be a 6-digit number
             'user' => 'required|integer',
         ]);
 
@@ -335,6 +336,9 @@ class AuthenticationController extends Controller
 
         // Retrieve the secret key from your storage
         $secretKey = User::where('id',  $request->user)->first()->tfa_secret;
+        $user = User::where('id',  $request->user)->first();
+
+
 
         // Ensure that the secret key is a string
         $secretKey = (string) $secretKey;
@@ -346,9 +350,8 @@ class AuthenticationController extends Controller
 
         if ($isValid) {
             // OTP is valid. Generate the token.
-            $user = User::find($request->user);
             $tokenResult = $user->createToken('api-token');
-            $token = $tokenResult->token;
+            $token = $tokenResult->accessToken;
             $token->expires_at = now()->addHours(1); // Token expires in 1 hour
             $token->save();
 
