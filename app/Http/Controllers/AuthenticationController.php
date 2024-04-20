@@ -277,9 +277,9 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function twoFactorGenerate($userID): JsonResponse
+    public function twoFactorGenerate(Request $request): JsonResponse
     {
-        $user = User::where('id', $userID)->first();
+        $user = User::where('id', $request->user)->first();
         $check2fa = $user->tfa_secret;
         if($check2fa){
             return response()->json(['message' => '2FA already enabled']);
@@ -317,7 +317,11 @@ class AuthenticationController extends Controller
             // Save the QR code to a file in the public directory
             Storage::disk('public')->put($filePath, $qrCode);
 
-            return response()->json(['qr_code_url' => url(Storage::url($filePath))]);
+            return response()->json([
+                'message' => '2FA enabled successfully',
+                'qr_code_url' => url(Storage::url($filePath)),
+                'secret_key' => $secretKey,
+            ]);
         }
 
 
