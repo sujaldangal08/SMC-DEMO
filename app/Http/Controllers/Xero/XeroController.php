@@ -4,11 +4,6 @@ namespace App\Http\Controllers\Xero;
 
 use App\Http\Controllers\Controller;
 use App\Models\Xero\Contact;
-use App\Models\Xero\Address;
-use App\Models\Xero\Phone;
-use App\Models\Xero\Balances;
-use App\Models\Xero\PurchaseOrder;
-use App\Models\Xero\LineItem;
 use App\Models\Xero\XeroConnect;
 use App\Models\Xero\XeroTenant;
 use GuzzleHttp\Exception\GuzzleException;

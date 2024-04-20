@@ -286,7 +286,7 @@ class AuthenticationController extends Controller
         }else{
             $google2fa = new Google2FA();
             $companyName = env('APP_NAME');
-            $companyEmail = 'nujan@shotcoder.com';
+            $companyEmail = $user->email;
             $secretKey = $google2fa->generateSecretKey();
 
             // Save the secret key to the user's record
