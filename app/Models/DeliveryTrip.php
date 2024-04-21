@@ -20,6 +20,14 @@ class DeliveryTrip extends Model
         'status'
     ];
 
+    public function casts(): array
+    {
+        return [
+            'materials_loaded' => 'array',
+            'amount_loaded' => 'array'
+        ];
+    }
+
     // Define the relationship between the delivery trip and the delivery schedule
     public function schedule()
     {

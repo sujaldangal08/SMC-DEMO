@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\DB;
 use App\Models\Branch;
+use Illuminate\Support\Facades\Log;
 
 
 Artisan::command('inspire', function () {
@@ -43,5 +44,6 @@ Schedule::call(function () {
 })->everyMinute();
 
 
-
-
+// Schedule::command('app:make-delivery-trips')
+//     ->everyFiveSeconds()
+//     ->appendOutputTo(storage_path('logs/delivery-trips.log'));
