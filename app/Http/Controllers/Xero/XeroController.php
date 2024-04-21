@@ -54,15 +54,14 @@ class XeroController extends Controller
         $refreshToken = $responseBody['refresh_token'];
 
         // Save the data to the XeroConnect model
-        XeroConnect::update([
-            'id_token' => $responseBody['id_token'],
-            'access_token' => $accessToken,
-            'expires_in' => $responseBody['expires_in'],
-            'token_type' => $responseBody['token_type'],
-            'refresh_token' => $refreshToken,
-            'scope' => $responseBody['scope'],
+        $xeroConnect = XeroConnect::first();
+        $xeroConnect->update([
+        'access_token' => $responseBody['access_token'],
+        'expires_in' => $responseBody['expires_in'],
+        'token_type' => $responseBody['token_type'],
+        'refresh_token' => $responseBody['refresh_token'],
+        'scope' => $responseBody['scope'],
         ]);
-
         return response()->json([
             'message' => 'Successfully connected to Xero',
             'access_token' => $accessToken,
@@ -117,16 +116,19 @@ class XeroController extends Controller
 
         // Save the data to the XeroTenant model
         foreach ($responseBody as $tenant) {
-            XeroTenant::update([
-                'connection_id' => $tenant['id'],
-                'authEventId' => $tenant['authEventId'],
-                'tenantId' => $tenant['tenantId'],
-                'tenantType' => $tenant['tenantType'],
-                'tenantName' => $tenant['tenantName'],
-                'xero_connect_id' => $xeroConnect->id,
-                'createdDateUtc' => $tenant['createdDateUtc'],
-                'updatedDateUtc' => $tenant['updatedDateUtc'],
-            ]);
+            $xeroTenant = XeroTenant::first();
+            foreach ($responseBody as $tenant) {
+                $xeroTenant->update([
+                    'connection_id' => $tenant['id'],
+                    'authEventId' => $tenant['authEventId'],
+                    'tenantId' => $tenant['tenantId'],
+                    'tenantType' => $tenant['tenantType'],
+                    'tenantName' => $tenant['tenantName'],
+                    'xero_connect_id' => $xeroConnect->id,
+                    'createdDateUtc' => $tenant['createdDateUtc'],
+                    'updatedDateUtc' => $tenant['updatedDateUtc'],
+                ]);
+            }
         }
 
         return response()->json([
@@ -134,6 +136,7 @@ class XeroController extends Controller
             'tenants' => $responseBody,
         ]);
     }
+
 
     public function getXeroData(): \Illuminate\Http\JsonResponse
     {
