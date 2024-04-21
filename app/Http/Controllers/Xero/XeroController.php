@@ -4,11 +4,6 @@ namespace App\Http\Controllers\Xero;
 
 use App\Http\Controllers\Controller;
 use App\Models\Xero\Contact;
-use App\Models\Xero\Address;
-use App\Models\Xero\Phone;
-use App\Models\Xero\Balances;
-use App\Models\Xero\PurchaseOrder;
-use App\Models\Xero\LineItem;
 use App\Models\Xero\XeroConnect;
 use App\Models\Xero\XeroTenant;
 use GuzzleHttp\Exception\GuzzleException;
@@ -53,14 +48,16 @@ class XeroController extends Controller
         $accessToken = $responseBody['access_token'];
         $refreshToken = $responseBody['refresh_token'];
 
-        // Save the data to the XeroConnect model
         $xeroConnect = XeroConnect::first();
+
+        // Save the data to the XeroConnect model
         $xeroConnect->update([
-        'access_token' => $responseBody['access_token'],
-        'expires_in' => $responseBody['expires_in'],
-        'token_type' => $responseBody['token_type'],
-        'refresh_token' => $responseBody['refresh_token'],
-        'scope' => $responseBody['scope'],
+            'id_token' => $responseBody['id_token'],
+            'access_token' => $accessToken,
+            'expires_in' => $responseBody['expires_in'],
+            'token_type' => $responseBody['token_type'],
+            'refresh_token' => $refreshToken,
+            'scope' => $responseBody['scope'],
         ]);
         return response()->json([
             'message' => 'Successfully connected to Xero',
@@ -85,7 +82,6 @@ class XeroController extends Controller
         ]);
 
         $responseBody = json_decode((string) $response->getBody(), true);
-
         $xeroConnect->update([
             'access_token' => $responseBody['access_token'],
             'expires_in' => $responseBody['expires_in'],
@@ -115,20 +111,18 @@ class XeroController extends Controller
         $responseBody = json_decode((string) $response->getBody(), true);
 
         // Save the data to the XeroTenant model
+        $xeroTenant = XeroTenant::first();
         foreach ($responseBody as $tenant) {
-            $xeroTenant = XeroTenant::first();
-            foreach ($responseBody as $tenant) {
-                $xeroTenant->update([
-                    'connection_id' => $tenant['id'],
-                    'authEventId' => $tenant['authEventId'],
-                    'tenantId' => $tenant['tenantId'],
-                    'tenantType' => $tenant['tenantType'],
-                    'tenantName' => $tenant['tenantName'],
-                    'xero_connect_id' => $xeroConnect->id,
-                    'createdDateUtc' => $tenant['createdDateUtc'],
-                    'updatedDateUtc' => $tenant['updatedDateUtc'],
-                ]);
-            }
+            $xeroTenant->update([
+                'connection_id' => $tenant['id'],
+                'authEventId' => $tenant['authEventId'],
+                'tenantId' => $tenant['tenantId'],
+                'tenantType' => $tenant['tenantType'],
+                'tenantName' => $tenant['tenantName'],
+                'xero_connect_id' => $xeroConnect->id,
+                'createdDateUtc' => $tenant['createdDateUtc'],
+                'updatedDateUtc' => $tenant['updatedDateUtc'],
+            ]);
         }
 
         return response()->json([

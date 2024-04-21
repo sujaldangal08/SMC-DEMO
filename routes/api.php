@@ -159,11 +159,13 @@ Route::post('/schedule/delivery', [DeliveryController::class, 'createDelivery'])
 Route::patch('/schedule/delivery/{id}', [DeliveryController::class, 'updateDelivery']);
 
 // 2fa test routes
-Route::get('/checkfa/{userID}', [AuthenticationController::class, 'twoFactorGenerate']);
-Route::post('/verifyfa', [AuthenticationController::class, 'verify2FACode']);
+Route::post('/2fa/generate', [AuthenticationController::class, 'twoFactorGenerate']);
+Route::post('/2fa/verify', [AuthenticationController::class, 'verify2FACode']);
+Route::post('/2fa/disable', [AuthenticationController::class, 'disable2FA']);
+
 
 // OAuth for Google
-Route::post('/oauth/google', [OAuthController::class, 'OAuthRecieve']);
+Route::post('/oauth/google', [OAuthController::class, 'OAuthReceive']);
 
 //Ticket Module Routes
 Route::get('/ticket', [TicketController::class, 'index']);

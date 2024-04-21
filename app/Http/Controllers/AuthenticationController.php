@@ -277,16 +277,16 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function twoFactorGenerate($userID): JsonResponse
+    public function twoFactorGenerate(Request $request): JsonResponse
     {
-        $user = User::where('id', $userID)->first();
+        $user = User::where('id', $request->user)->first();
         $check2fa = $user->tfa_secret;
         if($check2fa){
             return response()->json(['message' => '2FA already enabled']);
         }else{
             $google2fa = new Google2FA();
             $companyName = env('APP_NAME');
-            $companyEmail = 'nujan@shotcoder.com';
+            $companyEmail = $user->email;
             $secretKey = $google2fa->generateSecretKey();
 
             // Save the secret key to the user's record
@@ -317,17 +317,22 @@ class AuthenticationController extends Controller
             // Save the QR code to a file in the public directory
             Storage::disk('public')->put($filePath, $qrCode);
 
-            return response()->json(['qr_code_url' => url(Storage::url($filePath))]);
+            return response()->json([
+                'message' => '2FA enabled successfully',
+                'qr_code_url' => url(Storage::url($filePath)),
+                'secret_key' => $secretKey,
+            ]);
         }
 
 
     }
 
-    public function verify2FACode(User &$user, Request $request): JsonResponse
+    public function verify2FACode(Request $request): JsonResponse
     {
-        $otp = $request->input('otp');
+//        $otp = $request->input('otp');
+
         $request->validate([
-            'otp' => 'required|regex:/^[0-9]{3}\s[0-9]{3}$/',
+            'otp' => 'required|regex:/^[0-9]{6}$/', // OTP must be a 6-digit number
             'user' => 'required|integer',
         ]);
 
@@ -335,6 +340,9 @@ class AuthenticationController extends Controller
 
         // Retrieve the secret key from your storage
         $secretKey = User::where('id',  $request->user)->first()->tfa_secret;
+        $user = User::where('id',  $request->user)->first();
+
+
 
         // Ensure that the secret key is a string
         $secretKey = (string) $secretKey;
@@ -346,9 +354,8 @@ class AuthenticationController extends Controller
 
         if ($isValid) {
             // OTP is valid. Generate the token.
-            $user = User::find($request->user);
             $tokenResult = $user->createToken('api-token');
-            $token = $tokenResult->token;
+            $token = $tokenResult->accessToken;
             $token->expires_at = now()->addHours(1); // Token expires in 1 hour
             $token->save();
 
@@ -362,6 +369,19 @@ class AuthenticationController extends Controller
             return response()->json(['message' => 'Invalid 2FA code'], 400);
         }
 
+    }
+
+    public function disable2FA(Request $request): JsonResponse
+    {
+        $request->validate([
+            'user' => 'required|integer',
+        ]);
+
+        $user = User::where('id',  $request->user)->first();
+        $user->tfa_secret = null;
+        $user->save();
+
+        return response()->json(['message' => '2FA disabled successfully'], 200);
     }
 
 }
