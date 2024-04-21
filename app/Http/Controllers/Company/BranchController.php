@@ -102,6 +102,8 @@ class BranchController extends Controller
                 'branch_status' => '',
                 'branch_country_id' => '',
                 'company_id' => 'exists:companies,id'
+            ], [
+                'branch_code.unique' => 'The branch code has already been taken.'
             ]);
 
             // Find the branch record in the database
@@ -115,7 +117,7 @@ class BranchController extends Controller
                 'status' => 'success',
                 'message' => 'Branch updated successfully',
                 'data' => $branch
-            ]);
+            ], 200);
         } catch (ValidationException $e) {
             // Return a custom validation error response
             return response()->json([
@@ -138,7 +140,7 @@ class BranchController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Branch deleted successfully'
-        ]);
+        ], 200);
     }
 
     public function restoreBranch($id): \Illuminate\Http\JsonResponse
@@ -153,7 +155,7 @@ class BranchController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Branch recovered successfully'
-        ]);
+        ], 200);
     }
 
     public function permanentDeleteBranch($id): \Illuminate\Http\JsonResponse
@@ -170,13 +172,13 @@ class BranchController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Branch permanently deleted successfully!'
-            ]);
+            ], 200);
         } else {
             // Return a JSON response with the status and message
             return response()->json([
                 'status' => 'error',
                 'message' => 'No deleted branch found with the given ID'
-            ]);
+            ], 404);
         }
     }
 }

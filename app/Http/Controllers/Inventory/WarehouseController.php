@@ -27,8 +27,9 @@ class WarehouseController extends Controller
     {
         $validatedData = $request->validate([
             'location' => 'required|max:255',
-            'sku_id' => 'required|max:255|exists:skus,SKU',
+            'sku_id' => 'required|max:255|',
         ]);
+
 
         $warehouseLocation = $validatedData['location'];
         $skuString = $validatedData['sku_id'];

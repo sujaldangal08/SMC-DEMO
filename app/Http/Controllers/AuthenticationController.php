@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\EmailTemplate;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -91,7 +92,7 @@ class AuthenticationController extends Controller
             $user->password = Hash::make($request->password);
 
             $otp = rand(100000, 999999);
-            $user->otp =$otp;
+            $user->otp = $otp;
 
             // Set otp_expiry to be 5 minutes from now
             $user->otp_expiry = Carbon::now()->addMinutes(5);
@@ -144,14 +145,14 @@ class AuthenticationController extends Controller
         if($second >= $secondTwo){
             // If the OTP has expired, return a JSON response with an error message
             return response()->json(['message' => 'OTP has expired'], 401);
-        } elseif($checkUser->otp === $request->otp) {
+        } elseif(Crypt::decryptString($checkUser->otp) === $request->otp) {
             // If the OTP provided in the request matches the OTP stored in the user record,
             $checkUser->email_verified_at = Carbon::now();// set the email_verified_at field to the current time
             $checkUser->otp = null;// set the otp field to null
 
 
             $checkUser->save();
-            return response()->json(['message' => 'OTP verified successfully, you are now registered. Please login to continue']);
+            return response()->json(['message' => 'OTP verified successfully. Please login to continue'], 200);
         } else {
             // If the OTP provided in the request does not match the OTP stored in the user record,
             // return a JSON response with an error message
@@ -203,7 +204,7 @@ class AuthenticationController extends Controller
     {
         try {
             $request->user()->tokens()->delete();
-            return response()->json(['message' => 'Logout successful']);
+            return response()->json(['message' => 'Logout successful'], 200);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
@@ -211,7 +212,7 @@ class AuthenticationController extends Controller
 
     public function dashboard(): JsonResponse
     {
-        return response()->json(['message' => 'Dashboard']);
+        return response()->json(['message' => 'Dashboard'], 200);
     }
 
     public function forgotPassword(Request $request): JsonResponse
@@ -227,7 +228,7 @@ class AuthenticationController extends Controller
                 return response()->json(['message' => 'User not found'], 404);
             }
             $otp = rand(100000, 999999);
-            $user->otp = $otp;
+            $user->otp = Crypt::encryptString($otp);
             $user->otp_expiry = Carbon::now()->addMinutes(5);
             $user->save();
             $username = $user->name;
@@ -242,7 +243,7 @@ class AuthenticationController extends Controller
             // Send the email
             Mail::to($user->email)->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
 
-            return response()->json(['message' => 'OTP sent to your email']);
+            return response()->json(['message' => 'OTP sent to your email'], 200);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
@@ -270,22 +271,22 @@ class AuthenticationController extends Controller
             return response()->json([
                 'message' => 'Login successful',
                 'token' => $plainTextToken,
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
     }
 
-    public function twoFactorGenerate($userID): JsonResponse
+    public function twoFactorGenerate(Request $request): JsonResponse
     {
-        $user = User::where('id', $userID)->first();
+        $user = User::where('id', $request->user)->first();
         $check2fa = $user->tfa_secret;
         if($check2fa){
             return response()->json(['message' => '2FA already enabled']);
         }else{
             $google2fa = new Google2FA();
             $companyName = env('APP_NAME');
-            $companyEmail = 'nujan@shotcoder.com';
+            $companyEmail = $user->email;
             $secretKey = $google2fa->generateSecretKey();
 
             // Save the secret key to the user's record
@@ -316,17 +317,22 @@ class AuthenticationController extends Controller
             // Save the QR code to a file in the public directory
             Storage::disk('public')->put($filePath, $qrCode);
 
-            return response()->json(['qr_code_url' => url(Storage::url($filePath))]);
+            return response()->json([
+                'message' => '2FA enabled successfully',
+                'qr_code_url' => url(Storage::url($filePath)),
+                'secret_key' => $secretKey,
+            ]);
         }
 
 
     }
 
-    public function verify2FACode(User &$user, Request $request): JsonResponse
+    public function verify2FACode(Request $request): JsonResponse
     {
-        $otp = $request->input('otp');
+//        $otp = $request->input('otp');
+
         $request->validate([
-            'otp' => 'required|numeric',
+            'otp' => 'required|regex:/^[0-9]{6}$/', // OTP must be a 6-digit number
             'user' => 'required|integer',
         ]);
 
@@ -334,6 +340,9 @@ class AuthenticationController extends Controller
 
         // Retrieve the secret key from your storage
         $secretKey = User::where('id',  $request->user)->first()->tfa_secret;
+        $user = User::where('id',  $request->user)->first();
+
+
 
         // Ensure that the secret key is a string
         $secretKey = (string) $secretKey;
@@ -345,9 +354,8 @@ class AuthenticationController extends Controller
 
         if ($isValid) {
             // OTP is valid. Generate the token.
-            $user = User::find($request->user);
             $tokenResult = $user->createToken('api-token');
-            $token = $tokenResult->token;
+            $token = $tokenResult->accessToken;
             $token->expires_at = now()->addHours(1); // Token expires in 1 hour
             $token->save();
 
@@ -356,11 +364,24 @@ class AuthenticationController extends Controller
             return response()->json([
                 'message' => '2FA code verified successfully',
                 'token' => $plainTextToken,
-            ]);
+            ], 200);
         } else {
             return response()->json(['message' => 'Invalid 2FA code'], 400);
         }
-          
+
+    }
+
+    public function disable2FA(Request $request): JsonResponse
+    {
+        $request->validate([
+            'user' => 'required|integer',
+        ]);
+
+        $user = User::where('id',  $request->user)->first();
+        $user->tfa_secret = null;
+        $user->save();
+
+        return response()->json(['message' => '2FA disabled successfully'], 200);
     }
 
 }

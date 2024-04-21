@@ -38,8 +38,10 @@ Route::get('/company', 'App\Http\Controllers\Company\CompanyController@Company')
 // xero routes
 Route::get('/xerodata', 'App\Http\Controllers\Xero\XeroController@getXeroData');
 Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
-
-Route::get('/sendemail', 'App\Http\Controllers\EmailController@sendEmail');
+Route::get('/xero/connect', 'App\Http\Controllers\Xero\XeroController@xeroConnect');
+Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallback');
+Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
+Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
@@ -64,7 +66,7 @@ Route::post('/sku', [SkuController::class, 'createSku']);
 Route::patch('/sku/{id}', [SkuController::class, 'updateSku']);
 
 Route::post('/login', [AuthenticationController::class, 'login']);
-Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
+Route::post('/backend-login', [AuthenticationController::class, 'backendLogin']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/verify-otp', [AuthenticationController::class, 'verifyOtp']);
@@ -157,11 +159,13 @@ Route::post('/schedule/delivery', [DeliveryController::class, 'createDelivery'])
 Route::patch('/schedule/delivery/{id}', [DeliveryController::class, 'updateDelivery']);
 
 // 2fa test routes
-Route::get('/checkfa/{userID}', [AuthenticationController::class, 'twoFactorGenerate']);
-Route::post('/verifyfa', [AuthenticationController::class, 'verify2FACode']);
+Route::post('/2fa/generate', [AuthenticationController::class, 'twoFactorGenerate']);
+Route::post('/2fa/verify', [AuthenticationController::class, 'verify2FACode']);
+Route::post('/2fa/disable', [AuthenticationController::class, 'disable2FA']);
+
 
 // OAuth for Google
-Route::post('/oauth/google', [OAuthController::class, 'OAuthRecieve']);
+Route::post('/oauth/google', [OAuthController::class, 'OAuthReceive']);
 
 //Ticket Module Routes
 Route::get('/ticket', [TicketController::class, 'index']);

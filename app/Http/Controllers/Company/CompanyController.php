@@ -23,7 +23,7 @@ class CompanyController extends Controller
             'message' => 'Companies retrieved successfully',
             'total' => $CompanyCount,
             'data' => Company::all()
-        ]);
+        ], 200);
 
     }
     public function updateCompany(Request $request, $id): \Illuminate\Http\JsonResponse
@@ -39,6 +39,8 @@ class CompanyController extends Controller
                 'company_email' => 'email',
                 'company_code' => 'sometimes|unique:branches,branch_code,' . $id,
                 'company_country_id' => ''
+            ],  [
+                'company_code.unique' => 'The company code has already been taken.'
             ]);
 
             // Find the company record in the database
@@ -52,7 +54,7 @@ class CompanyController extends Controller
                 'status' => 'success',
                 'message' => 'Company updated successfully',
                 'data' => $company
-            ]);
+            ], 200);
         } catch (ValidationException $e) {
             // Return a custom validation error response
             return response()->json([

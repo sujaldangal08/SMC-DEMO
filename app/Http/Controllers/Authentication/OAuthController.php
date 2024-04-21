@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Models\User;
@@ -13,9 +15,10 @@ class OAuthController extends Controller
      * This method is used to handle the OAuth token received from the client.
      *
      * @param Request $request The incoming HTTP request containing the OAuth token.
-     * @return \Illuminate\Http\JsonResponse Returns a JSON response indicating whether the authentication was successful or not.
+     * @return JsonResponse Returns a JSON response indicating whether the authentication was successful or not.
+     * @throws GuzzleException
      */
-    public function OAuthRecieve(Request $request)
+    public function OAuthReceive(Request $request)
     {
         // Get the token from the request
         $token = $request->token;
@@ -59,7 +62,7 @@ class OAuthController extends Controller
                 'status' => 'success',
                 'message' => 'Authenticated',
                 'token' => $plainTextToken,
-            ]);
+            ], 200);
         }
     }
 }

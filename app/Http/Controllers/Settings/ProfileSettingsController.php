@@ -18,7 +18,7 @@ class ProfileSettingsController extends Controller
             }
             $id = $request->user()->id;
             $request->validate([
-                'name' => 'sometimes|required',
+                'name' => 'sometimes|required|string',
                 'email' => 'sometimes|required|email|unique:users,email,' . $id,
                 'phone_number' => 'sometimes|required|regex:/^([0-9\s\-\+\(\)]*)$/|digits:10',
                 'city' => 'sometimes|required|string',
