@@ -18,12 +18,12 @@ class UserController extends Controller
                 'message' => 'All users fetched successfully',
                 'total' => $users->count(),
                 'data' => $users
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
     public function RetreiveDriver()
@@ -38,12 +38,12 @@ class UserController extends Controller
                 'message' => 'All drivers fetched successfully',
                 'total' => $drivers->count(),
                 'data' => $drivers
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -59,12 +59,12 @@ class UserController extends Controller
                 'message' => 'All managers fetched successfully',
                 'total' => $managers->count(),
                 'data' => $managers
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -80,12 +80,12 @@ class UserController extends Controller
                 'message' => 'All staffs fetched successfully',
                 'total' => $staffs->count(),
                 'data' => $staffs
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -101,12 +101,12 @@ class UserController extends Controller
                 'message' => 'All customers fetched successfully',
                 'total' => $customers->count(),
                 'data' => $customers
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -122,12 +122,12 @@ class UserController extends Controller
                 'message' => 'All admins fetched successfully',
                 'total' => $admins->count(),
                 'data' => $admins
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ],  500);
         }
     }
 }

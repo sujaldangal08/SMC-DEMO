@@ -19,7 +19,7 @@ class WastageController extends Controller
             return response()->json([
                 'status' => 'success',
                 'data' => $waste
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -35,7 +35,7 @@ class WastageController extends Controller
             return response()->json([
                 'status' => 'success',
                 'data' => $waste
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',

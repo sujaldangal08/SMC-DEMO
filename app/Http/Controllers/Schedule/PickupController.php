@@ -29,7 +29,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -43,7 +43,7 @@ class PickupController extends Controller
                 'message' => 'Pickup schedule fetched successfully',
                 'data' => $schedule,
                 'route' => $route
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -53,7 +53,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -90,12 +90,12 @@ class PickupController extends Controller
                 'driver' => $driver,
                 'customer' => $customer,
                 'asset' => $asset
-            ]);
+            ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -132,7 +132,7 @@ class PickupController extends Controller
                 'driver' => $driver,
                 'customer' => $customer,
                 'asset' => $asset
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -142,7 +142,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -164,7 +164,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -176,7 +176,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule restored successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -186,7 +186,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -198,7 +198,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule permanently deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -208,7 +208,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 }

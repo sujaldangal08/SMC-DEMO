@@ -18,7 +18,7 @@ class SkuController extends Controller
              'status' => 'success',
              'message' => 'SKU retrieved successfully',
              'data' => $skuData
-         ]);
+         ], 200);
      }
      // Method to create new sku
      public function createSku(Request $request) :\Illuminate\Http\JsonResponse
@@ -39,7 +39,7 @@ class SkuController extends Controller
              'status' => 'success',
              'message' => 'SKU created successfully',
              'data' => $sku
-         ]);
+         ], 201);
      }
 
      // Method to update SKU
@@ -70,7 +70,7 @@ class SkuController extends Controller
              'status' => 'success',
              'message' => 'SKU updated successfully',
              'data' => $sku
-         ]);
+         ], 200);
      }
 
 }

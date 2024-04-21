@@ -19,12 +19,12 @@ class MaintenanceController extends Controller
                 'status' => 'success',
                 'message' => 'All maintenance fetched successfully',
                 'data' => $maintenances
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -36,7 +36,7 @@ class MaintenanceController extends Controller
                 'status' => 'success',
                 'message' => 'Maintenance fetched successfully',
                 'data' => $maintenances
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -46,7 +46,7 @@ class MaintenanceController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -70,12 +70,12 @@ class MaintenanceController extends Controller
                 'status' => 'success',
                 'message' => 'Maintenance created successfully',
                 'data' => $maintenance
-            ]);
+            ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -87,7 +87,9 @@ class MaintenanceController extends Controller
                 'maintenance_type' => 'string',
                 'contact_meta' => 'array',
                 'service_date' => 'date'
-            ]);
+            ], [
+                'contact_meta.array' => 'The contact meta must be an array'
+            ] );
 
             $maintenance = Maintenance::findOrFail($id);
 
@@ -115,7 +117,7 @@ class MaintenanceController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -137,7 +139,7 @@ class MaintenanceController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -149,7 +151,7 @@ class MaintenanceController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Maintenance restored successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -159,7 +161,7 @@ class MaintenanceController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -171,7 +173,7 @@ class MaintenanceController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Maintenance permanently deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -181,7 +183,7 @@ class MaintenanceController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 }
