@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Xero\Contact;
 use App\Models\Xero\XeroConnect;
 use App\Models\Xero\XeroTenant;
+use App\Models\Xero\XeroSetting;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -63,7 +64,7 @@ class XeroController extends Controller
             'message' => 'Successfully connected to Xero',
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken,
-        ]);
+        ], 200);
     }
 
 
@@ -94,7 +95,7 @@ class XeroController extends Controller
             'message' => 'Successfully refreshed the access token',
             'access_token' => $responseBody['access_token'],
             'refresh_token' => $responseBody['refresh_token'],
-        ]);
+        ], 200);
     }
 
     public function xeroTenant()
@@ -128,7 +129,7 @@ class XeroController extends Controller
         return response()->json([
             'message' => 'Successfully fetched and saved the tenants',
             'tenants' => $responseBody,
-        ]);
+        ], 200);
     }
 
 
@@ -178,6 +179,63 @@ class XeroController extends Controller
             'Contacts' => $transformedContacts
         ], 200);
     }
+
+    public function getXeroCredentials(): JsonResponse
+    {
+        $xeroSetting = XeroSetting::first();
+
+        if (!$xeroSetting) {
+            return response()->json(['message' => 'XeroSetting not found'], 404);
+        }
+
+        return response()->json([
+            'xero_client_id' => $xeroSetting->xero_client_id,
+            'xero_client_secret' => $xeroSetting->xero_client_secret,
+        ], 200);
+    }
+
+    public function storeXeroCredentials(Request $request): JsonResponse
+    {
+        // Validate the request...
+        $request->validate([
+            'xero_client_id' => 'required',
+            'xero_client_secret' => 'required',
+        ]);
+
+        // Get the first XeroSetting record or create a new one if it doesn't exist
+        $xeroSetting = XeroSetting::first() ?? new XeroSetting();
+
+        // Update the encrypted XeroSetting record with the provided credentials
+        $xeroSetting->xero_client_id = encrypt($request->xero_client_id);
+        $xeroSetting->xero_client_secret = encrypt($request->xero_client_secret);
+        $xeroSetting->save();
+
+        return response()->json(['message' => 'Xero credentials stored successfully'], 200);
+    }
+
+    public function updateXeroCredentials(Request $request, $id): JsonResponse
+    {
+        // Validate the request...
+        $request->validate([
+            'xero_client_id' => 'required',
+            'xero_client_secret' => 'required',
+        ]);
+
+        // Get the XeroSetting record with the given ID
+        $xeroSetting = XeroSetting::find($id);
+
+        if (!$xeroSetting) {
+            return response()->json(['message' => 'XeroSetting not found'], 404);
+        }
+
+        // Update the XeroSetting record with the provided credentials
+        $xeroSetting->xero_client_id = encrypt($request->xero_client_id);
+        $xeroSetting->xero_client_secret = encrypt($request->xero_client_secret);
+        $xeroSetting->save();
+
+        return response()->json(['message' => 'Xero credentials updated successfully'], 200);
+    }
+
 
     public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
     {

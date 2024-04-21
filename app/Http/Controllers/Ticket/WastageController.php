@@ -149,7 +149,7 @@ class WastageController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Waste deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -172,7 +172,7 @@ class WastageController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Waste restored successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -195,7 +195,7 @@ class WastageController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Waste permanently deleted'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',

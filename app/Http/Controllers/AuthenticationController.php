@@ -120,7 +120,7 @@ class AuthenticationController extends Controller
             return response()->json(['message' => 'Account created successfully, please check your email for the OTP'], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['errors' => $e->validator->errors()], 400);
+            return response()->json(['errors' => $e->validator->errors()], 422);
         }catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
@@ -282,7 +282,7 @@ class AuthenticationController extends Controller
         $user = User::where('id', $request->user)->first();
         $check2fa = $user->tfa_secret;
         if($check2fa){
-            return response()->json(['message' => '2FA already enabled']);
+            return response()->json(['message' => '2FA already enabled'],200);
         }else{
             $google2fa = new Google2FA();
             $companyName = env('APP_NAME');
@@ -321,7 +321,7 @@ class AuthenticationController extends Controller
                 'message' => '2FA enabled successfully',
                 'qr_code_url' => url(Storage::url($filePath)),
                 'secret_key' => $secretKey,
-            ]);
+            ], 200);
         }
 
 

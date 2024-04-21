@@ -31,7 +31,7 @@ class SuperAdminController extends Controller
                 'data' => $user
             ], 201);
         }catch(\Illuminate\Validation\ValidationException $e){
-            return response()->json(['error'=>$e->validator->errors()->getMessages()]);
+            return response()->json(['error'=>$e->validator->errors()->getMessages()], 422);
         }
          catch (\Exception $e) {
             return response()->json([

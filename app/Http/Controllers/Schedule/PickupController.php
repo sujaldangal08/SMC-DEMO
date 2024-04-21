@@ -24,7 +24,7 @@ class PickupController extends Controller
                 'message' => 'All pickup schedules fetched successfully',
                 'total' => $schedules->count(),
                 'data' => $schedules
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -154,7 +154,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
