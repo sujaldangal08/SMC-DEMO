@@ -23,14 +23,15 @@ class MakeDeliverySchedule extends Command
 
     /**
      * Execute the console command.
-     */ 
+     */
     public function handle()
     {
         // Get all the delivery schedules for the day that are pending
-        $deliverySchedules = DeliverySchedule::where('status', 'active')->get();
+        $deliverySchedules = DeliverySchedule::where('status', 'in_progress')->get();
 
         // Loop through the delivery schedules
         foreach ($deliverySchedules as $schedule) {
+
             // Check if the schedule is completed
             if ($schedule->is_completed) {
                 // Skip this schedule since it's already completed

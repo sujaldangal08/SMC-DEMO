@@ -21,9 +21,11 @@ class DeliverySchedule extends Model
         'n_trips_done',
         'interval',
         'start_date',
+        'delivery_date', // This is now a computed attribute
         'end_date',
         'status',
         'delivery_notes',
+        'locale',
         'meta'
     ];
 
@@ -55,7 +57,7 @@ class DeliverySchedule extends Model
 
     public function deliveryTrips()
     {
-        return $this->hasMany(DeliveryTrip::class);
+        return $this->hasMany(DeliveryTrip::class, 'schedule_id');
     }
 
     // This creates a new delivery trip when a delivery schedule is created and assign the related details
@@ -74,7 +76,7 @@ class DeliverySchedule extends Model
             $deliveryTrip->trip_date = $deliverySchedule->start_date; // Assign the start date as the trip date
             // Save the delivery trip
             $deliveryTrip->save();
-        });
+        }); 
     }
 
     // Define an accessor 

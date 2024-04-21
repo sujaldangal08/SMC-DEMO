@@ -112,12 +112,6 @@ class DeliveryScheduleController extends Controller
                 'delivery_notes' => 'nullable|string',
                 'meta' => 'nullable|array'
             ]);
-
-            if (isset($validatedData['n_trips']) && isset($validatedData['interval'])) {
-                // Calculate the end date based on the number of trips and interval
-                $totalDays = $validatedData['n_trips'] * $validatedData['interval'];
-                $validatedData['end_date'] = date('Y-m-d', strtotime($validatedData['start_date'] . ' + ' . $totalDays . ' days'));
-            }
             // Find the delivery schedule by ID and update the schedule
             $schedule = DeliverySchedule::findOrFail($id);
             $schedule->update($validatedData);

@@ -20,7 +20,8 @@ return new class extends Migration
             $table->date('pickup_date');
             $table->enum('status', ['pending', 'active', 'inactive', 'done', 'unloading', 'full', 'cancelled'])->default('pending');
             $table->string('notes')->nullable();
-            $table->string('material_type')->nullable();
+            $table->string('materials')->nullable();
+            $table->string('weighing_type')->nullable();
             $table->string('n_bins')->nullable();
             $table->string('tare_weight')->nullable();
             $table->string('image')->nullable();
