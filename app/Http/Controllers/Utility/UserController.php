@@ -8,7 +8,36 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function RetreiveUser()
+
+    public function RetrieveSingleUser()
+    {
+        try {
+            // Get the currently authenticated user
+            $user = auth()->user();
+
+            // If there is no authenticated user, return an error response
+            if (!$user) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'No authenticated user'
+                ], 401);
+            }
+
+            // Return the authenticated user's data
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User fetched successfully.',
+                'data' => $user
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function RetrieveUsers()
     {
         try {
             $users = User::all();
@@ -26,7 +55,7 @@ class UserController extends Controller
             ], 500);
         }
     }
-    public function RetreiveDriver()
+    public function RetrieveDriver()
     {
         try {
             $drivers = User::whereHas('role', function ($query) {
@@ -47,7 +76,7 @@ class UserController extends Controller
         }
     }
 
-    public function RetreiveManager()
+    public function RetrieveManager()
     {
         try {
             $managers = User::whereHas('role', function ($query) {
@@ -68,7 +97,7 @@ class UserController extends Controller
         }
     }
 
-    public function RetreiveStaff()
+    public function RetrieveStaff()
     {
         try {
             $staffs = User::whereHas('role', function ($query) {
@@ -89,7 +118,7 @@ class UserController extends Controller
         }
     }
 
-    public function RetreiveCustomer()
+    public function RetrieveCustomer()
     {
         try {
             $customers = User::whereHas('role', function ($query) {
@@ -110,7 +139,7 @@ class UserController extends Controller
         }
     }
 
-    public function RetreiveAdmin()
+    public function RetrieveAdmin()
     {
         try {
             $admins = User::whereHas('role', function ($query) {

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('driver_id')->constrained('users');
+            $table->foreignId('driver_id')->nullable()->constrained('users');
+            $table->foreignId('asset_id')->nullable()->constrained('assets');
             $table->string('description')->nullable();
             $table->enum('status', ['pending', 'active', 'done', 'unloading', 'full', 'cancelled'])->default('pending');
             $table->softDeletes();

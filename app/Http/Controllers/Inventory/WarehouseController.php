@@ -19,7 +19,7 @@ class WarehouseController extends Controller
             'status' => 'success',
             'message' => 'Warehouse retrieved successfully',
             'data' => $warehouseData
-        ]);
+        ], 200);
     }
 
     // Method to insert warehouse
@@ -68,7 +68,7 @@ class WarehouseController extends Controller
         return response()->json([
             'message' => 'Warehouse inserted successfully',
             'data' => $warehouse
-        ]);
+        ], 201);
     }
 
     // Method to update warehouse
@@ -97,7 +97,7 @@ class WarehouseController extends Controller
             'status' => 'success',
             'message' => 'Warehouse updated successfully',
             'data' => $warehouse
-        ]);
+        ], 200);
     }
 
     // Method to delete warehouse
@@ -119,7 +119,7 @@ class WarehouseController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Warehouse deleted successfully',
-        ]);
+        ], 200);
     }
 
     // Method to restore warehouse
@@ -141,7 +141,7 @@ class WarehouseController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Warehouse restored successfully',
-        ]);
+        ], 200);
     }
 
     // Method to permanently delete warehouse
@@ -163,6 +163,6 @@ class WarehouseController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Warehouse permanently deleted',
-        ]);
+        ],  200);
     }
 }

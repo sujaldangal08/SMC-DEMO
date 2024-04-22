@@ -129,7 +129,7 @@ class MaintenanceController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Maintenance deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',

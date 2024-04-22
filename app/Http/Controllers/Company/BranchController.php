@@ -23,7 +23,7 @@ class BranchController extends Controller
             'message' => 'Branches retrieved successfully',
             'total' => $BranchCount,
             'data' => Branch::all()
-        ]);
+        ], 200);
     }
 
     public function branchSingle($id): \Illuminate\Http\JsonResponse
@@ -43,7 +43,7 @@ class BranchController extends Controller
             'branch_code' => $data->branch_code,
             'branch_status' => $data->branch_status,
             'branch_country_id' => $data->branch_country_id
-        ]);
+        ], 200);
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         return response()->json([
             'error' => 'Resource not found.'
@@ -76,7 +76,7 @@ class BranchController extends Controller
                 'status' => 'success',
                 'message' => 'Branch created successfully',
                 'data' => $branch
-            ]);
+            ], 201);
         } catch (ValidationException $e) {
             // Return a custom validation error response
             return response()->json([

@@ -13,15 +13,12 @@ use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteCo
 use App\Http\Controllers\Ticket\{TicketController, WastageController};
 use App\Http\Controllers\Report\{ReportController};
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 // User routes
-Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetreiveDriver');
-Route::get('/managers', 'App\Http\Controllers\Utility\UserController@RetreiveManager');
-Route::get('/users', 'App\Http\Controllers\Utility\UserController@RetreiveUser');
-Route::get('/admins', 'App\Http\Controllers\Utility\UserController@RetreiveAdmin');
+Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');
+Route::get('/managers', 'App\Http\Controllers\Utility\UserController@RetrieveManager');
+Route::get('/users', 'App\Http\Controllers\Utility\UserController@RetrieveUsers');
+Route::get('/admins', 'App\Http\Controllers\Utility\UserController@RetrieveAdmin');
+Route::get('/user', 'App\Http\Controllers\Utility\UserController@RetrieveSingleUser')->middleware('auth:sanctum');
 
 // Company Branch Routes
 Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
@@ -42,6 +39,11 @@ Route::get('/xero/connect', 'App\Http\Controllers\Xero\XeroController@xeroConnec
 Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallback');
 Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
 Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
+
+// Xero Settings routes
+Route::get('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@getXeroCredential');
+Route::post('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@storeXeroCredential');
+Route::patch('/xero/settings/{id}', 'App\Http\Controllers\Settings\XeroSettingsController@updateXeroCredential');
 
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);

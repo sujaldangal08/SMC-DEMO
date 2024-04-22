@@ -3,63 +3,80 @@
 namespace App\Http\Controllers;
 
 use App\Mail\EmailTemplate;
-use Illuminate\Http\Request;
+use App\Models\Backend;
+use App\Models\Role;
 use App\Models\User;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Backend;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
-use App\Models\Role;
-use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
-use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
-use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use PragmaRX\Google2FA\Google2FA;
-use BaconQrCode\Writer;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\SvgImageBackEnd;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use Carbon\Carbon;
 
 class AuthenticationController extends Controller
 {
+    //    public function login(Request $request): JsonResponse
+    //    {
+    //        try {
+    //            $credentials = $request->only('email', 'password');
+    //            $user = User::where('email', $credentials['email'])->first();
+    //
+    //            if (!$user) {
+    //                return response()->json(['message' => 'Invalid Credentials'], 401);
+    //            }
+    //
+    //            if ($user->login_attempts >= $user->role->max_login_attempts) {
+    //                $user->deactivate();
+    //                return response()->json(['message' => 'You account has been deactivated. Please contact your admin in order to activate it again'], 401);
+    //            }
+    //
+    //            if (auth()->attempt($credentials)) {
+    //                $user->resetLoginAttempts();
+    //                if ($user->role->role === 'customer' && $user->email_verified_at === null) {
+    //                    return response()->json(['message' => 'Please verify your email'], 401);
+    //                }
+    //                if ($user->role->role === 'customer' && $user->tfa_secret === null) {
+    //                    return response()->json(['message' => 'Please enable 2FA'], 401);
+    //                }
+    //
+    //
+    //            }
+    //            $user->incrementLoginAttempts();
+    //            return response()->json([
+    //                'message' => 'Invalid Credentials'
+    //            ], 401);
+    //        } catch (\Exception $e) {
+    //            return response()->json(['exception' => $e->getMessage()], 400);
+    //        }
+    //    }
     public function login(Request $request): JsonResponse
     {
         try {
             $credentials = $request->only('email', 'password');
             $user = User::where('email', $credentials['email'])->first();
 
-            if (!$user) {
+            if (! $user || ! Hash::check($credentials['password'], $user->password)) {
                 return response()->json(['message' => 'Invalid Credentials'], 401);
             }
 
-            if ($user->login_attempts >= $user->role->max_login_attempts) {
-                $user->deactivate();
-                return response()->json(['message' => 'You account has been deactivated. Please contact your admin in order to activate it again'], 401);
-            }
+            // Create a new token for the user
+            $tokenResult = $user->createToken('authToken');
 
-            if (auth()->attempt($credentials)) {
-                $user->resetLoginAttempts();
-                if ($user->role->role === 'customer' && $user->email_verified_at === null) {
-                    return response()->json(['message' => 'Please verify your email'], 401);
-                }
-                if ($user->role->role === 'customer' && $user->tfa_secret === null) {
-                    return response()->json(['message' => 'Please enable 2FA'], 401);
-                }
-
-                return response()->json([
-                    'message' => 'Please verify your 2FA code',
-                    'redirect' => '/verifyfa',
-                    'user_id' => $user->id,  // Pass user id to use in the next request
-                ]);
-            }
-            $user->incrementLoginAttempts();
+            // Return the token in the response
             return response()->json([
-                'message' => 'Invalid Credentials'
-            ], 401);
+                'status' => 'success',
+                'message' => 'Login successful',
+                'access_token' => $tokenResult->plainTextToken,
+                'token_type' => 'Bearer',
+            ], 200);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
@@ -73,13 +90,13 @@ class AuthenticationController extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
-                'confirm_password' => 'required|same:password'
-            ],[
-            'password.required' => 'The password field is required.',
-            'password.min' => 'The password must be at least 8 characters.',
-            'password.regex' => 'The password must include at least one uppercase letter, one lowercase letter, one number, and one special character.',
-            'confirm_password.required' => 'The confirmation password field is required.',
-            'confirm_password.same' => 'The confirmation password must match the password.',
+                'confirm_password' => 'required|same:password',
+            ], [
+                'password.required' => 'The password field is required.',
+                'password.min' => 'The password must be at least 8 characters.',
+                'password.regex' => 'The password must include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+                'confirm_password.required' => 'The confirmation password field is required.',
+                'confirm_password.same' => 'The confirmation password must match the password.',
 
             ]);
 
@@ -113,19 +130,15 @@ class AuthenticationController extends Controller
             $mailable = new EmailTemplate($username, $subject, $template_type, $otp);
             Mail::to($user->email)->send($mailable);
 
-
-
             $user->save();
 
             return response()->json(['message' => 'Account created successfully, please check your email for the OTP'], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['errors' => $e->validator->errors()], 400);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
         }
-
-
 
     }
 
@@ -142,16 +155,16 @@ class AuthenticationController extends Controller
         $secondTwo = strtotime($checkUser->otp_expiry);
 
         // Check if the current time is greater than or equal to the OTP expiry time
-        if($second >= $secondTwo){
+        if ($second >= $secondTwo) {
             // If the OTP has expired, return a JSON response with an error message
             return response()->json(['message' => 'OTP has expired'], 401);
-        } elseif(Crypt::decryptString($checkUser->otp) === $request->otp) {
+        } elseif (Crypt::decryptString($checkUser->otp) === $request->otp) {
             // If the OTP provided in the request matches the OTP stored in the user record,
-            $checkUser->email_verified_at = Carbon::now();// set the email_verified_at field to the current time
-            $checkUser->otp = null;// set the otp field to null
-
+            $checkUser->email_verified_at = Carbon::now(); // set the email_verified_at field to the current time
+            $checkUser->otp = null; // set the otp field to null
 
             $checkUser->save();
+
             return response()->json(['message' => 'OTP verified successfully. Please login to continue'], 200);
         } else {
             // If the OTP provided in the request does not match the OTP stored in the user record,
@@ -159,7 +172,6 @@ class AuthenticationController extends Controller
             return response()->json(['message' => 'Invalid OTP'], 401);
         }
     }
-
 
     public function createUser(Request $request): JsonResponse
     {
@@ -169,7 +181,7 @@ class AuthenticationController extends Controller
                 'name' => 'required|min:3',
                 'email' => 'required|email|unique:users',
                 'role_id' => 'required|exists:roles,id',
-                'branch_id' => 'nullable|exists:branches,id'
+                'branch_id' => 'nullable|exists:branches,id',
             ]);
 
             if (Role::where('id', $request->role_id)->first()->role == 'customer' && $request->has('branch_id')) {
@@ -191,7 +203,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'message' => 'User created successfully',
                 'password' => $password,
-                'user' => $user
+                'user' => $user,
             ], 201);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
@@ -204,6 +216,7 @@ class AuthenticationController extends Controller
     {
         try {
             $request->user()->tokens()->delete();
+
             return response()->json(['message' => 'Logout successful'], 200);
         } catch (\Exception $e) {
             return response()->json(['exception' => $e->getMessage()], 400);
@@ -219,12 +232,12 @@ class AuthenticationController extends Controller
     {
         try {
             $request->validate([
-                'email' => 'required|email'
+                'email' => 'required|email',
             ]);
 
             $user = User::where('email', $request->email)->first();
 
-            if (!$user) {
+            if (! $user) {
                 return response()->json(['message' => 'User not found'], 404);
             }
             $otp = rand(100000, 999999);
@@ -257,7 +270,7 @@ class AuthenticationController extends Controller
             $credentials = $request->only('email', 'password');
             $user = Backend::where('email', $credentials['email'])->first();
 
-            if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            if (! $user || ! Hash::check($credentials['password'], $user->password)) {
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
 
@@ -281,9 +294,9 @@ class AuthenticationController extends Controller
     {
         $user = User::where('id', $request->user)->first();
         $check2fa = $user->tfa_secret;
-        if($check2fa){
+        if ($check2fa) {
             return response()->json(['message' => '2FA already enabled']);
-        }else{
+        } else {
             $google2fa = new Google2FA();
             $companyName = env('APP_NAME');
             $companyEmail = $user->email;
@@ -307,10 +320,10 @@ class AuthenticationController extends Controller
             $qrCode = $writer->writeString($qrCodeUrl);
 
             // Define the file path
-            $filePath = 'qrcodes/' . Str::random(10) . '.svg';
+            $filePath = 'qrcodes/'.Str::random(10).'.svg';
 
             // Check if the 'qrcodes' directory exists and create it if it doesn't
-            if (!Storage::disk('public')->exists('qrcodes')) {
+            if (! Storage::disk('public')->exists('qrcodes')) {
                 Storage::disk('public')->makeDirectory('qrcodes');
             }
 
@@ -321,15 +334,14 @@ class AuthenticationController extends Controller
                 'message' => '2FA enabled successfully',
                 'qr_code_url' => url(Storage::url($filePath)),
                 'secret_key' => $secretKey,
-            ]);
+            ], 200);
         }
-
 
     }
 
     public function verify2FACode(Request $request): JsonResponse
     {
-//        $otp = $request->input('otp');
+        //        $otp = $request->input('otp');
 
         $request->validate([
             'otp' => 'required|regex:/^[0-9]{6}$/', // OTP must be a 6-digit number
@@ -339,10 +351,8 @@ class AuthenticationController extends Controller
         $google2fa = new Google2FA();
 
         // Retrieve the secret key from your storage
-        $secretKey = User::where('id',  $request->user)->first()->tfa_secret;
-        $user = User::where('id',  $request->user)->first();
-
-
+        $secretKey = User::where('id', $request->user)->first()->tfa_secret;
+        $user = User::where('id', $request->user)->first();
 
         // Ensure that the secret key is a string
         $secretKey = (string) $secretKey;
@@ -377,11 +387,10 @@ class AuthenticationController extends Controller
             'user' => 'required|integer',
         ]);
 
-        $user = User::where('id',  $request->user)->first();
+        $user = User::where('id', $request->user)->first();
         $user->tfa_secret = null;
         $user->save();
 
         return response()->json(['message' => '2FA disabled successfully'], 200);
     }
-
 }
