@@ -3,19 +3,20 @@
 namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-use App\Models\User;
 
 class OAuthController extends Controller
 {
     /**
      * This method is used to handle the OAuth token received from the client.
      *
-     * @param Request $request The incoming HTTP request containing the OAuth token.
+     * @param  Request  $request  The incoming HTTP request containing the OAuth token.
      * @return JsonResponse Returns a JSON response indicating whether the authentication was successful or not.
+     *
      * @throws GuzzleException
      */
     public function OAuthReceive(Request $request)
@@ -43,13 +44,12 @@ class OAuthController extends Controller
         $checkuser = User::where('email', $email)->first();
 
         // If the user doesn't exist, return an error response
-        if (!$checkuser) {
+        if (! $checkuser) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Unauthorized',
             ], 401);
-        }
-        else {
+        } else {
             // The user exists, authenticate them with Laravel Sanctum
             $tokenResult = $checkuser->createToken('api-token');
             $token = $tokenResult->accessToken;
@@ -61,7 +61,10 @@ class OAuthController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Authenticated',
-                'token' => $plainTextToken,
+                'access_token' => $plainTextToken,
+                'token_type' => 'Bearer',
+                'expires_at' => $token->expires_at,
+                'refresh_token' => 'Laravel Sanctum does not support refresh tokens',
             ], 200);
         }
     }

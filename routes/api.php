@@ -14,15 +14,12 @@ use App\Http\Controllers\Ticket\{TicketController, WastageController};
 use App\Http\Controllers\Report\{ReportController};
 use App\Http\Controllers\Driver\DriverController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 // User routes
-Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetreiveDriver');
-Route::get('/managers', 'App\Http\Controllers\Utility\UserController@RetreiveManager');
-Route::get('/users', 'App\Http\Controllers\Utility\UserController@RetreiveUser');
-Route::get('/admins', 'App\Http\Controllers\Utility\UserController@RetreiveAdmin');
+Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');
+Route::get('/managers', 'App\Http\Controllers\Utility\UserController@RetrieveManager');
+Route::get('/users', 'App\Http\Controllers\Utility\UserController@RetrieveUsers');
+Route::get('/admins', 'App\Http\Controllers\Utility\UserController@RetrieveAdmin');
+Route::get('/user', 'App\Http\Controllers\Utility\UserController@RetrieveSingleUser')->middleware('auth:sanctum');
 
 // Company Branch Routes
 Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
