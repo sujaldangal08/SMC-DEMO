@@ -63,6 +63,7 @@ class OAuthController extends Controller
                 'message' => 'Authenticated',
                 'access_token' => $plainTextToken,
                 'token_type' => 'Bearer',
+                'expires_at' => $token->expires_at,
                 'refresh_token' => 'Laravel Sanctum does not support refresh tokens',
             ], 200);
         }
