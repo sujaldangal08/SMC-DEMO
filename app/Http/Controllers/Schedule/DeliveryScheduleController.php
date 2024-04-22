@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DeliverySchedule;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse; 
+use Illuminate\Http\JsonResponse;
 use App\Traits\ValidatesRoles;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class DeliveryScheduleController extends Controller
 {
@@ -62,7 +63,7 @@ class DeliveryScheduleController extends Controller
             // Validate the request data
             $validatedData = $request->validate([
                 'customer_id' => ['required', $this->roleRule('customer')], //Using the roleRule method from the ValidatesRoles trait
-                'driver_id' => ['nullable', $this->roleRule('driver')],// Using the roleRule method from the ValidatesRoles trait
+                'driver_id' => ['nullable', $this->roleRule('driver')], // Using the roleRule method from the ValidatesRoles trait
                 'truck_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'coordinates' => 'required|array',
                 'materials' => 'required|array',
@@ -111,12 +112,6 @@ class DeliveryScheduleController extends Controller
                 'delivery_notes' => 'nullable|string',
                 'meta' => 'nullable|array'
             ]);
-            
-            if (isset($validatedData['n_trips']) && isset($validatedData['interval'])) {
-                // Calculate the end date based on the number of trips and interval
-                $totalDays = $validatedData['n_trips'] * $validatedData['interval'];
-                $validatedData['end_date'] = date('Y-m-d', strtotime($validatedData['start_date'] . ' + ' . $totalDays . ' days'));
-            }
             // Find the delivery schedule by ID and update the schedule
             $schedule = DeliverySchedule::findOrFail($id);
             $schedule->update($validatedData);
@@ -210,5 +205,35 @@ class DeliveryScheduleController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function deliveryDate()
+    {
+        // Start date
+        $startDate = Carbon::createFromFormat('Y/m/d', '2024/04/01');
+
+        // Number of trips
+        $n_trips = 5;
+
+        // Interval between trips in days
+        $interval = 3;
+
+        // Array to hold the delivery dates
+        $deliveryDates = [];
+
+        for ($i = 0; $i < $n_trips; $i++) {
+            // Add the interval * number of trips to the start date
+            $deliveryDate = $startDate->copy()->addDays(($interval * $i) + 1);
+            // Add the delivery date to the array
+            $deliveryDates[] = $deliveryDate->format('Y/m/d');
+        }
+
+        // Now $deliveryDates contains the dates on which the deliveries will be made
+        print_r($deliveryDates);
+
+        // The end date is the last element in the deliveryDates array
+        $endDate = end($deliveryDates);
+
+        echo "End date: " . $endDate;
     }
 }

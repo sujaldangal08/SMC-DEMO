@@ -19,6 +19,8 @@ class PickupSchedule extends Model
         'status',
         'notes',
         'n_bins',
+        'materials',
+        'weighing_type',
         'tare_weight',
         'image',
         'coordinates'
@@ -49,7 +51,9 @@ class PickupSchedule extends Model
     {
         return [
             'coordinates' => 'array',
-            'image' => 'array'
+            'image' => 'array',
+            'materials' => 'array',
+            'weighing_type' => 'array',
         ];
     }
     protected static function booted()
