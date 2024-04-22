@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Schedule;
 
 use App\Http\Controllers\Controller;
-use App\Models\PickSchedule;
+//use App\Models\PickSchedule;
 use Illuminate\Http\Request;
 use App\Models\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
