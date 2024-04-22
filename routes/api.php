@@ -9,9 +9,10 @@ use App\Http\Controllers\Settings\{AuthenticationSettingsController, ProfileSett
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Inventory\{InventoryController, SkuController, WarehouseController};
 use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
-use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController, DeliveryScheduleController};
+use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController ,DeliveryScheduleController};
 use App\Http\Controllers\Ticket\{TicketController, WastageController};
 use App\Http\Controllers\Report\{ReportController};
+use App\Http\Controllers\Driver\DriverController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -194,3 +195,5 @@ Route::get('/assets/totalorspecific', [ReportController::class, 'getTotalAssets'
 
 // Logged in user details
 Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('auth:sanctum');
+
+Route::middleware('auth:api')->get('/pickup-schedules', [DriverController::class, 'index']);
