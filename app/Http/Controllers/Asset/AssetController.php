@@ -20,12 +20,12 @@ class AssetController extends Controller
                 'message' => 'All assets fetched successfully',
                 'total' => $assets->count(),
                 'data' => $assets
-            ]);
+            ],200); // Return a 200 response code
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ],500); // Internal Server Error
         }
     }
 
@@ -37,7 +37,7 @@ class AssetController extends Controller
                 'status' => 'success',
                 'message' => 'Asset fetched successfully',
                 'data' => $asset
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -47,7 +47,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -79,7 +79,7 @@ class AssetController extends Controller
             'status' => 'success',
             'message' => 'Asset created successfully',
             'data' => $asset
-        ]);
+        ], 201);
     }
 
     public function updateAsset(Request $request, int $id): JsonResponse
@@ -118,7 +118,7 @@ class AssetController extends Controller
                 'status' => 'success',
                 'message' => 'Asset updated successfully',
                 'data' => $asset
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -128,7 +128,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -141,7 +141,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -151,7 +151,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -164,7 +164,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset restored successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -174,7 +174,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 
@@ -187,7 +187,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset permanently deleted'
-            ]);
+            ] ,200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
@@ -197,7 +197,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ]);
+            ], 500);
         }
     }
 }

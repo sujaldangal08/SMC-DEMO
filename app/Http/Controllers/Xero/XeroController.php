@@ -4,15 +4,134 @@ namespace App\Http\Controllers\Xero;
 
 use App\Http\Controllers\Controller;
 use App\Models\Xero\Contact;
-use App\Models\Xero\Address;
-use App\Models\Xero\Phone;
-use App\Models\Xero\Balances;
-use App\Models\Xero\PurchaseOrder;
-use App\Models\Xero\LineItem;
+use App\Models\Xero\XeroConnect;
+use App\Models\Xero\XeroTenant;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class XeroController extends Controller
 {
+
+    public function xeroConnect(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    {
+        $query = http_build_query([
+            'response_type' => 'code',
+            'client_id' => env('XERO_CLIENT_ID'),
+            'redirect_uri' => env('XERO_REDIRECT_URI'),
+            'scope' => 'email profile openid accounting.settings accounting.transactions accounting.contacts offline_access', // Adjust scope as needed
+        ]);
+
+        return redirect('https://login.xero.com/identity/connect/authorize?' . $query);
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function xeroCallback(Request $request)
+    {
+        $code = $request->query('code');
+
+        $client = new Client();
+        $response = $client->post('https://identity.xero.com/connect/token', [
+            'form_params' => [
+                'grant_type' => 'authorization_code',
+                'client_id' => env('XERO_CLIENT_ID'),
+                'client_secret' => env('XERO_CLIENT_SECRET'),
+                'redirect_uri' => env('XERO_REDIRECT_URI'),
+                'code' => $code,
+            ],
+        ]);
+
+        $responseBody = json_decode((string) $response->getBody(), true);
+
+        $accessToken = $responseBody['access_token'];
+        $refreshToken = $responseBody['refresh_token'];
+
+        $xeroConnect = XeroConnect::first();
+
+        // Save the data to the XeroConnect model
+        $xeroConnect->update([
+            'id_token' => $responseBody['id_token'],
+            'access_token' => $accessToken,
+            'expires_in' => $responseBody['expires_in'],
+            'token_type' => $responseBody['token_type'],
+            'refresh_token' => $refreshToken,
+            'scope' => $responseBody['scope'],
+        ]);
+
+        return response()->json([
+            'message' => 'Successfully connected to Xero',
+            'access_token' => $accessToken,
+            'refresh_token' => $refreshToken,
+        ]);
+    }
+
+
+    public function xeroRefresh(): \Illuminate\Http\JsonResponse
+    {
+        $xeroConnect = XeroConnect::first();
+
+        $client = new Client();
+        $response = $client->post('https://identity.xero.com/connect/token', [
+            'form_params' => [
+                'grant_type' => 'refresh_token',
+                'client_id' => env('XERO_CLIENT_ID'),
+                'client_secret' => env('XERO_CLIENT_SECRET'),
+                'refresh_token' => $xeroConnect->refresh_token,
+            ],
+        ]);
+
+        $responseBody = json_decode((string) $response->getBody(), true);
+        $xeroConnect->update([
+            'access_token' => $responseBody['access_token'],
+            'expires_in' => $responseBody['expires_in'],
+            'token_type' => $responseBody['token_type'],
+            'refresh_token' => $responseBody['refresh_token'],
+            'scope' => $responseBody['scope'],
+        ]);
+
+        return response()->json([
+            'message' => 'Successfully refreshed the access token',
+            'access_token' => $responseBody['access_token'],
+            'refresh_token' => $responseBody['refresh_token'],
+        ]);
+    }
+
+    public function xeroTenant()
+    {
+        $xeroConnect = XeroConnect::first();
+
+        $client = new Client();
+        $response = $client->get('https://api.xero.com/connections', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $xeroConnect->access_token,
+            ],
+        ]);
+
+        $responseBody = json_decode((string) $response->getBody(), true);
+
+        // Save the data to the XeroTenant model
+        $xeroTenant = XeroTenant::first();
+        foreach ($responseBody as $tenant) {
+            $xeroTenant->update([
+                'connection_id' => $tenant['id'],
+                'authEventId' => $tenant['authEventId'],
+                'tenantId' => $tenant['tenantId'],
+                'tenantType' => $tenant['tenantType'],
+                'tenantName' => $tenant['tenantName'],
+                'xero_connect_id' => $xeroConnect->id,
+                'createdDateUtc' => $tenant['createdDateUtc'],
+                'updatedDateUtc' => $tenant['updatedDateUtc'],
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Successfully fetched and saved the tenants',
+            'tenants' => $responseBody,
+        ]);
+    }
+
     public function getXeroData(): \Illuminate\Http\JsonResponse
     {
         // Fetch all data from the database
@@ -57,7 +176,7 @@ class XeroController extends Controller
             'ProviderName' => 'LaravelApp',
             'DateTimeUTC' => now()->timestamp,
             'Contacts' => $transformedContacts
-        ]);
+        ], 200);
     }
 
     public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
@@ -120,7 +239,7 @@ class XeroController extends Controller
             'ProviderName' => 'LaravelApp',
             'DateTimeUTC' => now()->timestamp,
             'Contacts' => $transformedPurchaseOrder
-        ]);
+        ], 200);
     }
 
 }

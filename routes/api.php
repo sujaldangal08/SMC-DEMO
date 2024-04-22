@@ -9,18 +9,16 @@ use App\Http\Controllers\Settings\{AuthenticationSettingsController, ProfileSett
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Inventory\{InventoryController, SkuController, WarehouseController};
 use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
-use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController};
+use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController, DeliveryScheduleController};
 use App\Http\Controllers\Ticket\{TicketController, WastageController};
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+use App\Http\Controllers\Report\{ReportController};
 
 // User routes
-Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetreiveDriver');
-Route::get('/managers', 'App\Http\Controllers\Utility\UserController@RetreiveManager');
-Route::get('/users', 'App\Http\Controllers\Utility\UserController@RetreiveUser');
-Route::get('/admins', 'App\Http\Controllers\Utility\UserController@RetreiveAdmin');
+Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');
+Route::get('/managers', 'App\Http\Controllers\Utility\UserController@RetrieveManager');
+Route::get('/users', 'App\Http\Controllers\Utility\UserController@RetrieveUsers');
+Route::get('/admins', 'App\Http\Controllers\Utility\UserController@RetrieveAdmin');
+Route::get('/user', 'App\Http\Controllers\Utility\UserController@RetrieveSingleUser')->middleware('auth:sanctum');
 
 // Company Branch Routes
 Route::get('/branch', 'App\Http\Controllers\Company\BranchController@branch');
@@ -37,8 +35,10 @@ Route::get('/company', 'App\Http\Controllers\Company\CompanyController@Company')
 // xero routes
 Route::get('/xerodata', 'App\Http\Controllers\Xero\XeroController@getXeroData');
 Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
-
-Route::get('/sendemail', 'App\Http\Controllers\EmailController@sendEmail');
+Route::get('/xero/connect', 'App\Http\Controllers\Xero\XeroController@xeroConnect');
+Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallback');
+Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
+Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
@@ -63,7 +63,7 @@ Route::post('/sku', [SkuController::class, 'createSku']);
 Route::patch('/sku/{id}', [SkuController::class, 'updateSku']);
 
 Route::post('/login', [AuthenticationController::class, 'login']);
-Route::post('backend-login', [AuthenticationController::class, 'backendLogin']);
+Route::post('/backend-login', [AuthenticationController::class, 'backendLogin']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/verify-otp', [AuthenticationController::class, 'verifyOtp']);
@@ -142,17 +142,27 @@ Route::delete('/schedule/pickup/{id}', [PickupController::class, 'destroy']);
 Route::post('/schedule/pickup/restore/{id}', [PickupController::class, 'restore']);
 Route::delete('/schedule/pickup/delete/{id}', [PickupController::class, 'permanentDelete']);
 
+//Delivery Plan Routes
+Route::get('/delivery', [DeliveryScheduleController::class, 'index']);
+Route::get('/delivery/{id}', [DeliveryScheduleController::class, 'show']);
+Route::post('/delivery', [DeliveryScheduleController::class, 'store']);
+Route::patch('/delivery/{id}', [DeliveryScheduleController::class, 'update']);
+Route::delete('/delivery/{id}', [DeliveryScheduleController::class, 'destroy']);
+Route::post('/delivery/restore/{id}', [DeliveryScheduleController::class, 'restore']);
+Route::delete('/delivery/delete/{id}', [DeliveryScheduleController::class, 'permanentDelete']);
+
 // Delivery Schedule routes
 Route::post('/schedule/delivery', [DeliveryController::class, 'createDelivery']);
 Route::patch('/schedule/delivery/{id}', [DeliveryController::class, 'updateDelivery']);
 
 // 2fa test routes
-Route::get('/checkfa/{userID}', [AuthenticationController::class, 'twoFactorGenerate']);
-Route::post('/verifyfa', [AuthenticationController::class, 'verify2FACode']);
+Route::post('/2fa/generate', [AuthenticationController::class, 'twoFactorGenerate']);
+Route::post('/2fa/verify', [AuthenticationController::class, 'verify2FACode']);
+Route::post('/2fa/disable', [AuthenticationController::class, 'disable2FA']);
+
 
 // OAuth for Google
-Route::post('/oauth/google', [OAuthController::class, 'OAuthRecieve']);
-
+Route::post('/oauth/google', [OAuthController::class, 'OAuthReceive']);
 
 //Ticket Module Routes
 Route::get('/ticket', [TicketController::class, 'index']);
@@ -163,7 +173,6 @@ Route::delete('/ticket/{ticketNumber}', [TicketController::class, 'delete']);
 Route::post('/ticket/restore/{ticketNumber}', [TicketController::class, 'restore']);
 Route::get('/ticket/delete/{ticketNumber}', [TicketController::class, 'permanentDelete']);
 
-
 //Wastage Mode Routes
 Route::get('/waste', [WastageController::class, 'index']);
 Route::get('/waste/{id}', [WastageController::class, 'show']);
@@ -172,3 +181,13 @@ Route::patch('/waste/{id}', [WastageController::class, 'update']);
 Route::delete('/waste/{id}', [WastageController::class, 'delete']);
 Route::post('/waste/restore/{id}', [WastageController::class, 'restore']);
 Route::delete('/waste/delete/{id}', [WastageController::class, 'permanentDelete']);
+
+//  Counting the total number of deliveries, pickups, tickets, users, and assets and single out the specific ones
+Route::get('/deliveries/totalorspecific', [ReportController::class, 'getTotalDeliveries']);
+Route::get('/pickups/totalorspecific', [ReportController::class, 'getTotalPickups']);
+Route::get('/tickets/totalorspecific', [ReportController::class, 'getTotalTickets']);
+Route::get('/users/totalorspecific', [ReportController::class, 'getTotalUsers']);
+Route::get('/assets/totalorspecific', [ReportController::class, 'getTotalAssets']);
+
+// Logged in user details
+Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('auth:sanctum');
