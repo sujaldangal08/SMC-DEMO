@@ -47,15 +47,22 @@ class PickupSchedule extends Model
     }
 
 
-    protected function casts(): array
-    {
-        return [
-            'coordinates' => 'array',
-            'image' => 'array',
-            'materials' => 'array',
-            'weighing_type' => 'array',
-        ];
-    }
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'coordinates' => 'array',
+    //         'image' => 'array',
+    //         'materials' => 'array',
+    //         'weighing_type' => 'array',
+    //     ];
+    // }
+    protected $casts = [
+        'coordinates' => 'array',
+        'image' => 'array',
+        'materials' => 'array',
+        'weighing_type' => 'array',
+        'tare_weight' => 'array',
+    ];
     protected static function booted()
     {
         static::creating(function ($pickupSchedule) {
