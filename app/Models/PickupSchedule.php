@@ -52,4 +52,25 @@ class PickupSchedule extends Model
             'image' => 'array'
         ];
     }
+    protected static function booted()
+    {
+        static::creating(function ($pickupSchedule) {
+            if (!isset($pickupSchedule->driver_id) && isset($pickupSchedule->route_id)) {
+                $route = Route::find($pickupSchedule->route_id);
+                if ($route && $route->driver_id) {
+                    $pickupSchedule->driver_id = $route->driver_id;
+                }
+            }
+        });
+        static::updating(function ($pickupSchedule) {
+            if ($pickupSchedule->isDirty('route_id')) {
+                $route = Route::find($pickupSchedule->route_id);
+                if ($route) {
+                    $pickupSchedule->driver_id = $route->driver_id;
+                    $pickupSchedule->asset_id = $route->asset_id;
+                }
+            }
+        });
+    }
+
 }

@@ -61,10 +61,10 @@ class PickupController extends Controller
     {
         try {
             $validatedRequest =  $request->validate([
-                'route_id' => 'exists:routes,id',
-                'asset_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+                'route_id' => ['nullable','exists:routes,id'],
+                'asset_id' => ['nullable',Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'driver_id' => ['nullable', $this->roleRule('driver')],
-                'customer_id' => ['required', $this->roleRule('customer')],
+                'customer_id' => ['nullable', $this->roleRule('customer')],
                 'pickup_date' => 'required|date',
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
@@ -105,7 +105,7 @@ class PickupController extends Controller
             $schedule = PickupSchedule::findOrFail($id);
             $validatedRequest =  $request->validate([
                 'route_id' => 'exists:routes,id',
-                'asset_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+                'asset_id' => ['nullable',Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'driver_id' => ['nullable', $this->roleRule('driver')],
                 'customer_id' => ['required', $this->roleRule('customer')],
                 'pickup_date' => 'nullable|date',

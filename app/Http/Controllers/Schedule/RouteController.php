@@ -62,7 +62,8 @@ class RouteController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string',
                 'description' => 'required|string',
-                'driver_id' => ['required|exists:user,id', $this->roleRule('driver')], // 'driver_id' => 'required|exists:users,id
+                'driver_id' => ['nullable','exists:users,id', $this->roleRule('driver')],
+                'asset_id' => ['nullable', 'exists:assets,id'],
                 'status' => 'required|in:active,inactive,pending,full'
             ]);
 
@@ -89,7 +90,8 @@ class RouteController extends Controller
                 'name' => 'string',
                 'description' => 'string',
                 'status' => 'in:active,inactive,done,pending,full',
-                'driver_id' => ['required|exists:user,id', $this->roleRule('driver')], // 'driver_id' => 'exists:users,id
+                'driver_id' => array_merge(['nullable','exists:users,id'], [$this->roleRule('driver')]), // 'driver_id' => 'exists:users,id
+                'asset_id' => 'nullable|exists:assets,id'
             ], [
                 'driver_id.exists' => 'The selected driver is invalid'
             ]);
