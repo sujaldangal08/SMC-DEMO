@@ -54,6 +54,7 @@ class PickupSchedule extends Model
             'image' => 'array',
             'materials' => 'array',
             'weighing_type' => 'array',
+            'tare_weight' => 'array'
         ];
     }
 }
