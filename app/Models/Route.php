@@ -17,7 +17,9 @@ class Route extends Model
         'end_point',
         'distance',
         'duration',
-        'status'
+        'status',
+        'driver_id',
+        'asset_id',
     ];
 
     public function schedule()
@@ -44,5 +46,28 @@ class Route extends Model
                 }
             }
         });
+        static::updating(function ($route) {
+            if ($route->isDirty('driver_id')) {
+                foreach ($route->schedule->where('status', '!=', 'done') as $schedule) {
+                    $schedule->driver_id = $route->driver_id;
+                    $schedule->save();
+                }
+            }
+        });
+
+    static::updating(function ($route) {
+        if ($route->isDirty('driver_id')) {
+            foreach ($route->schedule->where('status', '!=', 'done') as $schedule) {
+                $schedule->driver_id = $route->driver_id;
+                $schedule->save();
+            }
+        }
+        if ($route->isDirty('asset_id')) {
+            foreach ($route->schedule->where('status', '!=', 'done') as $schedule) {
+                $schedule->asset_id = $route->asset_id;
+                $schedule->save();
+            }
+        }
+    });
     }
 }

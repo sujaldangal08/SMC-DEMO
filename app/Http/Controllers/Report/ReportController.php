@@ -27,9 +27,9 @@ class ReportController extends Controller {
             }
             $totalDeliveries = $query->count();
         } catch ( \Exception $e ) {
-            return response()->json( [ 'error' => 'Data not found!' ], 500 );
+            return response()->json( [ 'error' => 'Data not found!' ], 404);
         }
-        return response()->json( [ 'total_deliveries' => $totalDeliveries ] );
+        return response()->json( [ 'total_deliveries' => $totalDeliveries ], 200);
     }
 
     // Retrieves the total number of pickups with optional filtering by status.
@@ -51,10 +51,10 @@ class ReportController extends Controller {
 
             $totalPickups = $query->count();
         } catch ( \Exception $e ) {
-            return response()->json( [ 'error' => 'Data not found!' ], 500 );
+            return response()->json( [ 'error' => 'Data not found!' ], 400 );
         }
 
-        return response()->json( [ 'total_pickups' => $totalPickups ] );
+        return response()->json( [ 'total_pickups' => $totalPickups ], 200);
     }
 
     // Retrieves the total number of tickets with optional filtering by status.
@@ -76,10 +76,10 @@ class ReportController extends Controller {
 
             $totalTickets = $query->count();
         } catch ( \Exception $e ) {
-            return response()->json( [ 'error' => 'Data not found!' ], 500 );
+            return response()->json( [ 'error' => 'Data not found!' ], 404 );
         }
 
-        return response()->json( [ 'total_tickets' => $totalTickets ] );
+        return response()->json( [ 'total_tickets' => $totalTickets ], 200);
     }
 
     // Retrieves the total number of users with optional filtering by status.
@@ -101,10 +101,10 @@ class ReportController extends Controller {
 
             $totalUsers = $query->count();
         } catch ( \Exception $e ) {
-            return response()->json( [ 'error' => 'Data not found!' ], 500 );
+            return response()->json( [ 'error' => 'Data not found!' ], 404 );
         }
 
-        return response()->json( [ 'total_users' => $totalUsers ] );
+        return response()->json( [ 'total_users' => $totalUsers ], 200);
     }
 
     // Retrieves the total number of assets with optional filtering by status.
@@ -125,10 +125,10 @@ class ReportController extends Controller {
 
             $totalAssets = $query->count();
         } catch ( \Exception $e ) {
-            return response()->json( [ 'error' => 'Data not found!' ], 500 );
+            return response()->json( [ 'error' => 'Data not found!' ], 404 );
         }
 
-        return response()->json( [ 'total_assets' => $totalAssets ] );
+        return response()->json( [ 'total_assets' => $totalAssets ], 200);
     }
 
     // Fetches data based on user role: customer or driver.
@@ -147,7 +147,7 @@ class ReportController extends Controller {
         } else {
             return response()->json( [ 'error' => 'Unauthorized' ], 403 );
         }
-        return response()->json( $data );
+        return response()->json( $data, 200 );
     }
 
 }

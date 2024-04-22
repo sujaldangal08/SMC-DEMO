@@ -334,7 +334,7 @@ class AuthenticationController extends Controller
                 'message' => '2FA enabled successfully',
                 'qr_code_url' => url(Storage::url($filePath)),
                 'secret_key' => $secretKey,
-            ]);
+            ], 200);
         }
 
     }

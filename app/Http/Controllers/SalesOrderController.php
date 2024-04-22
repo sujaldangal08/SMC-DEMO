@@ -43,6 +43,6 @@ class SalesOrderController extends Controller
 
         return response()->json([
                 'data' => $salesOrder,
-        ]);
+        ], 200);
     }
 }

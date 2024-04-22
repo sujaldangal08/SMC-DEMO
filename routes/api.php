@@ -40,6 +40,11 @@ Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallb
 Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
 Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 
+// Xero Settings routes
+Route::get('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@getXeroCredential');
+Route::post('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@storeXeroCredential');
+Route::patch('/xero/settings/{id}', 'App\Http\Controllers\Settings\XeroSettingsController@updateXeroCredential');
+
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
 Route::post('/inventory', [InventoryController::class, 'createInventory']);

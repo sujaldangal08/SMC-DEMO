@@ -24,7 +24,7 @@ class PickupController extends Controller
                 'message' => 'All pickup schedules fetched successfully',
                 'total' => $schedules->count(),
                 'data' => $schedules
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -61,17 +61,17 @@ class PickupController extends Controller
     {
         try {
             $validatedRequest =  $request->validate([
-                'route_id' => 'exists:routes,id',
-                'asset_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+                'route_id' => ['nullable','exists:routes,id'],
+                'asset_id' => ['nullable',Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'driver_id' => ['nullable', $this->roleRule('driver')],
-                'customer_id' => ['required', $this->roleRule('customer')],
+                'customer_id' => ['nullable', $this->roleRule('customer')],
                 'pickup_date' => 'required|date',
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . count($request->input('n_bins'))],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:' . count($request->input('n_bins'))],
+                'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);
@@ -106,16 +106,15 @@ class PickupController extends Controller
             $schedule = PickupSchedule::findOrFail($id);
             $validatedRequest =  $request->validate([
                 'route_id' => 'exists:routes,id',
-                'asset_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+                'asset_id' => ['nullable',Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'driver_id' => ['nullable', $this->roleRule('driver')],
                 'customer_id' => ['required', $this->roleRule('customer')],
                 'pickup_date' => 'nullable|date',
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
-                'materials' => 'nullable|array',
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . count($request->input('n_bins'))],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:' . count($request->input('n_bins'))],
+                'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);
@@ -156,7 +155,7 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule deleted successfully'
-            ]);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
