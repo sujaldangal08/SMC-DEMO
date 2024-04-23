@@ -20,7 +20,7 @@ class DeliveyScheduleFactory extends Factory
             'customer_id' => \App\Models\User::all()->random()->id,
             'driver_id' => \App\Models\User::all()->random()->id,
             'truck_id' => \App\Models\Asset::all()->random()->id,
-            'coordinates' => $this->faker->latitude . ', ' . $this->faker->longitude,
+            'coordinates' => $this->faker->latitude.', '.$this->faker->longitude,
             'materials' => $this->faker->word,
             'amount' => $this->faker->randomNumber(2),
             'n_trips' => $this->faker->numberBetween(1, 10),

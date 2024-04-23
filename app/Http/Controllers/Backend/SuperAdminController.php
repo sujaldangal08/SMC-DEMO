@@ -31,19 +31,18 @@ class SuperAdminController extends Controller
                 'data' => $user,
             ], 201);
 
-        }catch(\Illuminate\Validation\ValidationException $e){
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Validation error.',
                 'data' => null,
-                'errors' => $e->validator->errors()->getMessages()
+                'errors' => $e->validator->errors()->getMessages(),
             ], 422);
-        }
-         catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Failed to create super admin: ' . $e->getMessage(),
-                'data' => null
+                'message' => 'Failed to create super admin: '.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -51,18 +50,19 @@ class SuperAdminController extends Controller
     public function destroy($id)
     {
         $superAdmin = Backend::find($id);
-        if (!$superAdmin) {
+        if (! $superAdmin) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Super admin not found',
-                'data' => null
+                'data' => null,
             ], 404);
         }
         $superAdmin->delete();
+
         return response()->json([
             'status' => 'success',
             'message' => 'Super admin moved to trash successfully',
-            'data' => null
-        ],200);
+            'data' => null,
+        ], 200);
     }
 }

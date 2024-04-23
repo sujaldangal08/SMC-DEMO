@@ -25,7 +25,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500); // Internal Server Error
         }
     }
@@ -44,13 +44,13 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Asset not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -88,7 +88,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -133,13 +133,13 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Asset not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -153,19 +153,19 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset deleted successfully',
-                'data' => null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Asset not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -179,19 +179,19 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset restored successfully',
-                'data' => $asset
+                'data' => $asset,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Asset not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -205,19 +205,19 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset permanently deleted',
-                'data'=>null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Asset not found',
-                'data'=>null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data'=>null
+                'data' => null,
             ], 500);
         }
     }

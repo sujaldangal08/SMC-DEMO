@@ -16,15 +16,15 @@ class DeliveyTripFactory extends Factory
      */
     public function definition(): array
     {
-            return [
-                'schedule_id' => DeliverySchedule::factory(),
-                'driver_id' => User::factory(),
-                'truck_id' => Asset::factory(),
-                'materials_loaded' => $this->faker->word,
-                'amount_loaded' => $this->faker->randomNumber(),
-                'trip_number' => $this->faker->unique()->numerify('Trip ###'),
-                'status' => $this->faker->randomElement(['pending', 'in_progress', 'completed']),
-                'trip_date' => $this->faker->date(),
-            ];
+        return [
+            'schedule_id' => DeliverySchedule::factory(),
+            'driver_id' => User::factory(),
+            'truck_id' => Asset::factory(),
+            'materials_loaded' => $this->faker->word,
+            'amount_loaded' => $this->faker->randomNumber(),
+            'trip_number' => $this->faker->unique()->numerify('Trip ###'),
+            'status' => $this->faker->randomElement(['pending', 'in_progress', 'completed']),
+            'trip_date' => $this->faker->date(),
+        ];
     }
 }
