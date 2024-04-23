@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +31,7 @@ class EmailSeeder extends Seeder
             'template_type' => 'Delivery Confirmation',
             'created_at' => now(),
             'updated_at' => now(),
-        ],[
+        ], [
             'subject' => 'welcome',
             'logo' => 'https://i.ibb.co/5Tf8VcN/Untitled-design-4.png',
             'top_link' => null,
@@ -50,7 +49,7 @@ class EmailSeeder extends Seeder
             'template_type' => 'welcome',
             'created_at' => now(),
             'updated_at' => now(),
-        ],[
+        ], [
             'subject' => 'otp',
             'logo' => 'https://i.ibb.co/5Tf8VcN/Untitled-design-4.png',
             'top_link' => null,
@@ -68,7 +67,7 @@ class EmailSeeder extends Seeder
             'template_type' => 'otp',
             'created_at' => now(),
             'updated_at' => now(),
-        ]
+        ],
         ]);
 
     }

@@ -23,15 +23,16 @@ class Delivery extends Model
         'delivery_file',
         'delivery_interval',
         'delivery_status',
-        'delivery_notes'
+        'delivery_notes',
     ];
 
-    public function user() : \Illuminate\Database\Eloquent\Relations\HasOne
+    public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(User::class);
     }
 
-    public function asset(){
+    public function asset()
+    {
         return $this->belongsTo(Asset::class);
     }
 }

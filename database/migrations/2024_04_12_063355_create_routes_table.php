@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('asset_id')->nullable()->constrained('assets');
             $table->string('description')->nullable();
             $table->enum('status', ['pending', 'active', 'done', 'unloading', 'full', 'cancelled'])->default('pending');
+            $table->date('start_date');
             $table->softDeletes();
             $table->timestamps();
         });

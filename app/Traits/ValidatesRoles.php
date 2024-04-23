@@ -2,10 +2,9 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Exists;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Query\Builder;
 
 trait ValidatesRoles
 {
