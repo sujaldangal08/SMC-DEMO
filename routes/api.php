@@ -12,6 +12,7 @@ use App\Http\Controllers\Asset\{AssetController, InsuranceController, Maintenanc
 use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController, DeliveryScheduleController};
 use App\Http\Controllers\Ticket\{TicketController, WastageController};
 use App\Http\Controllers\Report\{ReportController};
+use App\Http\Controllers\FaqController;
 
 // User routes
 Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');
@@ -73,12 +74,12 @@ Route::post('/forgot-password', [AuthenticationController::class, 'forgotPasswor
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/verify-otp', [AuthenticationController::class, 'verifyOtp']);
 
-
 Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 // Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware(RoleAuthentication::class);
 Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware('auth:sanctum');
 
 Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
+Route::patch('/reset-password', [ProfileSettingsController::class, 'resetPassword'])->middleware('auth:sanctum');
 
 
 // Super Admin Routes
@@ -196,3 +197,7 @@ Route::get('/assets/totalorspecific', [ReportController::class, 'getTotalAssets'
 
 // Logged in user details
 Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('auth:sanctum');
+
+//faq
+Route::get('/faq', [FaqController::class, 'getFaq']);
+Route::post('/faq', [FaqController::class, 'insertFaq']);
