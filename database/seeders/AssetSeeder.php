@@ -15,16 +15,16 @@ class AssetSeeder extends Seeder
     {
 
         DB::table('assets')->insert([
-            'title' => 'Asset 1',
+            'title' => 'Asset',
             'image' => 'image.jpg',
-            'asset_type' => 'type',
+            'asset_type' => 'Vehicle',
             'meta' => json_encode([
-                'description' => 'This is a valuable asset',
-                'location' => 'Warehouse 1',
-                'condition' => 'New',
-                'purchase_date' => now()->format('Y-m-d'),
-            ]),
-            'branch_id' => 1, // assuming a branch with id 1 exists
+                'brand' => 'Isuzu',
+                'model' => 'N-series',
+                'tare-weight' => '15 ton',
+             ]),
+            'branch_id' => 1,
         ]);
+
     }
 }
