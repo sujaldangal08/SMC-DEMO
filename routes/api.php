@@ -10,6 +10,7 @@ use App\Http\Controllers\Inventory\InventoryController;
 use App\Http\Controllers\Inventory\SkuController;
 use App\Http\Controllers\Inventory\WarehouseController;
 use App\Http\Controllers\Report\{ReportController};
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Schedule\DeliveryController;
 use App\Http\Controllers\Schedule\DeliveryScheduleController;
@@ -86,6 +87,8 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware(
 Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware('auth:sanctum');
 
 Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
+Route::patch('/reset-password', [ProfileSettingsController::class, 'resetPassword'])->middleware('auth:sanctum');
+
 
 // Super Admin Routes
 Route::get('/setting/auth-attempts', [AuthenticationSettingsController::class, 'authAttempts'])->middleware('auth:sanctum', 'role:super-admin');
@@ -209,3 +212,7 @@ Route::get('/assets/totalorspecific', [ReportController::class, 'getTotalAssets'
 
 // Logged in user details
 Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('auth:sanctum');
+
+//faq
+Route::get('/faq', [FaqController::class, 'getFaq']);
+Route::post('/faq', [FaqController::class, 'insertFaq']);

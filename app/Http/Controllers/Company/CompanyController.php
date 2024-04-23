@@ -59,9 +59,10 @@ class CompanyController extends Controller
         } catch (ValidationException $e) {
             // Return a custom validation error response
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Unable to Update: Validation error',
-                'errors' => $e->errors(),
+                'data' => null,
+                'errors' => $e->errors()
             ], 422);
         }
 
