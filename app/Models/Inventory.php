@@ -10,8 +10,8 @@ class Inventory extends Model
 {
     use HasFactory, SoftDeletes;
 
-
     protected $primaryKey = 'id';
+
     protected $fillable = [
         'SKU_id',
         'name',
@@ -26,9 +26,7 @@ class Inventory extends Model
     ];
 
     public function sku()
-{
-    return $this->hasOne(Sku::class, 'inventory_id', 'id');
-}
-
-
+    {
+        return $this->hasOne(Sku::class, 'inventory_id', 'id');
+    }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Warehouse;
 use App\Models\Sku;
+use App\Models\Warehouse;
+use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
@@ -18,18 +18,17 @@ class WarehouseController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Warehouse retrieved successfully',
-            'data' => $warehouseData
+            'data' => $warehouseData,
         ], 200);
     }
 
     // Method to insert warehouse
-    public function createWarehouse(Request $request) :\Illuminate\Http\JsonResponse
+    public function createWarehouse(Request $request): \Illuminate\Http\JsonResponse
     {
         $validatedData = $request->validate([
             'location' => 'required|max:255',
             'sku_id' => 'required|max:255|',
         ]);
-
 
         $warehouseLocation = $validatedData['location'];
         $skuString = $validatedData['sku_id'];
@@ -37,20 +36,20 @@ class WarehouseController extends Controller
         // Find the SKU by its string
         $sku = Sku::where('SKU', $skuString)->first();
 
-        if (!$sku) {
-                return response()->json([
-            'message' => 'SKU not found',
+        if (! $sku) {
+            return response()->json([
+                'message' => 'SKU not found',
             ], 404);
         }
 
-    // Check if the warehouse already exists
-    $warehouse = Warehouse::where('location', $warehouseLocation)->first();
+        // Check if the warehouse already exists
+        $warehouse = Warehouse::where('location', $warehouseLocation)->first();
 
         if ($warehouse) {
             // Warehouse exists, add the SKU ID to the existing SKU IDs
-            $existingSkuIds =  $warehouse->SKU_id;
+            $existingSkuIds = $warehouse->SKU_id;
 
-            if (!in_array($sku->id, $existingSkuIds)) {
+            if (! in_array($sku->id, $existingSkuIds)) {
                 $existingSkuIds[] = $sku->id;
             }
 
@@ -60,19 +59,19 @@ class WarehouseController extends Controller
             // Warehouse doesn't exist, create a new one with the SKU ID
             $warehouse = Warehouse::create([
                 'location' => $warehouseLocation,
-                'SKU_id' => [$sku->id]
+                'SKU_id' => [$sku->id],
             ]);
         }
 
         // Return a JSON response
         return response()->json([
             'message' => 'Warehouse inserted successfully',
-            'data' => $warehouse
+            'data' => $warehouse,
         ], 201);
     }
 
     // Method to update warehouse
-    public function updateWarehouse(Request $request, $id) :\Illuminate\Http\JsonResponse
+    public function updateWarehouse(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         // Validate the request data
         $data = $request->validate([
@@ -83,7 +82,7 @@ class WarehouseController extends Controller
         // Find the warehouse by its ID
         $warehouse = Warehouse::find($id);
 
-        if (!$warehouse) {
+        if (! $warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -96,17 +95,17 @@ class WarehouseController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Warehouse updated successfully',
-            'data' => $warehouse
+            'data' => $warehouse,
         ], 200);
     }
 
     // Method to delete warehouse
-    public function deleteWarehouse($id) :\Illuminate\Http\JsonResponse
+    public function deleteWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
         $warehouse = Warehouse::find($id);
 
-        if (!$warehouse) {
+        if (! $warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -123,12 +122,12 @@ class WarehouseController extends Controller
     }
 
     // Method to restore warehouse
-    public function restoreWarehouse($id) :\Illuminate\Http\JsonResponse
+    public function restoreWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
         $warehouse = Warehouse::withTrashed()->find($id);
 
-        if (!$warehouse) {
+        if (! $warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -145,12 +144,12 @@ class WarehouseController extends Controller
     }
 
     // Method to permanently delete warehouse
-    public function permanentDeleteWarehouse($id) :\Illuminate\Http\JsonResponse
+    public function permanentDeleteWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
         $warehouse = Warehouse::withTrashed()->find($id);
 
-        if (!$warehouse) {
+        if (! $warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -163,6 +162,6 @@ class WarehouseController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Warehouse permanently deleted',
-        ],  200);
+        ], 200);
     }
 }

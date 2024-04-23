@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Schedule;
 
 use App\Http\Controllers\Controller;
 use App\Models\Delivery;
-use Illuminate\Http\Request;
 use App\Traits\ValidatesRoles;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class DeliveryController extends Controller
 {
     use ValidatesRoles;
+
     // Method to insert delivery
     public function createDelivery(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -37,7 +38,7 @@ class DeliveryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Delivery created successfully',
-            'Delivery' => $delivery
+            'Delivery' => $delivery,
         ], 200);
     }
 
@@ -71,7 +72,7 @@ class DeliveryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Delivery updated',
-            'Delivery' => $delivery
+            'Delivery' => $delivery,
         ], 200);
     }
 }

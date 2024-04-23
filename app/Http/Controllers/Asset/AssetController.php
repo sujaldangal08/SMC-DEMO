@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Asset;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Models\Asset;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AssetController extends Controller
 {
@@ -19,12 +19,12 @@ class AssetController extends Controller
                 'status' => 'success',
                 'message' => 'All assets fetched successfully',
                 'total' => $assets->count(),
-                'data' => $assets
+                'data' => $assets,
             ], 200); // Return a 200 response code
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500); // Internal Server Error
         }
     }
@@ -33,20 +33,21 @@ class AssetController extends Controller
     {
         try {
             $asset = Asset::findOrFail($id);
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset fetched successfully',
-                'data' => $asset
+                'data' => $asset,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Asset not found'
+                'message' => 'Asset not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -59,13 +60,13 @@ class AssetController extends Controller
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'asset_type' => 'required|string|max:255',
                 'meta' => 'required|array',
-                'branch_id' => 'required|integer|exists:branches,id'
+                'branch_id' => 'required|integer|exists:branches,id',
             ]);
 
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->extension();
+            $imageName = time().'.'.$image->extension();
             $image->move(public_path('uploads/assets'), $imageName);
-            $destinationPath = 'uploads/assets/' . $imageName;
+            $destinationPath = 'uploads/assets/'.$imageName;
 
             $asset = new Asset();
             $asset->title = $request->title;
@@ -78,12 +79,12 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset created successfully',
-                'data' => $asset
+                'data' => $asset,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -96,23 +97,22 @@ class AssetController extends Controller
                 'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'asset_type' => 'sometimes|required|string|max:255',
                 'meta' => 'sometimes|required|array',
-                'branch_id' => 'sometimes|required|integer|exists:branches,id'
+                'branch_id' => 'sometimes|required|integer|exists:branches,id',
             ]);
 
             $asset = Asset::findOrFail($id);
 
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $imageName = time() . '.' . $image->extension();
+                $imageName = time().'.'.$image->extension();
                 $image->move(public_path('uploads/assets'), $imageName);
-                $destinationPath = 'uploads/assets/' . $imageName;
+                $destinationPath = 'uploads/assets/'.$imageName;
                 $asset->image = $destinationPath;
             }
 
             $meta = $asset->meta;  // Retrieve the 'meta' array
             $meta = array_merge($meta, $request->get('meta', []));
             $meta = array_filter($meta, 'strlen');  // Remove keys with null or empty values
-
 
             $asset->title = $request->title ?? $asset->title;
             $asset->asset_type = $request->asset_type ?? $asset->asset_type;
@@ -123,17 +123,17 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset updated successfully',
-                'data' => $asset
+                'data' => $asset,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Asset not found'
+                'message' => 'Asset not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -146,17 +146,17 @@ class AssetController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Asset deleted successfully'
+                'message' => 'Asset deleted successfully',
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Asset not found'
+                'message' => 'Asset not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -169,17 +169,17 @@ class AssetController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Asset restored successfully'
+                'message' => 'Asset restored successfully',
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Asset not found'
+                'message' => 'Asset not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -192,17 +192,17 @@ class AssetController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Asset permanently deleted'
+                'message' => 'Asset permanently deleted',
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Asset not found'
+                'message' => 'Asset not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

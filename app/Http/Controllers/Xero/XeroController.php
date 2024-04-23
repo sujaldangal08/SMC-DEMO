@@ -5,15 +5,14 @@ namespace App\Http\Controllers\Xero;
 use App\Http\Controllers\Controller;
 use App\Models\Xero\Contact;
 use App\Models\Xero\XeroConnect;
-use App\Models\Xero\XeroTenant;
 use App\Models\Xero\XeroSetting;
+use App\Models\Xero\XeroTenant;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
 
 class XeroController extends Controller
 {
-
     public function xeroConnect(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $query = http_build_query([
@@ -23,7 +22,7 @@ class XeroController extends Controller
             'scope' => 'email profile openid accounting.settings accounting.transactions accounting.contacts offline_access', // Adjust scope as needed
         ]);
 
-        return redirect('https://login.xero.com/identity/connect/authorize?' . $query);
+        return redirect('https://login.xero.com/identity/connect/authorize?'.$query);
     }
 
     /**
@@ -60,13 +59,13 @@ class XeroController extends Controller
             'refresh_token' => $refreshToken,
             'scope' => $responseBody['scope'],
         ]);
+
         return response()->json([
             'message' => 'Successfully connected to Xero',
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken,
         ], 200);
     }
-
 
     public function xeroRefresh(): \Illuminate\Http\JsonResponse
     {
@@ -105,7 +104,7 @@ class XeroController extends Controller
         $client = new Client();
         $response = $client->get('https://api.xero.com/connections', [
             'headers' => [
-                'Authorization' => 'Bearer ' . $xeroConnect->access_token,
+                'Authorization' => 'Bearer '.$xeroConnect->access_token,
             ],
         ]);
 
@@ -131,7 +130,6 @@ class XeroController extends Controller
             'tenants' => $responseBody,
         ], 200);
     }
-
 
     public function getXeroData(): \Illuminate\Http\JsonResponse
     {
@@ -176,7 +174,7 @@ class XeroController extends Controller
             'Status' => 'OK',
             'ProviderName' => 'LaravelApp',
             'DateTimeUTC' => now()->timestamp,
-            'Contacts' => $transformedContacts
+            'Contacts' => $transformedContacts,
         ], 200);
     }
 
@@ -184,7 +182,7 @@ class XeroController extends Controller
     {
         $xeroSetting = XeroSetting::first();
 
-        if (!$xeroSetting) {
+        if (! $xeroSetting) {
             return response()->json(['message' => 'XeroSetting not found'], 404);
         }
 
@@ -224,7 +222,7 @@ class XeroController extends Controller
         // Get the XeroSetting record with the given ID
         $xeroSetting = XeroSetting::find($id);
 
-        if (!$xeroSetting) {
+        if (! $xeroSetting) {
             return response()->json(['message' => 'XeroSetting not found'], 404);
         }
 
@@ -236,21 +234,19 @@ class XeroController extends Controller
         return response()->json(['message' => 'Xero credentials updated successfully'], 200);
     }
 
-
     public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
     {
 
         $contact = Contact::with(['addresses', 'phones', 'balances', 'purchaseOrder'])->first();
         $purchaseOrder = $contact->purchaseOrder;
 
-
         $transformedPurchaseOrder = $purchaseOrder->map(function ($purchaseOrder) {
             return [
                 'PurchaseOrderID' => $purchaseOrder->purchase_order_id,
                 'PurchaseOrderNumber' => $purchaseOrder->purchase_order_number,
                 'DateString' => $purchaseOrder->date_string,
-                'Date' => '/Date(' . (new \DateTime($purchaseOrder->date))->getTimestamp() . '000+0000)/',
-                'DeliveryDate' => '/Date(' . (new \DateTime($purchaseOrder->delivery_date))->getTimestamp() . '000+0000)/',
+                'Date' => '/Date('.(new \DateTime($purchaseOrder->date))->getTimestamp().'000+0000)/',
+                'DeliveryDate' => '/Date('.(new \DateTime($purchaseOrder->delivery_date))->getTimestamp().'000+0000)/',
                 'DeliveryAddress' => $purchaseOrder->delivery_address,
                 'AttentionTo' => $purchaseOrder->attention_to,
                 'Telephone' => $purchaseOrder->telephone,
@@ -267,7 +263,7 @@ class XeroController extends Controller
                     'Name' => $purchaseOrder->contact->name,
                     'Addresses' => $purchaseOrder->contact->addresses,
                     'Phones' => $purchaseOrder->contact->phones,
-                    'UpdatedDateUTC' => '/Date(' . (new \DateTime($purchaseOrder->contact->updated_at))->getTimestamp() . '000+0000)/',
+                    'UpdatedDateUTC' => '/Date('.(new \DateTime($purchaseOrder->contact->updated_at))->getTimestamp().'000+0000)/',
                     'ContactGroups' => $purchaseOrder->contact->contactGroups,
                     'DefaultCurrency' => $purchaseOrder->contact->defaultCurrency,
                     'ContactPersons' => $purchaseOrder->contact->contactPersons,
@@ -290,14 +286,12 @@ class XeroController extends Controller
             ];
         });
 
-
         return response()->json([
             'Id' => '58b5344c-edf0-44ce-9e54-f5540b525888',
             'Status' => 'OK',
             'ProviderName' => 'LaravelApp',
             'DateTimeUTC' => now()->timestamp,
-            'Contacts' => $transformedPurchaseOrder
+            'Contacts' => $transformedPurchaseOrder,
         ], 200);
     }
-
 }
