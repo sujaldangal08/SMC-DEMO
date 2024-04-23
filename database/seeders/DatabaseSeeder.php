@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call(InsuranceSeeder::class);
         $this->call(MaintenanceSeeder::class);
         $this->call(DeliverySeeder::class);
-        // $this->call(DeliveryScheduleSeeder::class);
+        $this->call(DeliveryScheduleSeeder::class);
+        $this->call(DeliveryTripSeeder::class);
     }
 }

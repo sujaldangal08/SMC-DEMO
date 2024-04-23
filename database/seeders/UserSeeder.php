@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Role;
+use Hash;
 
 class UserSeeder extends Seeder
 {
@@ -20,6 +21,7 @@ class UserSeeder extends Seeder
             User::factory()->create([
                 'name' => 'User ' . $roleId,
                 'email' => 'user' . $roleId . '@example.com',
+                'password' => Hash::make('password'),
                 'role_id' => $roleId,
             ]);
         }
