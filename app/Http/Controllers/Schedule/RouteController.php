@@ -21,8 +21,9 @@ class RouteController extends Controller
                     return $schedule->customer->name;
                 });
                 $route->total_materials = $route->schedule->map(function ($schedule) {
-                    return array_sum(json_decode($schedule->amount, true));
-                })->sum();
+                    $amount = json_decode($schedule->amount, true);
+                    return is_array($amount) ? array_sum($amount) : 0;
+                })->sum() ?? 0;
                 unset($route->schedule);
 
                 return $route;
