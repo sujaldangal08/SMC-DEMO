@@ -37,15 +37,14 @@ class MakeDeliverySchedule extends Command
                 // Skip this schedule since it's already completed
                 continue;
             }
-
+            // dd($schedule);
             // Check if today is one of the delivery dates for this schedule
             $deliveryDates = $schedule->delivery_date;
             // Check if today is one of the delivery dates for this schedule ignore the first date as it's the start date and the trip for that date has already been created
             if (in_array(date('Y-m-d'), array_slice($deliveryDates, 1))) {
                 // Create a delivery trip
-                $schedule->createDeliveryTrip();
+                $schedule->createDeliveryTrip(date('Y-m-d'));
             }
         }
-        // echo
     }
 }

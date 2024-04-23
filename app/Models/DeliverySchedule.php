@@ -36,6 +36,7 @@ class DeliverySchedule extends Model
             'coordinates' => 'array',
             'materials' => 'array',
             'amount' => 'array',
+            'delivery_date' => 'json', // This is now a computed attribute
             'meta' => 'json'
         ];
     }
@@ -76,7 +77,7 @@ class DeliverySchedule extends Model
             $deliveryTrip->trip_date = $deliverySchedule->start_date; // Assign the start date as the trip date
             // Save the delivery trip
             $deliveryTrip->save();
-        }); 
+        });
     }
 
     // Define an accessor 
@@ -92,19 +93,19 @@ class DeliverySchedule extends Model
     }
 
     // Define an accessor to get the delivery date based on the interval
-    public function getDeliveryDateAttribute(): array
-    {
-        $deliveryDates = [];
-        // Loop through the number of trips
-        for ($i = 0; $i < $this->n_trips; $i++) {
-            // Calculate the delivery date based on the interval
-            $deliveryDate = date('Y-m-d', strtotime($this->start_date . ' + ' . ($i * $this->interval) . ' days'));
-            $deliveryDates[] = $deliveryDate;
-        }
-        return $deliveryDates;
-    }
+    // public function getDeliveryDateAttribute(): array
+    // {
+    //     $deliveryDates = [];
+    //     // Loop through the number of trips
+    //     for ($i = 0; $i < $this->n_trips; $i++) {
+    //         // Calculate the delivery date based on the interval
+    //         $deliveryDate = date('Y-m-d', strtotime($this->start_date . ' + ' . ($i * $this->interval) . ' days'));
+    //         $deliveryDates[] = $deliveryDate;
+    //     }
+    //     return $deliveryDates;
+    // }
 
-    public function createDeliveryTrip(): void
+    public function createDeliveryTrip($tripDate): void
     {
         // Get the last delivery trip
         $lastDeliveryTrip = $this->deliveryTrips()->orderBy('trip_number', 'desc')->first();
@@ -118,8 +119,8 @@ class DeliverySchedule extends Model
         $deliveryTrip->amount_loaded = $this->amount;
         $deliveryTrip->trip_number = $lastDeliveryTrip->trip_number + 1;
         $deliveryTrip->status = 'pending';
-        // Calculate the trip date based on the interval of the last trip
-        $deliveryTrip->trip_date = date('Y-m-d', strtotime($lastDeliveryTrip->trip_date . ' + ' . $this->interval . ' days'));
+        // Assign the passed trip date to the tip date to get the correct date for the trip
+        $deliveryTrip->trip_date = $tripDate;
         $deliveryTrip->save();
     }
 }

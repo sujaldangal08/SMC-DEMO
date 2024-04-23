@@ -61,17 +61,17 @@ class PickupController extends Controller
     {
         try {
             $validatedRequest =  $request->validate([
-                'route_id' => ['nullable','exists:routes,id'],
-                'asset_id' => ['nullable',Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+                'route_id' => ['nullable', 'exists:routes,id'],
+                'asset_id' => ['nullable', Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'driver_id' => ['nullable', $this->roleRule('driver')],
                 'customer_id' => ['nullable', $this->roleRule('customer')],
                 'pickup_date' => 'required|date',
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . count($request->input('materials'))],
                 'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
+                'tare_weight' => ['nullable'],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);
@@ -106,13 +106,14 @@ class PickupController extends Controller
             $schedule = PickupSchedule::findOrFail($id);
             $validatedRequest =  $request->validate([
                 'route_id' => 'exists:routes,id',
-                'asset_id' => ['nullable',Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+                'asset_id' => ['nullable', Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'driver_id' => ['nullable', $this->roleRule('driver')],
                 'customer_id' => ['required', $this->roleRule('customer')],
                 'pickup_date' => 'nullable|date',
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
+                'materials' => 'nullable|array',
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . count($request->input('materials'))],
                 'n_bins' => 'nullable|integer',
                 'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',

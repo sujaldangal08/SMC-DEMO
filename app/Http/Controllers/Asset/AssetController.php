@@ -20,12 +20,12 @@ class AssetController extends Controller
                 'message' => 'All assets fetched successfully',
                 'total' => $assets->count(),
                 'data' => $assets
-            ],200); // Return a 200 response code
+            ], 200); // Return a 200 response code
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
-            ],500); // Internal Server Error
+            ], 500); // Internal Server Error
         }
     }
 
@@ -53,33 +53,39 @@ class AssetController extends Controller
 
     public function createAsset(Request $request): JsonResponse
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'asset_type' => 'required|string|max:255',
-            'meta' => 'required|array',
-            'branch_id' => 'required|integer|exists:branches,id'
+        try {
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'asset_type' => 'required|string|max:255',
+                'meta' => 'required|array',
+                'branch_id' => 'required|integer|exists:branches,id'
+            ]);
 
-        ]);
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('uploads/assets'), $imageName);
+            $destinationPath = 'uploads/assets/' . $imageName;
 
-        $image = $request->file('image');
-        $imageName = time() . '.' . $image->extension();
-        $image->move(public_path('uploads/assets'), $imageName);
-        $destinationPath = 'uploads/assets/' . $imageName;
+            $asset = new Asset();
+            $asset->title = $request->title;
+            // $asset->image = $destinationPath;
+            $asset->asset_type = $request->asset_type;
+            $asset->meta = $request->meta;
+            $asset->branch_id = $request->branch_id;
+            $asset->save();
 
-        $asset = new Asset();
-        $asset->title = $request->title;
-        $asset->image = $destinationPath;
-        $asset->asset_type = $request->asset_type;
-        $asset->meta = $request->meta;
-        $asset->branch_id = $request->branch_id;
-        $asset->save();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Asset created successfully',
-            'data' => $asset
-        ], 201);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Asset created successfully',
+                'data' => $asset
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function updateAsset(Request $request, int $id): JsonResponse
@@ -187,7 +193,7 @@ class AssetController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Asset permanently deleted'
-            ] ,200);
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
