@@ -24,6 +24,6 @@ class EmailTemplate extends Model
         'footer_link',
         'footer_text',
         'color',
-        'template_type'
+        'template_type',
     ];
 }

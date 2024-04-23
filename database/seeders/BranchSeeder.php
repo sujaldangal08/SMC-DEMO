@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Branch;
+use Illuminate\Database\Seeder;
 
 class BranchSeeder extends Seeder
 {
@@ -39,7 +38,7 @@ class BranchSeeder extends Seeder
             'branch_email' => 'branch@email.com',
             'branch_code' => '444',
             'branch_status' => 'Active',
-            'branch_country_id' => '1'
+            'branch_country_id' => '1',
         ]);
 
     }

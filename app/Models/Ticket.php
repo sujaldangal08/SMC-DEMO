@@ -27,7 +27,7 @@ class Ticket extends Model
         'lot_number',
         'ticket_number',
         'in_time',
-        'out_time'
+        'out_time',
     ];
 
     public function driver()
@@ -55,7 +55,7 @@ class Ticket extends Model
         return [
             'in_time' => 'datetime',
             'out_time' => 'datetime',
-            'image' => 'array'
+            'image' => 'array',
         ];
     }
 }

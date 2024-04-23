@@ -15,11 +15,12 @@ class RoleAuthentication
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        if (!$request->user()->hasRole($role)) {
+        if (! $request->user()->hasRole($role)) {
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => 'Unauthorized',
             ], 401);
         }
+
         return $next($request);
     }
 }

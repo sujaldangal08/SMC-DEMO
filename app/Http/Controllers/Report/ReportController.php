@@ -3,23 +3,22 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Asset;
 use App\Models\Delivery;
 use App\Models\PickupSchedule;
 use App\Models\Ticket;
 use App\Models\User;
-use App\Models\Asset;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-
     //Retrieves the total number of deliveries based on optional filtering criteria provided through the 'status' parameter in the request.
 
     public function getTotalDeliveries(Request $request)
     {
         try {
             $request->validate([
-                'status' => 'nullable|in:active,inactive,scheduled,completed,cancelled'
+                'status' => 'nullable|in:active,inactive,scheduled,completed,cancelled',
             ]);
             $status = $request->input('status');
             // Query the database for the total number of deliveries based on the optional status filter.
@@ -31,6 +30,7 @@ class ReportController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Data not found!'], 404);
         }
+
         return response()->json(['total_deliveries' => $totalDeliveries], 200);
     }
 
@@ -40,7 +40,7 @@ class ReportController extends Controller
     {
         try {
             $request->validate([
-                'status' => 'nullable|in:active,inactive,schedule,unloading,done,completed,cancelled'
+                'status' => 'nullable|in:active,inactive,schedule,unloading,done,completed,cancelled',
             ]);
 
             $status = $request->input('status');
@@ -66,7 +66,7 @@ class ReportController extends Controller
     {
         try {
             $request->validate([
-                'status' => 'nullable|in:active,inactive,scheduled,completed,cancelled'
+                'status' => 'nullable|in:active,inactive,scheduled,completed,cancelled',
             ]);
 
             $status = $request->input('status');
@@ -92,7 +92,7 @@ class ReportController extends Controller
     {
         try {
             $request->validate([
-                'status' => 'nullable|in:active,inactive'
+                'status' => 'nullable|in:active,inactive',
             ]);
 
             $status = $request->input('status');
@@ -118,7 +118,7 @@ class ReportController extends Controller
     {
         try {
             $request->validate([
-                'status' => 'nullable|in:active,inactive,scheduled,completed,cancelled'
+                'status' => 'nullable|in:active,inactive,scheduled,completed,cancelled',
             ]);
 
             $status = $request->input('status');
@@ -154,6 +154,7 @@ class ReportController extends Controller
         } else {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
+
         return response()->json($data, 200);
     }
 }

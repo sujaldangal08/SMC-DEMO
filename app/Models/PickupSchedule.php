@@ -23,7 +23,7 @@ class PickupSchedule extends Model
         'weighing_type',
         'tare_weight',
         'image',
-        'coordinates'
+        'coordinates',
     ];
 
     public function route()
@@ -46,7 +46,6 @@ class PickupSchedule extends Model
         return $this->belongsTo(User::class);
     }
 
-
     // protected function casts(): array
     // {
     //     return [
@@ -63,10 +62,11 @@ class PickupSchedule extends Model
         'weighing_type' => 'array',
         'tare_weight' => 'array',
     ];
+
     protected static function booted()
     {
         static::creating(function ($pickupSchedule) {
-            if (!isset($pickupSchedule->driver_id) && isset($pickupSchedule->route_id)) {
+            if (! isset($pickupSchedule->driver_id) && isset($pickupSchedule->route_id)) {
                 $route = Route::find($pickupSchedule->route_id);
                 if ($route && $route->driver_id) {
                     $pickupSchedule->driver_id = $route->driver_id;

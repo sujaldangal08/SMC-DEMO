@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Asset;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use App\Models\Insurance;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class InsuranceController extends Controller
@@ -19,7 +19,7 @@ class InsuranceController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'All insurances fetched successfully',
-                'data' => $insurances
+                'data' => $insurances,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -67,7 +67,7 @@ class InsuranceController extends Controller
                 'end_date' => 'required|date',
                 'purchase_date' => 'required|date',
                 'attachment' => 'required|file',
-                'contact_meta' => 'required|array'
+                'contact_meta' => 'required|array',
 
             ]);
 
@@ -75,9 +75,9 @@ class InsuranceController extends Controller
             if ($request->hasFile('attachment')) {
                 $files = $request->file('attachment');
                 foreach ($files as $file) {
-                    $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
+                    $filename = Str::random(10).'.'.$file->getClientOriginalExtension();
                     $file->move(public_path('uploads/attachments'), $filename);
-                    $attachments[] = 'uploads/attachments/' . $filename;
+                    $attachments[] = 'uploads/attachments/'.$filename;
                 }
             }
             $insurance = new Insurance();
@@ -92,10 +92,11 @@ class InsuranceController extends Controller
             $insurance->contact_meta = json_decode($request->contact_meta, true);
             $insurance->save();
             $insurance->asset_title = $insurance->asset->title;
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Insurance created successfully',
-                'data' => $insurance
+                'data' => $insurance,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -119,16 +120,16 @@ class InsuranceController extends Controller
                 'end_date' => 'sometimes|date',
                 'purchase_date' => 'sometimes|date',
                 'attachment' => 'sometimes|file',
-                'contact_meta' => 'sometimes|array'
+                'contact_meta' => 'sometimes|array',
             ]);
 
             $attachments = [];
             if ($request->hasFile('attachment')) {
                 $files = $request->file('attachment');
                 foreach ($files as $file) {
-                    $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
+                    $filename = Str::random(10).'.'.$file->getClientOriginalExtension();
                     $file->move(public_path('uploads/attachments'), $filename);
-                    $attachments[] = 'uploads/attachments/' . $filename;
+                    $attachments[] = 'uploads/attachments/'.$filename;
                 }
             }
             $insurance->asset_id = $request->asset_id ?? $insurance->asset_id;
@@ -143,10 +144,11 @@ class InsuranceController extends Controller
             $insurance->save();
 
             $insurance->asset_title = $insurance->asset->title;
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Insurance updated successfully',
-                'data' => $insurance
+                'data' => $insurance,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([

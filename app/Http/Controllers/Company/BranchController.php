@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Request;
 use App\Models\Branch;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class BranchController extends Controller
 {
@@ -22,7 +22,7 @@ class BranchController extends Controller
             'status' => 'success',
             'message' => 'Branches retrieved successfully',
             'total' => $BranchCount,
-            'data' => Branch::all()
+            'data' => Branch::all(),
         ], 200);
     }
 
@@ -68,7 +68,7 @@ class BranchController extends Controller
                 'branch_code' => 'required | unique:branches,branch_code',
                 'branch_status' => 'required',
                 'branch_country_id' => 'required',
-                'company_id' => 'required|exists:companies,id'
+                'company_id' => 'required|exists:companies,id',
             ]);
 
             // Create a new branch record in the database
@@ -78,7 +78,7 @@ class BranchController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Branch created successfully',
-                'data' => $branch
+                'data' => $branch,
             ], 201);
         } catch (ValidationException $e) {
             // Return a custom validation error response
@@ -102,12 +102,12 @@ class BranchController extends Controller
                 'branch_zip' => '',
                 'branch_phone' => 'numeric|digits:10',
                 'branch_email' => 'email',
-                'branch_code' => 'sometimes|unique:branches,branch_code,' . $id,
+                'branch_code' => 'sometimes|unique:branches,branch_code,'.$id,
                 'branch_status' => '',
                 'branch_country_id' => '',
-                'company_id' => 'exists:companies,id'
+                'company_id' => 'exists:companies,id',
             ], [
-                'branch_code.unique' => 'The branch code has already been taken.'
+                'branch_code.unique' => 'The branch code has already been taken.',
             ]);
 
             // Find the branch record in the database
@@ -120,7 +120,7 @@ class BranchController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Branch updated successfully',
-                'data' => $branch
+                'data' => $branch,
             ], 200);
         } catch (ValidationException $e) {
             // Return a custom validation error response

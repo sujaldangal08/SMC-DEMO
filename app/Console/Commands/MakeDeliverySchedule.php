@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\DeliverySchedule;
+use Illuminate\Console\Command;
 
 class MakeDeliverySchedule extends Command
 {

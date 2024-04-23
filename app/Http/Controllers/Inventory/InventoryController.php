@@ -3,26 +3,22 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Inventory;
-use App\Models\Warehouse;
 use App\Models\Sku;
-use Illuminate\Validation\ValidationException;
-
+use App\Models\Warehouse;
+use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
-
     // Inventory
     // Method to get inventory details
-    public function inventory() :\Illuminate\Http\JsonResponse
+    public function inventory(): \Illuminate\Http\JsonResponse
     {
         // Define SKU ID
         $skuId = 1;
 
         // Get all SKU
         $sku = sku::all();
-
 
         // Get inventory details for the given SKU ID
         $inventory = Inventory::where('SKU_id', $skuId)->get();
@@ -35,13 +31,13 @@ class InventoryController extends Controller
             'status' => 'success',
             'message' => 'Inventories retrieved successfully',
             'SKU' => $sku,
-            'Inventory' =>  $inventory,
-            'Warehouse' => $warehouse
+            'Inventory' => $inventory,
+            'Warehouse' => $warehouse,
         ], 200);
     }
 
     // Method to insert inventory
-    public function createInventory(Request $request) :\Illuminate\Http\JsonResponse
+    public function createInventory(Request $request): \Illuminate\Http\JsonResponse
     {
         // Validate the request data
         $data = $request->validate([
@@ -54,17 +50,16 @@ class InventoryController extends Controller
             'cost_price' => 'required|numeric',
             'manufacturing' => 'required|string',
             'supplier' => 'required|string',
-            'serial_number' => 'required|string'
+            'serial_number' => 'required|string',
         ]);
 
         // Handle the image upload
         if ($request->hasFile('thumbnail_image')) {
             $image = $request->file('thumbnail_image');
-            $imageName = time() . '.' . $image->extension();
+            $imageName = time().'.'.$image->extension();
             $image->move(public_path('uploads/inventory'), $imageName);
-            $data['thumbnail_image'] = 'uploads/inventory/' . $imageName;
+            $data['thumbnail_image'] = 'uploads/inventory/'.$imageName;
         }
-
 
         // Create a new inventory with the validated data
         $inventory = Inventory::create($data);
@@ -73,16 +68,16 @@ class InventoryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Inventory inserted successfully',
-            'data' => $inventory
+            'data' => $inventory,
         ], 201);
     }
 
     // Method to update inventory
-    public function updateInventory(Request $request, $id) :\Illuminate\Http\JsonResponse
+    public function updateInventory(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         $inventory = Inventory::find($id);
 
-      // Validate the request data
+        // Validate the request data
         $data = $request->validate([
             'name' => 'sometimes|required|string',
             'thumbnail_image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -92,7 +87,7 @@ class InventoryController extends Controller
             'cost_price' => 'sometimes|required|numeric',
             'manufacturing' => 'sometimes|required|string',
             'supplier' => 'sometimes|required|string',
-            'serial_number' => 'sometimes|required|string|unique:inventories,serial_number,' . $id,
+            'serial_number' => 'sometimes|required|string|unique:inventories,serial_number,'.$id,
             'SKU_id' => 'sometimes|required|integer',
         ]);
 
@@ -102,12 +97,12 @@ class InventoryController extends Controller
         //Handle image upload
         if ($request->hasFile('thumbnail_image')) {
             $image = $request->file('thumbnail_image');
-            $imageName = time() . '.' . $image->extension();
+            $imageName = time().'.'.$image->extension();
             $image->move(public_path('uploads/inventory'), $imageName);
-            $data['thumbnail_image'] = 'uploads/inventory/' . $imageName;
+            $data['thumbnail_image'] = 'uploads/inventory/'.$imageName;
         }
 
-        if (!$inventory) {
+        if (! $inventory) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
@@ -122,17 +117,17 @@ class InventoryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Inventory updated successfully',
-            'data' => $inventory
+            'data' => $inventory,
         ], 200);
     }
 
     // Method to delete inventory
-    public function deleteInventory($id) :\Illuminate\Http\JsonResponse
+    public function deleteInventory($id): \Illuminate\Http\JsonResponse
     {
         // Find the inventory by its ID
         $inventory = Inventory::find($id);
 
-        if (!$inventory) {
+        if (! $inventory) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
@@ -152,12 +147,12 @@ class InventoryController extends Controller
     }
 
     // Method to restore inventory
-    public function restoreInventory($id) :\Illuminate\Http\JsonResponse
+    public function restoreInventory($id): \Illuminate\Http\JsonResponse
     {
         // Find the inventory by its ID
         $inventory = Inventory::withTrashed()->find($id);
 
-        if (!$inventory) {
+        if (! $inventory) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
@@ -177,12 +172,12 @@ class InventoryController extends Controller
     }
 
     // Method to    delete inventory permanently
-    public function permanentDeleteInventory($id) :\Illuminate\Http\JsonResponse
+    public function permanentDeleteInventory($id): \Illuminate\Http\JsonResponse
     {
         // Find the inventory by its ID
         $inventory = Inventory::withTrashed()->find($id);
 
-        if (!$inventory) {
+        if (! $inventory) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
@@ -200,5 +195,4 @@ class InventoryController extends Controller
             'data' => null
         ], 200);
     }
-
 }

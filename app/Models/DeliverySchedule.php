@@ -26,7 +26,7 @@ class DeliverySchedule extends Model
         'status',
         'delivery_notes',
         'locale',
-        'meta'
+        'meta',
     ];
 
     // Using cast to convert the coordinates, materials, and amount to an array for easy manipulation
@@ -37,7 +37,7 @@ class DeliverySchedule extends Model
             'materials' => 'array',
             'amount' => 'array',
             'delivery_date' => 'json', // This is now a computed attribute
-            'meta' => 'json'
+            'meta' => 'json',
         ];
     }
 
@@ -80,7 +80,7 @@ class DeliverySchedule extends Model
         });
     }
 
-    // Define an accessor 
+    // Define an accessor
     public function getIsCompletedAttribute(): bool
     {
         //Get the data related to the schedule and count the number of trips assigned
@@ -89,6 +89,7 @@ class DeliverySchedule extends Model
         if ($deliveryTripsCount == $this->n_trips) {
             return true;
         }
+
         return false;
     }
 

@@ -21,7 +21,7 @@ class Maintenance extends Model
     {
         return [
             'contact_meta' => 'array',
-            'attachment' => 'array'
+            'attachment' => 'array',
         ];
     }
 

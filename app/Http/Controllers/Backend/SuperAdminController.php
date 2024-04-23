@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Backend;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SuperAdminController extends Controller
 {
-    public function createSuperAdmin(Request $request):JsonResponse
+    public function createSuperAdmin(Request $request): JsonResponse
     {
         try {
             $validatedData = $request->validate([
@@ -28,7 +28,7 @@ class SuperAdminController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Super admin created successfully!',
-                'data' => $user
+                'data' => $user,
             ], 201);
         }catch(\Illuminate\Validation\ValidationException $e){
             return response()->json([
