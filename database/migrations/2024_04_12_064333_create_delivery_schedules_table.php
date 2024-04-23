@@ -26,9 +26,9 @@ return new class extends Migration
             $table->date('start_date');
             $table->string('delivery_date');
             $table->date('end_date');
-            $table->enum('status', ['pending', 'in_progress', 'completed']);
+            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->string('delivery_notes');
-            $table->enum('locale', ['local', 'international']);
+            $table->enum('locale', ['domestic', 'international']);
             $table->json('meta')->nullable();
             $table->softDeletes();
             $table->timestamps();
