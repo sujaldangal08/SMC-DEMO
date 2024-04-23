@@ -17,11 +17,13 @@ class RouteController extends Controller
     {
         try {
             $routes = Route::with(['schedule.customer'])->get()->map(function ($route) {
+                // Get the names of all customers in the route and assign it to the route object
                 $route->customer_names = $route->schedule->map(function ($schedule) {
                     return $schedule->customer->name;
                 });
                 $route->total_materials = $route->schedule->map(function ($schedule) {
-                    return array_sum(json_decode($schedule->amount, true));
+                    $amount = $schedule->amount;
+                    return is_array($amount) ? array_sum($amount) : 0; // If the amount is an array, sum the values, else set the total to 0
                 })->sum();
                 unset($route->schedule);
 

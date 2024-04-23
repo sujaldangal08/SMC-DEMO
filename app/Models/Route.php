@@ -10,7 +10,13 @@ class Route extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * @var \Illuminate\Support\Collection|mixed
+     */
+    public mixed $customer_names;
+    public mixed $total_materials;
     protected $fillable = [
+        'start_date',
         'name',
         'description',
         'start_point',

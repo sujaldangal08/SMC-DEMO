@@ -18,7 +18,6 @@ return new class extends Migration
             $table->enum('asset_type', ['vehicle', 'equipment', 'weighing_machine', 'office_equipment']);
             $table->text('meta');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade')->nullable();
-            $table->date('assigned_date');
             $table->softDeletes();
             $table->timestamps();
         });
