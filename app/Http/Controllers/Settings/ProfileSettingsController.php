@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Hash;
 
 class ProfileSettingsController extends Controller
 {
@@ -48,4 +49,34 @@ class ProfileSettingsController extends Controller
             return response()->json(['exception' => $e->getMessage()], 400);
         }
     }
+
+    public function resetPassword(Request $request): JsonResponse
+    {
+        // Check if the user is authenticated
+        if (! $request->user()) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+
+        try {
+            $request->validate([
+                'current_password' => 'required',
+                'new_password' => 'required|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
+                'confirm_password' => 'required|same:new_password',
+            ]);
+
+            $user = $request->user();
+
+            if (! Hash::check($request->current_password, $user->password)) {
+                return response()->json(['message' => 'Current password does not match'], 400);
+            }
+
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+
+            return response()->json(['message' => 'Password reset successful'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['exception' => $e->getMessage()], 400);
+        }
+    }
+
 }
