@@ -60,10 +60,9 @@ class AuthenticationSettingsController extends Controller
             $role->save();
 
             return response()->json([
-                'status'=> 'success',
+                'status' => 'success',
                 'message' => 'Login attempts updated',
-                'auth_attempts' => $role]
-                ,200);
+                'auth_attempts' => $role], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',

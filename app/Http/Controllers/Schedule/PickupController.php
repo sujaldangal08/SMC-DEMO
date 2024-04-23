@@ -70,8 +70,8 @@ class PickupController extends Controller
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:' . count($request->input('materials'))],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . count($request->input('materials'))],
+                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
                 'n_bins' => 'nullable|integer',
                 'tare_weight' => ['nullable'],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
@@ -116,10 +116,10 @@ class PickupController extends Controller
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:' . count($request->input('materials'))],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . count($request->input('materials'))],
+                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
                 'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
+                'tare_weight' => ['nullable', 'array', 'size:'.(is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);
@@ -144,13 +144,13 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Pickup schedule not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -164,19 +164,19 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule deleted successfully',
-                'data' => null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Pickup schedule not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -196,13 +196,13 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Pickup schedule not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -216,19 +216,19 @@ class PickupController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule permanently deleted successfully',
-                'data' => null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Pickup schedule not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }

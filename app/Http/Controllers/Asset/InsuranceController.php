@@ -25,7 +25,7 @@ class InsuranceController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -38,19 +38,19 @@ class InsuranceController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Insurance fetched successfully',
-                'data' => $insurance
+                'data' => $insurance,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Insurance not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -101,8 +101,8 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:' . $e->getMessage(),
-                'data' => null
+                'message' => 'Database Error:'.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -154,13 +154,13 @@ class InsuranceController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Insurance not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:' . $e->getMessage(),
-                'data' => null
+                'message' => 'Database Error:'.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -174,19 +174,19 @@ class InsuranceController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Insurance deleted successfully',
-                'data' => null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Insurance not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:' . $e->getMessage(),
-                'data' => null
+                'message' => 'Database Error:'.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -200,19 +200,19 @@ class InsuranceController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Insurance restored successfully',
-                'data' => $insurance
+                'data' => $insurance,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Insurance not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:' . $e->getMessage(),
-                'data' => null
+                'message' => 'Database Error:'.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -226,19 +226,19 @@ class InsuranceController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Insurance permanently deleted successfully',
-                'data' => null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Insurance not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:' . $e->getMessage(),
-                'data' => null
+                'message' => 'Database Error:'.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }

@@ -23,6 +23,7 @@ class RouteController extends Controller
                 });
                 $route->total_materials = $route->schedule->map(function ($schedule) {
                     $amount = $schedule->amount;
+
                     return is_array($amount) ? array_sum($amount) : 0; // If the amount is an array, sum the values, else set the total to 0
                 })->sum();
                 unset($route->schedule);
@@ -40,7 +41,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -61,13 +62,13 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Route not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -95,7 +96,7 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -126,13 +127,13 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Route not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -146,19 +147,19 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Route deleted successfully',
-                'data' => null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Route not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -178,13 +179,13 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Route not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -198,19 +199,19 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Route permanently deleted successfully',
-                'data' => null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Route not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }

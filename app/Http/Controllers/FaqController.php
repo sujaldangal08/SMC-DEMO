@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Faq;
+use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
-   public function getFaq(){
+    public function getFaq()
+    {
         try {
             $faqs = Faq::all();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'All faqs fetched successfully',
@@ -22,9 +24,11 @@ class FaqController extends Controller
                 'data' => null,
                 'error' => $e->getMessage()], 500);
         }
-   }
-   public function insertFaq(Request $request){
-        try{
+    }
+
+    public function insertFaq(Request $request)
+    {
+        try {
             $request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
@@ -33,6 +37,7 @@ class FaqController extends Controller
             $faq->title = $request->title;
             $faq->description = $request->description;
             $faq->save();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Faq added successfully',
@@ -45,5 +50,5 @@ class FaqController extends Controller
                 'data' => null,
                 'error' => $e->getMessage()], 500);
         }
-   }
+    }
 }

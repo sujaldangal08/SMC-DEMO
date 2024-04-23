@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\DeliveryTrip;
-
+use Illuminate\Database\Seeder;
 
 class DeliveryTripSeeder extends Seeder
 {
@@ -15,7 +13,7 @@ class DeliveryTripSeeder extends Seeder
     public function run(): void
     {
         DeliveryTrip::create([
-            'schedule_id' => 1, 
+            'schedule_id' => 1,
             'driver_id' => 1, // Replace with actual driver ID
             'truck_id' => 1, // Replace with actual truck ID
             'materials_loaded' => 'Material Name', // Replace with actual material name

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Hash;
 
 class ProfileSettingsController extends Controller
 {
@@ -76,7 +76,7 @@ class ProfileSettingsController extends Controller
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'Current password does not match',
-                    'data' => null
+                    'data' => null,
                 ], 400);
             }
 
@@ -86,15 +86,14 @@ class ProfileSettingsController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Password reset successful',
-                'data' => null
+                'data' => null,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Password reset failed',
-                'exception' => $e->getMessage()
+                'exception' => $e->getMessage(),
             ], 400);
         }
     }
-
 }
