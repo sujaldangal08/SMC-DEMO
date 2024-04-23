@@ -28,10 +28,20 @@ class ReportController extends Controller
             }
             $totalDeliveries = $query->count();
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Data not found!'], 404);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Data not found!',
+                'data' => null,
+                'error' => 'Data not found!'
+                ], 404);
         }
 
-        return response()->json(['total_deliveries' => $totalDeliveries], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total deliveries fetched successfully',
+            'data' => ['total_deliveries' => $totalDeliveries],
+            'total_deliveries' => $totalDeliveries
+        ], 200);
     }
 
     // Retrieves the total number of pickups with optional filtering by status.
@@ -54,7 +64,11 @@ class ReportController extends Controller
 
             $totalPickups = $query->count();
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Data not found!'], 400);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Data not found!',
+                'data' => null,
+                'error' => 'Data not found!'], 400);
         }
 
         return response()->json(['total_pickups' => $totalPickups], 200);
@@ -80,7 +94,11 @@ class ReportController extends Controller
 
             $totalTickets = $query->count();
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Data not found!'], 404);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Data not found!',
+                'data' => null,
+                'error' => 'Data not found!'], 404);
         }
 
         return response()->json(['total_tickets' => $totalTickets], 200);
@@ -106,7 +124,11 @@ class ReportController extends Controller
 
             $totalUsers = $query->count();
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Data not found!'], 404);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Data not found!',
+                'data' => null,
+                'error' => 'Data not found!'], 404);
         }
 
         return response()->json(['total_users' => $totalUsers], 200);
@@ -131,10 +153,18 @@ class ReportController extends Controller
 
             $totalAssets = $query->count();
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Data not found!'], 404);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Data not found!',
+                'data' => null,
+                'error' => 'Data not found!'], 404);
         }
 
-        return response()->json(['total_assets' => $totalAssets], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Total assets fetched successfully',
+            'data' => ['total_assets' => $totalAssets],
+            'total_assets' => $totalAssets], 200);
     }
 
     // Fetches data based on user role: customer or driver.
@@ -152,9 +182,18 @@ class ReportController extends Controller
                 ->with('scheduledPickups')
                 ->get();
         } else {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Unauthorized',
+                'data' => null,
+                'error' => 'Unauthorized'], 403);
         }
 
-        return response()->json($data, 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data fetched successfully',
+            'data' => $data
+            ], 200);
+
     }
 }

@@ -112,7 +112,9 @@ class WarehouseController extends Controller
 
         if (! $warehouse) {
             return response()->json([
+                'status' => 'failure',
                 'message' => 'Warehouse not found',
+                'data' => null
             ], 404);
         }
 
@@ -123,6 +125,7 @@ class WarehouseController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Warehouse deleted successfully',
+            'data' => null
         ], 200);
     }
 
@@ -134,7 +137,9 @@ class WarehouseController extends Controller
 
         if (! $warehouse) {
             return response()->json([
+                'status' => 'failure',
                 'message' => 'Warehouse not found',
+                'data' => null
             ], 404);
         }
 
@@ -145,6 +150,7 @@ class WarehouseController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Warehouse restored successfully',
+            'data' => $warehouse
         ], 200);
     }
 
@@ -156,7 +162,9 @@ class WarehouseController extends Controller
 
         if (! $warehouse) {
             return response()->json([
+                'status' => 'failure',
                 'message' => 'Warehouse not found',
+                'data' => null
             ], 404);
         }
 
@@ -167,6 +175,7 @@ class WarehouseController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Warehouse permanently deleted',
+            'data' => null
         ], 200);
     }
 }

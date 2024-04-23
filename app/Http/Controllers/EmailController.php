@@ -25,6 +25,10 @@ class EmailController extends Controller
         // Send the email
         Mail::to('soviamdr@gmail.com')->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
 
-        return response()->json(['message' => 'Email sent successfully']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Email sent successfully',
+            'data' => null,
+        ], 200);
     }
 }
