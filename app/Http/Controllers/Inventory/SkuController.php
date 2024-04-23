@@ -58,7 +58,9 @@ class SkuController extends Controller
 
          if (!$sku) {
              return response()->json([
-                 'message' => 'SKU not found',
+                'status' => 'failure',
+                'message' => 'SKU not found',
+                'data' => null
              ], 404);
          }
 

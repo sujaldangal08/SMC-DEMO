@@ -39,7 +39,9 @@ class WarehouseController extends Controller
 
         if (!$sku) {
                 return response()->json([
-            'message' => 'SKU not found',
+                'status' => 'failure',
+                'message' => 'SKU not found',
+                'data' => null
             ], 404);
         }
 
@@ -66,6 +68,7 @@ class WarehouseController extends Controller
 
         // Return a JSON response
         return response()->json([
+            'status' => 'success',
             'message' => 'Warehouse inserted successfully',
             'data' => $warehouse
         ], 201);
@@ -85,7 +88,9 @@ class WarehouseController extends Controller
 
         if (!$warehouse) {
             return response()->json([
+                'status' => 'failure',
                 'message' => 'Warehouse not found',
+                'data' => null
             ], 404);
         }
 

@@ -23,8 +23,9 @@ class AssetController extends Controller
             ], 200); // Return a 200 response code
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null
             ], 500); // Internal Server Error
         }
     }
@@ -40,13 +41,15 @@ class AssetController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Asset not found'
+                'status' => 'failure',
+                'message' => 'Asset not found',
+                'data' => null
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null
             ], 500);
         }
     }
@@ -82,8 +85,9 @@ class AssetController extends Controller
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null
             ], 500);
         }
     }
@@ -127,13 +131,15 @@ class AssetController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Asset not found'
+                'status' => 'failure',
+                'message' => 'Asset not found',
+                'data' => null
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null
             ], 500);
         }
     }
@@ -146,17 +152,20 @@ class AssetController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Asset deleted successfully'
+                'message' => 'Asset deleted successfully',
+                'data' => null
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Asset not found'
+                'status' => 'failure',
+                'message' => 'Asset not found',
+                'data' => null
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null
             ], 500);
         }
     }
@@ -169,17 +178,20 @@ class AssetController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Asset restored successfully'
+                'message' => 'Asset restored successfully',
+                'data' => $asset
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Asset not found'
+                'status' => 'failure',
+                'message' => 'Asset not found',
+                'data' => null
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null
             ], 500);
         }
     }
@@ -192,17 +204,20 @@ class AssetController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Asset permanently deleted'
+                'message' => 'Asset permanently deleted',
+                'data'=>null
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Asset not found'
+                'status' => 'failure',
+                'message' => 'Asset not found',
+                'data'=>null
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data'=>null
             ], 500);
         }
     }

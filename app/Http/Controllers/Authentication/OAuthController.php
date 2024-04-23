@@ -46,8 +46,9 @@ class OAuthController extends Controller
         // If the user doesn't exist, return an error response
         if (! $checkuser) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Unauthorized',
+                'data' => null
             ], 401);
         } else {
             // The user exists, authenticate them with Laravel Sanctum
@@ -61,6 +62,7 @@ class OAuthController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Authenticated',
+                'data' => $checkuser,
                 'access_token' => $plainTextToken,
                 'token_type' => 'Bearer',
                 'expires_at' => $token->expires_at,

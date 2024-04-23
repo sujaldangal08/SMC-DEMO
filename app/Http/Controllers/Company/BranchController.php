@@ -46,6 +46,9 @@ class BranchController extends Controller
         ], 200);
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         return response()->json([
+            'status' => 'failure',
+            'message' => 'Resource not found.',
+            'data' => null,
             'error' => 'Resource not found.'
         ], 404);
     }
@@ -80,8 +83,9 @@ class BranchController extends Controller
         } catch (ValidationException $e) {
             // Return a custom validation error response
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Validation error',
+                'data' => null,
                 'errors' => $e->errors()
             ], 400);
         }
@@ -121,8 +125,9 @@ class BranchController extends Controller
         } catch (ValidationException $e) {
             // Return a custom validation error response
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Unable to Update: Validation error',
+                'data' => null,
                 'errors' => $e->errors()
             ], 400);
         }
@@ -139,7 +144,8 @@ class BranchController extends Controller
         // Return a JSON response with the status and message
         return response()->json([
             'status' => 'success',
-            'message' => 'Branch deleted successfully'
+            'message' => 'Branch deleted successfully',
+            'data' => null
         ], 200);
     }
 
@@ -154,7 +160,8 @@ class BranchController extends Controller
         // Return a JSON response with the status and message
         return response()->json([
             'status' => 'success',
-            'message' => 'Branch recovered successfully'
+            'message' => 'Branch recovered successfully',
+            'data' => $branch
         ], 200);
     }
 
@@ -171,13 +178,15 @@ class BranchController extends Controller
             // Return a JSON response with the status and message
             return response()->json([
                 'status' => 'success',
-                'message' => 'Branch permanently deleted successfully!'
+                'message' => 'Branch permanently deleted successfully!',
+                'data' => null
             ], 200);
         } else {
             // Return a JSON response with the status and message
             return response()->json([
-                'status' => 'error',
-                'message' => 'No deleted branch found with the given ID'
+                'status' => 'failure',
+                'message' => 'No deleted branch found with the given ID',
+                'data' => null
             ], 404);
         }
     }
