@@ -13,11 +13,19 @@ class SalesOrderController extends Controller
         $salesOrder = SalesOrder::find($id);
 
         if (! $salesOrder) {
-            return response()->json(['message' => 'Sales order not found'], 404);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Sales order not found',
+                'data' => null,
+            ], 404);
         }
 
         // Return the found sales order
-        return response()->json(['data' => $salesOrder], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Sales order fetched successfully',
+            'data' => $salesOrder,
+        ], 200);
     }
 
     public function store(Request $request)
@@ -41,6 +49,8 @@ class SalesOrderController extends Controller
         $salesOrder = SalesOrder::get();
 
         return response()->json([
+            'status' => 'success',
+            'message' => 'Sales order created successfully',
             'data' => $salesOrder,
         ], 200);
     }

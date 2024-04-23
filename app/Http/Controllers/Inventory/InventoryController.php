@@ -156,7 +156,7 @@ class InventoryController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
-                'data' => 'null'
+                'data' => null
             ], 404);
         }
 
