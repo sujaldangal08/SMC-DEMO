@@ -30,6 +30,7 @@ class SuperAdminController extends Controller
                 'message' => 'Super admin created successfully!',
                 'data' => $user,
             ], 201);
+
         }catch(\Illuminate\Validation\ValidationException $e){
             return response()->json([
                 'status' => 'failure',
