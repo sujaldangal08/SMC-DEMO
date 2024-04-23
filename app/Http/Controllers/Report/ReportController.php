@@ -32,15 +32,15 @@ class ReportController extends Controller
                 'status' => 'failure',
                 'message' => 'Data not found!',
                 'data' => null,
-                'error' => 'Data not found!'
-                ], 404);
+                'error' => 'Data not found!',
+            ], 404);
         }
 
         return response()->json([
             'status' => 'success',
             'message' => 'Total deliveries fetched successfully',
             'data' => ['total_deliveries' => $totalDeliveries],
-            'total_deliveries' => $totalDeliveries
+            'total_deliveries' => $totalDeliveries,
         ], 200);
     }
 
@@ -192,8 +192,8 @@ class ReportController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Data fetched successfully',
-            'data' => $data
-            ], 200);
+            'data' => $data,
+        ], 200);
 
     }
 }

@@ -30,7 +30,7 @@ class DeliveryScheduleController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'An error occurred while retrieving the delivery schedule',
-                'data'=> null,
+                'data' => null,
                 'error' => $e->getMessage(),
             ], 500);
         }

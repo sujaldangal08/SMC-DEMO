@@ -16,12 +16,12 @@ class AssetFactory extends Factory
      */
     public function definition(): array
     {
-            return [
-                'title' => $this->faker->sentence,
-                'image' => $this->faker->imageUrl(),
-                'asset_type' => $this->faker->word,
-                'meta' => $this->faker->sentence,
-                'branch_id' => 1, // assuming a branch with id 1 exists
-            ];
+        return [
+            'title' => $this->faker->sentence,
+            'image' => $this->faker->imageUrl(),
+            'asset_type' => $this->faker->word,
+            'meta' => $this->faker->sentence,
+            'branch_id' => 1, // assuming a branch with id 1 exists
+        ];
     }
 }

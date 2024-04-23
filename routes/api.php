@@ -6,11 +6,11 @@ use App\Http\Controllers\Asset\MaintenanceController;
 use App\Http\Controllers\Authentication\OAuthController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\Backend\SuperAdminController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\Inventory\InventoryController;
 use App\Http\Controllers\Inventory\SkuController;
 use App\Http\Controllers\Inventory\WarehouseController;
 use App\Http\Controllers\Report\{ReportController};
-use App\Http\Controllers\FaqController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Schedule\DeliveryController;
 use App\Http\Controllers\Schedule\DeliveryScheduleController;
@@ -88,7 +88,6 @@ Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middle
 
 Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
 Route::patch('/reset-password', [ProfileSettingsController::class, 'resetPassword'])->middleware('auth:sanctum');
-
 
 // Super Admin Routes
 Route::get('/setting/auth-attempts', [AuthenticationSettingsController::class, 'authAttempts'])->middleware('auth:sanctum', 'role:super-admin');

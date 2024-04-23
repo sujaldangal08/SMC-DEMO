@@ -62,7 +62,7 @@ class CompanyController extends Controller
                 'status' => 'failure',
                 'message' => 'Unable to Update: Validation error',
                 'data' => null,
-                'errors' => $e->errors()
+                'errors' => $e->errors(),
             ], 422);
         }
 

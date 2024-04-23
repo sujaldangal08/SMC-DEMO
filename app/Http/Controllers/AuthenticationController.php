@@ -47,9 +47,9 @@ class AuthenticationController extends Controller
 
                 if (! Hash::check($credentials['password'], $user['password'])) {
                     $user->incrementLoginAttempts();
+
                     return response()->json(['message' => 'Invalid Credentials'], 401);
                 }
-
 
             }
 
@@ -257,7 +257,7 @@ class AuthenticationController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Dashboard',
-            'data' => 'Welcome to the dashboard'
+            'data' => 'Welcome to the dashboard',
         ], 200);
     }
 
@@ -272,9 +272,9 @@ class AuthenticationController extends Controller
 
             if (! $user) {
                 return response()->json([
-                    'status'=> 'failure',
+                    'status' => 'failure',
                     'message' => 'User not found',
-                    'data' => null
+                    'data' => null,
                 ], 404);
             }
             $otp = rand(100000, 999999);
@@ -333,7 +333,7 @@ class AuthenticationController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status'=> 'failure',
+                'status' => 'failure',
                 'exception' => $e->getMessage(),
                 'data' => null,
             ], 400);
@@ -348,7 +348,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => '2FA already enabled',
-                'data' => null
+                'data' => null,
             ]);
         } else {
             $google2fa = new Google2FA();
@@ -452,7 +452,7 @@ class AuthenticationController extends Controller
         $user->save();
 
         return response()->json([
-            'status'=> 'success',
+            'status' => 'success',
             'message' => '2FA disabled successfully',
             'data' => null,
         ], 200);

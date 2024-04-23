@@ -163,19 +163,19 @@ class WastageController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Waste deleted successfully',
-                'data'=> null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Waste not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -195,13 +195,13 @@ class WastageController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Waste not found',
-                'data' =>  null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
@@ -215,19 +215,19 @@ class WastageController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Waste permanently deleted',
-                'data' => null
+                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Waste not found',
-                'data' => null
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => $e->getMessage(),
-                'data' => null
+                'data' => null,
             ], 500);
         }
     }
