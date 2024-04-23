@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
-use App\Models\Waste;
 use App\Models\Ticket;
+use App\Models\Waste;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,14 +16,15 @@ class WastageController extends Controller
     {
         try {
             $waste = Waste::all();
+
             return response()->json([
                 'status' => 'success',
-                'data' => $waste
+                'data' => $waste,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -32,19 +33,20 @@ class WastageController extends Controller
     {
         try {
             $waste = Waste::findOrFail($id);
+
             return response()->json([
                 'status' => 'success',
-                'data' => $waste
+                'data' => $waste,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Waste not found'
+                'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -57,14 +59,14 @@ class WastageController extends Controller
                 'ticket_id' => 'required|integer|exists:tickets,id',
                 'quantity' => 'required|integer',
                 'image.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg',
-                'notes' => 'sometimes|string'
+                'notes' => 'sometimes|string',
             ]);
 
             $imagePaths = [];
             foreach ($validatedData['image'] as $image) {
-                $imageName = Str::random(10) . '.' . $image->extension();
+                $imageName = Str::random(10).'.'.$image->extension();
                 $image->move(public_path('uploads/wastes'), $imageName);
-                $imagePath = 'uploads/wastes/' . $imageName;
+                $imagePath = 'uploads/wastes/'.$imageName;
                 $imagePaths[] = $imagePath;
             }
             $validatedData['image'] = $imagePaths;
@@ -74,7 +76,7 @@ class WastageController extends Controller
             if ($data->gross_weight < $validatedData['quantity']) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Waste quantity cannot be greater than gross weight'
+                    'message' => 'Waste quantity cannot be greater than gross weight',
                 ], 400);
             }
             if ($validatedData['quantity'] > ($data->gross_weight * 0.1)) {
@@ -86,12 +88,12 @@ class WastageController extends Controller
 
             return response()->json([
                 'status' => $message,
-                'data' => $waste
+                'data' => $waste,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -103,7 +105,7 @@ class WastageController extends Controller
                 'ticket_id' => 'sometimes|integer|exists:tickets,id',
                 'quantity' => 'sometimes|integer',
                 'image.*' => 'sometimes|file|mimes:jpeg,png,jpg,gif,svg',
-                'notes' => 'sometimes|string'
+                'notes' => 'sometimes|string',
             ]);
 
             $data = Ticket::where('id', $validatedData['ticket_id'])->first();
@@ -111,7 +113,7 @@ class WastageController extends Controller
             if ($data->gross_weight < $validatedData['quantity']) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Waste quantity cannot be greater than gross weight'
+                    'message' => 'Waste quantity cannot be greater than gross weight',
                 ], 400);
             }
             if ($validatedData['quantity'] > ($data->gross_weight * 0.1)) {
@@ -125,17 +127,17 @@ class WastageController extends Controller
 
             return response()->json([
                 'status' => $message,
-                'data' => $waste
+                'data' => $waste,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Waste not found'
+                'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -148,17 +150,17 @@ class WastageController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Waste deleted successfully'
-            ]);
+                'message' => 'Waste deleted successfully',
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Waste not found'
+                'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -171,17 +173,17 @@ class WastageController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Waste restored successfully'
-            ]);
+                'message' => 'Waste restored successfully',
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Waste not found'
+                'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -194,17 +196,17 @@ class WastageController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Waste permanently deleted'
-            ]);
+                'message' => 'Waste permanently deleted',
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Waste not found'
+                'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

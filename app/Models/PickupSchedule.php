@@ -19,9 +19,11 @@ class PickupSchedule extends Model
         'status',
         'notes',
         'n_bins',
+        'materials',
+        'weighing_type',
         'tare_weight',
         'image',
-        'coordinates'
+        'coordinates',
     ];
 
     public function route()
@@ -44,12 +46,41 @@ class PickupSchedule extends Model
         return $this->belongsTo(User::class);
     }
 
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'coordinates' => 'array',
+    //         'image' => 'array',
+    //         'materials' => 'array',
+    //         'weighing_type' => 'array',
+    //     ];
+    // }
+    protected $casts = [
+        'coordinates' => 'array',
+        'image' => 'array',
+        'materials' => 'array',
+        'weighing_type' => 'array',
+        'tare_weight' => 'array',
+    ];
 
-    protected function casts(): array
+    protected static function booted()
     {
-        return [
-            'coordinates' => 'array',
-            'image' => 'array'
-        ];
+        static::creating(function ($pickupSchedule) {
+            if (! isset($pickupSchedule->driver_id) && isset($pickupSchedule->route_id)) {
+                $route = Route::find($pickupSchedule->route_id);
+                if ($route && $route->driver_id) {
+                    $pickupSchedule->driver_id = $route->driver_id;
+                }
+            }
+        });
+        static::updating(function ($pickupSchedule) {
+            if ($pickupSchedule->isDirty('route_id')) {
+                $route = Route::find($pickupSchedule->route_id);
+                if ($route) {
+                    $pickupSchedule->driver_id = $route->driver_id;
+                    $pickupSchedule->asset_id = $route->asset_id;
+                }
+            }
+        });
     }
 }

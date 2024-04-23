@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('image')->default('profile_photos/default.jpg');
             $table->string('phone_number')->nullable();
             $table->string('city')->nullable();
-//            $table->foreignId('branch_id')->nullable()->constrained('branches');
+            //            $table->foreignId('branch_id')->nullable()->constrained('branches');
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->string('zip_code')->nullable();

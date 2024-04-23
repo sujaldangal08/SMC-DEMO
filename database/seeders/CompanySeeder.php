@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Company;
+use Illuminate\Database\Seeder;
 
 class CompanySeeder extends Seeder
 {
@@ -24,7 +23,7 @@ class CompanySeeder extends Seeder
             'company_phone' => '123-456-7890',
             'company_email' => 'company@email.com',
             'company_code' => '123',
-            'company_country_id' => '1'
+            'company_country_id' => '1',
         ]);
     }
 }

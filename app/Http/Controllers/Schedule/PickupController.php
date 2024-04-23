@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Schedule;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Models\PickupSchedule;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Validation\Rule;
 use App\Traits\ValidatesRoles;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PickupController extends Controller
 {
@@ -23,12 +23,12 @@ class PickupController extends Controller
                 'status' => 'success',
                 'message' => 'All pickup schedules fetched successfully',
                 'total' => $schedules->count(),
-                'data' => $schedules
-            ]);
+                'data' => $schedules,
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -38,21 +38,22 @@ class PickupController extends Controller
         try {
             $schedule = PickupSchedule::findOrFail($id);
             $route = $schedule->route()->first();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule fetched successfully',
                 'data' => $schedule,
-                'route' => $route
+                'route' => $route,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Pickup schedule not found'
+                'message' => 'Pickup schedule not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -60,17 +61,19 @@ class PickupController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
-            $validatedRequest =  $request->validate([
-                'route_id' => 'exists:routes,id',
-                'asset_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+            $validatedRequest = $request->validate([
+                'route_id' => ['nullable', 'exists:routes,id'],
+                'asset_id' => ['nullable', Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'driver_id' => ['nullable', $this->roleRule('driver')],
-                'customer_id' => ['required', $this->roleRule('customer')],
+                'customer_id' => ['nullable', $this->roleRule('customer')],
                 'pickup_date' => 'required|date',
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
-                'material_type' => 'nullable|string',
+                'materials' => 'nullable|array',
+                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
                 'n_bins' => 'nullable|integer',
-                'tare_weight' => 'nullable|string',
+                'tare_weight' => ['nullable'],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);
@@ -89,12 +92,12 @@ class PickupController extends Controller
                 'route' => $route,
                 'driver' => $driver,
                 'customer' => $customer,
-                'asset' => $asset
+                'asset' => $asset,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -103,17 +106,19 @@ class PickupController extends Controller
     {
         try {
             $schedule = PickupSchedule::findOrFail($id);
-            $validatedRequest =  $request->validate([
+            $validatedRequest = $request->validate([
                 'route_id' => 'exists:routes,id',
-                'asset_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
+                'asset_id' => ['nullable', Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
                 'driver_id' => ['nullable', $this->roleRule('driver')],
                 'customer_id' => ['required', $this->roleRule('customer')],
                 'pickup_date' => 'nullable|date',
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
-                'material_type' => 'nullable|string',
+                'materials' => 'nullable|array',
+                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
                 'n_bins' => 'nullable|integer',
-                'tare_weight' => 'nullable|string',
+                'tare_weight' => ['nullable', 'array', 'size:'.(is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);
@@ -124,6 +129,7 @@ class PickupController extends Controller
             $driver = $schedule->driver()->first();
             $customer = $schedule->customer()->first();
             $asset = $schedule->asset()->first();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule updated successfully',
@@ -131,17 +137,17 @@ class PickupController extends Controller
                 'route' => $route,
                 'driver' => $driver,
                 'customer' => $customer,
-                'asset' => $asset
+                'asset' => $asset,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Pickup schedule not found'
+                'message' => 'Pickup schedule not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -151,19 +157,20 @@ class PickupController extends Controller
         try {
             $schedule = PickupSchedule::findOrFail($id);
             $schedule->delete();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Pickup schedule deleted successfully'
-            ]);
+                'message' => 'Pickup schedule deleted successfully',
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Pickup schedule not found'
+                'message' => 'Pickup schedule not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -173,19 +180,20 @@ class PickupController extends Controller
         try {
             $schedule = PickupSchedule::withTrashed()->findOrFail($id);
             $schedule->restore();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Pickup schedule restored successfully'
+                'message' => 'Pickup schedule restored successfully',
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Pickup schedule not found'
+                'message' => 'Pickup schedule not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -195,19 +203,20 @@ class PickupController extends Controller
         try {
             $schedule = PickupSchedule::withTrashed()->findOrFail($id);
             $schedule->forceDelete();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Pickup schedule permanently deleted successfully'
+                'message' => 'Pickup schedule permanently deleted successfully',
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Pickup schedule not found'
+                'message' => 'Pickup schedule not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

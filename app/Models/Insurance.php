@@ -19,14 +19,14 @@ class Insurance extends Model
         'end_date',
         'purchase_date',
         'attachment',
-        'contact_meta'
+        'contact_meta',
     ];
 
     protected function casts(): array
     {
         return [
             'contact_meta' => 'array',
-            'attachment' => 'array'
+            'attachment' => 'array',
         ];
     }
 

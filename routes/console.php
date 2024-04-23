@@ -1,17 +1,14 @@
 <?php
 
+use App\Models\Branch;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
-use Illuminate\Support\Facades\DB;
-use App\Models\Branch;
-
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
-
-
 
 Artisan::command('app:schedule-command', function () {
     Log::info('ScheduleCommand is running...');
@@ -33,15 +30,16 @@ Artisan::command('app:schedule-command', function () {
     }
 
     // Log a message indicating the completion of the command
-    Log::info('ScheduleCommand executed successfully.' . now());
+    Log::info('ScheduleCommand executed successfully.'.now());
 })->everyMinute();
-
 
 Schedule::call(function () {
 
     Artisan::call('app:schedule-command');
 })->everyMinute();
 
+// Schedule::command('app:make-delivery-trips')
+//     ->everyFiveSeconds()
+//     ->appendOutputTo(storage_path('logs/delivery-trips.log'));
 
-
-
+Schedule::command('sanctum:prune-expired --hours=24')->daily();

@@ -17,12 +17,19 @@ class Route extends Model
         'end_point',
         'distance',
         'duration',
-        'status'
+        'status',
+        'driver_id',
+        'asset_id',
     ];
 
     public function schedule()
     {
         return $this->hasMany(PickupSchedule::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id')->through(PickupSchedule::class);
     }
 
     protected static function boot()
@@ -41,6 +48,29 @@ class Route extends Model
                     $newSchedule->route_id = $newRoute->id;
                     $newSchedule->status = 'pending';
                     $newSchedule->save();
+                }
+            }
+        });
+        static::updating(function ($route) {
+            if ($route->isDirty('driver_id')) {
+                foreach ($route->schedule->where('status', '!=', 'done') as $schedule) {
+                    $schedule->driver_id = $route->driver_id;
+                    $schedule->save();
+                }
+            }
+        });
+
+        static::updating(function ($route) {
+            if ($route->isDirty('driver_id')) {
+                foreach ($route->schedule->where('status', '!=', 'done') as $schedule) {
+                    $schedule->driver_id = $route->driver_id;
+                    $schedule->save();
+                }
+            }
+            if ($route->isDirty('asset_id')) {
+                foreach ($route->schedule->where('status', '!=', 'done') as $schedule) {
+                    $schedule->asset_id = $route->asset_id;
+                    $schedule->save();
                 }
             }
         });

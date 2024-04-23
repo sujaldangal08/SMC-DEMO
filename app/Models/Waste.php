@@ -14,7 +14,7 @@ class Waste extends Model
         'ticket_id',
         'quantity',
         'image',
-        'notes'
+        'notes',
     ];
 
     protected function casts(): array
@@ -23,7 +23,7 @@ class Waste extends Model
             'ticket_id' => 'integer',
             'quantity' => 'integer',
             'image' => 'array',
-            'notes' => 'string'
+            'notes' => 'string',
         ];
     }
 

@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('pickup_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('route_id')->constrained('routes')->cascadeOnDelete()->nullable();
-            $table->foreignId('driver_id')->constrained('users')->cascadeOnDelete()->nullable();
-            $table->foreignId('asset_id')->constrained('assets')->cascadeOnDelete()->nullable();
-            $table->foreignId('customer_id')->constrained('users')->cascadeOnDelete()->nullable();
+            $table->foreignId('route_id')->nullable()->constrained('routes')->cascadeOnDelete();
+            $table->foreignId('driver_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('asset_id')->nullable()->constrained('assets')->cascadeOnDelete();
+            $table->foreignId('customer_id')->constrained('users')->cascadeOnDelete();
             $table->date('pickup_date');
             $table->enum('status', ['pending', 'active', 'inactive', 'done', 'unloading', 'full', 'cancelled'])->default('pending');
             $table->string('notes')->nullable();
-            $table->string('material_type')->nullable();
+            $table->string('materials')->nullable();
+            $table->string('amount')->nullable();
+            $table->string('weighing_type')->nullable();
             $table->string('n_bins')->nullable();
             $table->string('tare_weight')->nullable();
             $table->string('image')->nullable();

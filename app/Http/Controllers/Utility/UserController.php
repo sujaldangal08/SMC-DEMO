@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Utility;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-
     public function RetrieveSingleUser()
     {
         try {
@@ -16,10 +14,10 @@ class UserController extends Controller
             $user = auth()->user();
 
             // If there is no authenticated user, return an error response
-            if (!$user) {
+            if (! $user) {
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'No authenticated user'
+                    'message' => 'No authenticated user',
                 ], 401);
             }
 
@@ -27,12 +25,12 @@ class UserController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'User fetched successfully.',
-                'data' => $user
+                'data' => $user,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -46,15 +44,16 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'All users fetched successfully',
                 'total' => $users->count(),
-                'data' => $users
+                'data' => $users,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
+
     public function RetrieveDriver()
     {
         try {
@@ -66,12 +65,12 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'All drivers fetched successfully',
                 'total' => $drivers->count(),
-                'data' => $drivers
+                'data' => $drivers,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -87,12 +86,12 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'All managers fetched successfully',
                 'total' => $managers->count(),
-                'data' => $managers
+                'data' => $managers,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -108,12 +107,12 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'All staffs fetched successfully',
                 'total' => $staffs->count(),
-                'data' => $staffs
+                'data' => $staffs,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -129,12 +128,12 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'All customers fetched successfully',
                 'total' => $customers->count(),
-                'data' => $customers
+                'data' => $customers,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
@@ -150,13 +149,13 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'All admins fetched successfully',
                 'total' => $admins->count(),
-                'data' => $admins
+                'data' => $admins,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
-            ],  500);
+                'message' => $e->getMessage(),
+            ], 500);
         }
     }
 }

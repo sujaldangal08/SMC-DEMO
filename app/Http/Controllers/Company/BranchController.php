@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Request;
 use App\Models\Branch;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class BranchController extends Controller
 {
@@ -22,34 +22,35 @@ class BranchController extends Controller
             'status' => 'success',
             'message' => 'Branches retrieved successfully',
             'total' => $BranchCount,
-            'data' => Branch::all()
-        ]);
+            'data' => Branch::all(),
+        ], 200);
     }
 
     public function branchSingle($id): \Illuminate\Http\JsonResponse
-{
-    try {
-        $data = Branch::findOrFail($id);
-        return response()->json([
-            'id' => $data->id,
-            'branch_name' => $data->branch_name,
-            'branch_street' => $data->branch_street,
-            'branch_street2' => $data->branch_street2,
-            'branch_city' => $data->branch_city,
-            'branch_state' => $data->branch_state,
-            'branch_zip' => $data->branch_zip,
-            'branch_phone' => $data->branch_phone,
-            'branch_email' => $data->branch_email,
-            'branch_code' => $data->branch_code,
-            'branch_status' => $data->branch_status,
-            'branch_country_id' => $data->branch_country_id
-        ]);
-    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-        return response()->json([
-            'error' => 'Resource not found.'
-        ], 404);
+    {
+        try {
+            $data = Branch::findOrFail($id);
+
+            return response()->json([
+                'id' => $data->id,
+                'branch_name' => $data->branch_name,
+                'branch_street' => $data->branch_street,
+                'branch_street2' => $data->branch_street2,
+                'branch_city' => $data->branch_city,
+                'branch_state' => $data->branch_state,
+                'branch_zip' => $data->branch_zip,
+                'branch_phone' => $data->branch_phone,
+                'branch_email' => $data->branch_email,
+                'branch_code' => $data->branch_code,
+                'branch_status' => $data->branch_status,
+                'branch_country_id' => $data->branch_country_id,
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Resource not found.',
+            ], 404);
+        }
     }
-}
 
     public function createBranch(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -65,7 +66,7 @@ class BranchController extends Controller
                 'branch_code' => 'required | unique:branches,branch_code',
                 'branch_status' => 'required',
                 'branch_country_id' => 'required',
-                'company_id' => 'required|exists:companies,id'
+                'company_id' => 'required|exists:companies,id',
             ]);
 
             // Create a new branch record in the database
@@ -75,14 +76,14 @@ class BranchController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Branch created successfully',
-                'data' => $branch
-            ]);
+                'data' => $branch,
+            ], 201);
         } catch (ValidationException $e) {
             // Return a custom validation error response
             return response()->json([
                 'status' => 'error',
                 'message' => 'Validation error',
-                'errors' => $e->errors()
+                'errors' => $e->errors(),
             ], 400);
         }
     }
@@ -98,12 +99,12 @@ class BranchController extends Controller
                 'branch_zip' => '',
                 'branch_phone' => 'numeric|digits:10',
                 'branch_email' => 'email',
-                'branch_code' => 'sometimes|unique:branches,branch_code,' . $id,
+                'branch_code' => 'sometimes|unique:branches,branch_code,'.$id,
                 'branch_status' => '',
                 'branch_country_id' => '',
-                'company_id' => 'exists:companies,id'
+                'company_id' => 'exists:companies,id',
             ], [
-                'branch_code.unique' => 'The branch code has already been taken.'
+                'branch_code.unique' => 'The branch code has already been taken.',
             ]);
 
             // Find the branch record in the database
@@ -116,14 +117,14 @@ class BranchController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Branch updated successfully',
-                'data' => $branch
+                'data' => $branch,
             ], 200);
         } catch (ValidationException $e) {
             // Return a custom validation error response
             return response()->json([
                 'status' => 'error',
                 'message' => 'Unable to Update: Validation error',
-                'errors' => $e->errors()
+                'errors' => $e->errors(),
             ], 400);
         }
     }
@@ -139,7 +140,7 @@ class BranchController extends Controller
         // Return a JSON response with the status and message
         return response()->json([
             'status' => 'success',
-            'message' => 'Branch deleted successfully'
+            'message' => 'Branch deleted successfully',
         ], 200);
     }
 
@@ -154,7 +155,7 @@ class BranchController extends Controller
         // Return a JSON response with the status and message
         return response()->json([
             'status' => 'success',
-            'message' => 'Branch recovered successfully'
+            'message' => 'Branch recovered successfully',
         ], 200);
     }
 
@@ -171,13 +172,13 @@ class BranchController extends Controller
             // Return a JSON response with the status and message
             return response()->json([
                 'status' => 'success',
-                'message' => 'Branch permanently deleted successfully!'
+                'message' => 'Branch permanently deleted successfully!',
             ], 200);
         } else {
             // Return a JSON response with the status and message
             return response()->json([
                 'status' => 'error',
-                'message' => 'No deleted branch found with the given ID'
+                'message' => 'No deleted branch found with the given ID',
             ], 404);
         }
     }

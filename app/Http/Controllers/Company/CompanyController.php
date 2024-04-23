@@ -22,10 +22,11 @@ class CompanyController extends Controller
             'status' => 'success',
             'message' => 'Companies retrieved successfully',
             'total' => $CompanyCount,
-            'data' => Company::all()
+            'data' => Company::all(),
         ], 200);
 
     }
+
     public function updateCompany(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         try { // Validate the incoming request data
@@ -37,10 +38,10 @@ class CompanyController extends Controller
                 'company_zip' => 'string',
                 'company_phone' => 'numeric|digits:10',
                 'company_email' => 'email',
-                'company_code' => 'sometimes|unique:branches,branch_code,' . $id,
-                'company_country_id' => ''
-            ],  [
-                'company_code.unique' => 'The company code has already been taken.'
+                'company_code' => 'sometimes|unique:branches,branch_code,'.$id,
+                'company_country_id' => '',
+            ], [
+                'company_code.unique' => 'The company code has already been taken.',
             ]);
 
             // Find the company record in the database
@@ -53,17 +54,16 @@ class CompanyController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Company updated successfully',
-                'data' => $company
+                'data' => $company,
             ], 200);
         } catch (ValidationException $e) {
             // Return a custom validation error response
             return response()->json([
                 'status' => 'error',
                 'message' => 'Unable to Update: Validation error',
-                'errors' => $e->errors()
-            ], 400);
+                'errors' => $e->errors(),
+            ], 422);
         }
 
     }
-
 }

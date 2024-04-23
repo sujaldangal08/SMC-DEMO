@@ -26,7 +26,7 @@ class CompanyFactory extends Factory
             'company_phone' => $this->faker->phoneNumber,
             'company_email' => $this->faker->companyEmail,
             'company_code' => $this->faker->randomNumber(3, true),
-            'company_country_id' => $this->faker->randomNumber(2, true)
+            'company_country_id' => $this->faker->randomNumber(2, true),
         ];
     }
 }

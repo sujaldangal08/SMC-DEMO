@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\SalesOrder;
+use Illuminate\Http\Request;
 
 class SalesOrderController extends Controller
-
 {
     public function show($id)
     {
         // Find the sales order by its ID
         $salesOrder = SalesOrder::find($id);
 
-        if (!$salesOrder) {
+        if (! $salesOrder) {
             return response()->json(['message' => 'Sales order not found'], 404);
         }
 
@@ -42,7 +41,7 @@ class SalesOrderController extends Controller
         $salesOrder = SalesOrder::get();
 
         return response()->json([
-                'data' => $salesOrder,
-        ]);
+            'data' => $salesOrder,
+        ], 200);
     }
 }
