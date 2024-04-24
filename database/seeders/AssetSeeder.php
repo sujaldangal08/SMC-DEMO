@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Asset;
 
 class AssetSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class AssetSeeder extends Seeder
     public function run(): void
     {
 
-        DB::table('assets')->insert([
+        Asset::factory()->create([
             'title' => 'Asset',
             'image' => 'image.jpg',
             'asset_type' => 'Vehicle',
