@@ -12,7 +12,7 @@ class DeliveryScheduleSeeder extends Seeder
      */
     public function run(): void
     {
-        DeliverySchedule::create([
+        DeliverySchedule::factory()->create([
             'customer_id' => 1,
             'driver_id' => 1,
             'truck_id' => 1,

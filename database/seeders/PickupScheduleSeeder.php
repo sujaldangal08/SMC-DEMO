@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\PickupSchedule;
+use Illuminate\Database\Seeder;
 
 class PickupScheduleSeeder extends Seeder
 {
@@ -12,7 +12,7 @@ class PickupScheduleSeeder extends Seeder
      */
     public function run(): void
     {
-        PickupSchedule::create([
+        PickupSchedule::factory()->create([
             'route_id' => 1,
             'driver_id' => 2,
             'asset_id' => 1,
@@ -22,7 +22,7 @@ class PickupScheduleSeeder extends Seeder
             'notes' => 'Some notes',
             'materials' => ['Iron', 'Steel'],
             'amount' => [100, 200],
-            'weighing_type' => ['Type 1', 'Type 2'],
+            'weighing_type' => ['bridge', 'bridge'],
             'n_bins' => 10,
             'tare_weight' => [50, 60],
             'image' => ['image1.jpg', 'image2.jpg'],

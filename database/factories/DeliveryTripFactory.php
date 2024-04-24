@@ -2,12 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Models\Asset;
+use App\Models\DeliverySchedule;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DeliveryTrip>
  */
-class DeliveyTripFactory extends Factory
+class DeliveryTripFactory extends Factory
 {
     /**
      * Define the model's default state.

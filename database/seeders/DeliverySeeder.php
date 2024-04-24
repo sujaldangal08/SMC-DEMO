@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Delivery;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DeliverySeeder extends Seeder
 {
@@ -12,7 +12,7 @@ class DeliverySeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('deliveries')->insert([
+        Delivery::factory()->create([
             'status' => 'pending',
             'truck_id' => 1,
             'driver_id' => 2,

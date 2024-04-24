@@ -79,7 +79,7 @@ class DeliveryScheduleController extends Controller
                 'n_trips' => 'required_if:locale,domestic', // Validate the number of trips based on the number of delivery  dates only if the locale is international
                 'interval' => 'required_if:locale,domestic|integer',
                 'start_date' => 'required|date',
-                'status' => 'required|in:pending,completed,cancelled', // Validate the status based on the given options
+                'status' => 'required|in:pending,completed,cancelled,in_progress', // Validate the status based on the given options
                 'delivery_notes' => 'nullable|string',
                 'meta' => 'nullable|array',
             ]);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Asset\MaintenanceController;
 use App\Http\Controllers\Authentication\OAuthController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\Backend\SuperAdminController;
+use App\Http\Controllers\Driver\DriverController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\Inventory\InventoryController;
 use App\Http\Controllers\Inventory\SkuController;
@@ -143,7 +144,7 @@ Route::get('/route/{id}', [RouteController::class, 'show']);
 Route::post('/route', [RouteController::class, 'store']);
 Route::patch('/route/{id}', [RouteController::class, 'update']);
 Route::delete('/route/{id}', [RouteController::class, 'delete']);
-Route::post('/route/restore/{id}', [RouteController::class, 'restore']);
+Route::get('/route/restore/{id}', [RouteController::class, 'restore']);
 Route::delete('/route/delete/{id}', [RouteController::class, 'permanentDelete']);
 
 // Pickup Schedule routes
@@ -216,6 +217,13 @@ Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('a
 //faq
 Route::get('/faq', [FaqController::class, 'getFaq']);
 Route::post('/faq', [FaqController::class, 'insertFaq']);
+
+//Driver Module Routes
+Route::get('/driver/route', [DriverController::class, 'driverRoute'])->middleware('auth:sanctum');
+Route::get('/driver/route/{id}', [DriverController::class, 'detailRoute'])->middleware('auth:sanctum');
+Route::patch('/driver/route/{id}', [DriverController::class, 'updateRoute'])->middleware('auth:sanctum');
+Route::get('driver/schedule/{id}', [DriverController::class, 'detailSchedule'])->middleware('auth:sanctum');
+Route::patch('/driver/schedule/{id}', [DriverController::class, 'updateSchedule'])->middleware('auth:sanctum');
 
 Route::get('/settings', [SettingController::class, 'index']);
 Route::post('/settings', [SettingController::class, 'store']);

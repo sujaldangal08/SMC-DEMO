@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Insurance;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class InsuranceSeeder extends Seeder
 {
@@ -12,7 +12,7 @@ class InsuranceSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('insurances')->insert([
+        Insurance::factory()->create([
             'asset_id' => 1, // assuming an asset with id 1 exists
             'insurance_type' => 'Comprehensive',
             'provider' => 'Insurance Company 1',

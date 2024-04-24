@@ -73,7 +73,7 @@ class AssetController extends Controller
 
             $asset = new Asset();
             $asset->title = $request->title;
-            // $asset->image = $destinationPath;
+            $asset->image = $destinationPath;
             $asset->asset_type = $request->asset_type;
             $asset->meta = $request->meta;
             $asset->branch_id = $request->branch_id;

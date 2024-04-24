@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DeliverySchedule>
  */
-class DeliveyScheduleFactory extends Factory
+class DeliveryScheduleFactory extends Factory
 {
     /**
      * Define the model's default state.
