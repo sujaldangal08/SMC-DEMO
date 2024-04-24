@@ -17,7 +17,7 @@ class WasteFactory extends Factory
     public function definition(): array
     {
         return [
-            'ticket_id' => 1, 
+            'ticket_id' => 1,
             'quantity' => $this->faker->randomNumber(),
             'image' => 'waste_image.png',
             'notes' => $this->faker->sentence(),

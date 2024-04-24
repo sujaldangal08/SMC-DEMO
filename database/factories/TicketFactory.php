@@ -20,7 +20,7 @@ class TicketFactory extends Factory
             'rego_number' => $this->faker->unique()->numerify('REGO#####'),
             'driver_id' => 2,
             'customer_id' => 4,
-            'route_id' => null, 
+            'route_id' => null,
             'material' => $this->faker->word(),
             'initial_truck_weight' => $this->faker->randomNumber(),
             'full_bin_weight' => $this->faker->randomNumber(),

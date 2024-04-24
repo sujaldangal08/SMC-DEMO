@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance;
+use Illuminate\Database\Seeder;
 
 class MaintenanceSeeder extends Seeder
 {

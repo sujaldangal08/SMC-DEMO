@@ -75,7 +75,7 @@ class DeliveryScheduleController extends Controller
                 'locale' => 'required|in:domestic,international', // Validate the locale based on the given options
                 'delivery_date' => 'required_if:locale,international|array', // Validate the delivery date as an array only if the locale is international
                 'materials' => 'required|array',
-                'amount' => ['required', 'array', 'size:' . count($request->input('materials'))], // Validate the amount array based on the number of materials
+                'amount' => ['required', 'array', 'size:'.count($request->input('materials'))], // Validate the amount array based on the number of materials
                 'n_trips' => 'required_if:locale,domestic', // Validate the number of trips based on the number of delivery  dates only if the locale is international
                 'interval' => 'required_if:locale,domestic|integer',
                 'start_date' => 'required|date',
@@ -85,13 +85,13 @@ class DeliveryScheduleController extends Controller
             ]);
 
             //Calculate the delivery date if there is no delivery date in the request object needed for CRON job
-            if (!$request->has('delivery_date')) {
+            if (! $request->has('delivery_date')) {
                 // Calculate the delivery dates
                 $deliveryDates = [];
                 // Loop through the number of trips
                 for ($i = 0; $i < $request->input('n_trips'); $i++) {
                     // Calculate the delivery date based on the interval
-                    $deliveryDate = date('Y-m-d', strtotime($request->input('start_date') . ' + ' . ($i * $request->input('interval')) . ' days'));
+                    $deliveryDate = date('Y-m-d', strtotime($request->input('start_date').' + '.($i * $request->input('interval')).' days'));
                     $deliveryDates[] = $deliveryDate;
                 }
                 // Add the calculated delivery dates to the validated data
@@ -99,7 +99,7 @@ class DeliveryScheduleController extends Controller
             }
 
             //Calculate the number of trips
-            if (!$request->has('n_trips')) {
+            if (! $request->has('n_trips')) {
                 $validatedData['n_trips'] = count($validatedData['delivery_date']);
             }
 
@@ -137,8 +137,8 @@ class DeliveryScheduleController extends Controller
                 'delivery_date' => 'required|date|array', // Validate the delivery date as an array
                 'materials' => 'required|array',
                 'delivery_date.*' => 'required_if:locale,international|date|array', // Validate each delivery date if the locale is international
-                'amount' => ['required', 'array', 'size:' . count($request->input('materials'))], // Validate the amount array based on the number of materials
-                'n_trips' => ['required|integer', 'size:' . count($request->input('delivery_date')) . '|required_if:locale,international'], // Validate the number of trips based on the number of delivery dates only if the locale is international
+                'amount' => ['required', 'array', 'size:'.count($request->input('materials'))], // Validate the amount array based on the number of materials
+                'n_trips' => ['required|integer', 'size:'.count($request->input('delivery_date')).'|required_if:locale,international'], // Validate the number of trips based on the number of delivery dates only if the locale is international
                 'interval' => 'required_if:locale,domestic|integer',
                 'start_date' => 'required|date',
                 'status' => 'required|in:pending,completed,cancelled', // Validate the status based on the given options
@@ -146,13 +146,13 @@ class DeliveryScheduleController extends Controller
                 'meta' => 'nullable|array',
             ]);
 
-            if (!$request->has('delivery_date')) {
+            if (! $request->has('delivery_date')) {
                 // Calculate the delivery dates
                 $deliveryDates = [];
                 // Loop through the number of trips
                 for ($i = 0; $i < $request->input('n_trips'); $i++) {
                     // Calculate the delivery date based on the interval
-                    $deliveryDate = date('Y-m-d', strtotime($request->input('start_date') . ' + ' . ($i * $request->input('interval')) . ' days'));
+                    $deliveryDate = date('Y-m-d', strtotime($request->input('start_date').' + '.($i * $request->input('interval')).' days'));
                     $deliveryDates[] = $deliveryDate;
                 }
                 // Add the calculated delivery dates to the validated data
@@ -296,6 +296,6 @@ class DeliveryScheduleController extends Controller
         // The end date is the last element in the deliveryDates array
         $endDate = end($deliveryDates);
 
-        echo 'End date: ' . $endDate;
+        echo 'End date: '.$endDate;
     }
 }

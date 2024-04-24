@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Warehouse;
+use Illuminate\Database\Seeder;
 
 class WarehouseSeeder extends Seeder
 {
@@ -15,7 +14,7 @@ class WarehouseSeeder extends Seeder
     {
         Warehouse::factory()->create([
             'location' => 'Location1',
-            'SKU_id' =>1,
+            'SKU_id' => 1,
         ]);
     }
 }
