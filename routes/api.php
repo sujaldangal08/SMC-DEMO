@@ -23,7 +23,7 @@ use App\Http\Controllers\Settings\ProfileSettingsController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\WastageController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\Settings\DataSettingController;
 
 // User routes
 Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');
@@ -52,10 +52,11 @@ Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallb
 Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
 Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 
-// Xero Settings routes
-Route::get('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@getXeroCredential');
-Route::post('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@storeXeroCredential');
-Route::patch('/xero/settings/{id}', 'App\Http\Controllers\Settings\XeroSettingsController@updateXeroCredential');
+// Setting routes
+Route::get('/settings', [DataSettingController::class, 'getAll']);
+Route::get('/settings/{setting_name}', [DataSettingController::class, 'getOne']);
+Route::post('/settings', [DataSettingController::class, 'insertSetting']);
+Route::patch('/settings/{setting_name}', [DataSettingController::class, 'updateSettingValue']);
 
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
