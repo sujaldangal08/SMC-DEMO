@@ -193,4 +193,5 @@ Route::get('/assets/totalorspecific', [ReportController::class, 'getTotalAssets'
 // Logged in user details
 Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('auth:sanctum');
 
-Route::middleware('auth:api')->get('/pickup-schedules', [DriverController::class, 'index']);
+    Route::get('/pickups/{id}/done', [DriverController::class, 'markPickupAsDone']);
+    Route::post('/logout', [DriverController::class, 'logout']);
