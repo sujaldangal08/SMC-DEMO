@@ -3,11 +3,16 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Delivery;
+use App\Models\Asset;
+use App\Models\User;
+use Carbon\Carbon;
+
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Delivery>
  */
-class DeliveyFactory extends Factory
+class DeliveryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,9 +26,9 @@ class DeliveyFactory extends Factory
 
         return [
             'status' => 'pending',
-            'truck_id' => \App\Models\Truck::all()->random()->id,
-            'driver_id' => \App\Models\Driver::all()->random()->id,
-            'customer_id' => \App\Models\Customer::all()->random()->id,
+            'truck_id' => $this->faker->randomNumber(),
+            'driver_id' => $this->faker->randomNumber(),
+            'customer_id' => $this->faker->randomNumber(),
             'delivery_location' => $this->faker->address,
             'delivery_start_date' => $startDate->format('Y-m-d'),
             'delivery_end_date' => $endDate->format('Y-m-d'),

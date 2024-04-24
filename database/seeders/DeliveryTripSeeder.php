@@ -12,7 +12,7 @@ class DeliveryTripSeeder extends Seeder
      */
     public function run(): void
     {
-        DeliveryTrip::create([
+        DeliveryTrip::factory()->create([
             'schedule_id' => 1,
             'driver_id' => 2,
             'truck_id' => 1,

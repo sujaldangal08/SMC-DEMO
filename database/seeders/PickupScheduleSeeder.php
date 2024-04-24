@@ -12,7 +12,7 @@ class PickupScheduleSeeder extends Seeder
      */
     public function run(): void
     {
-        PickupSchedule::create([
+        PickupSchedule::factory()->create([
             'route_id' => 1,
             'driver_id' => 2,
             'asset_id' => 1,
