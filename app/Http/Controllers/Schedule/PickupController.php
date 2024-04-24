@@ -70,8 +70,8 @@ class PickupController extends Controller
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
+                'amount' => ['nullable', 'array', 'size:' . count($request->input('materials'))],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . count($request->input('materials'))],
                 'n_bins' => 'nullable|integer',
                 'tare_weight' => ['nullable'],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
@@ -79,7 +79,6 @@ class PickupController extends Controller
             ]);
             // dd($validatedRequest);
             $schedule = PickupSchedule::create($validatedRequest);
-            dd($schedule);
             //TODO: Implement notification to related parties after the schedule is created
             $route = $schedule->route()->first();
             $driver = $schedule->driver()->first();
@@ -116,10 +115,10 @@ class PickupController extends Controller
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
+                'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
+                'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:'.(is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);

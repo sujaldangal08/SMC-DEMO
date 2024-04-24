@@ -21,6 +21,7 @@ use App\Http\Controllers\Settings\AuthenticationSettingsController;
 use App\Http\Controllers\Settings\ProfileSettingsController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\WastageController;
+use App\Http\Controllers\Driver\DriverController;
 use Illuminate\Support\Facades\Route;
 
 // User routes
@@ -215,3 +216,8 @@ Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('a
 //faq
 Route::get('/faq', [FaqController::class, 'getFaq']);
 Route::post('/faq', [FaqController::class, 'insertFaq']);
+
+
+//Driver Module Routes
+Route::get('/driver/route', [DriverController::class, 'driverRoute'])->middleware('auth:sanctum');
+ROute::get('/driver/route/{id}', [DriverController::class, 'detailRoute'])->middleware('auth:sanctum');
