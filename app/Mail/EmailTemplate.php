@@ -7,7 +7,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-
 #[AllowDynamicProperties] class EmailTemplate extends Mailable
 {
     use Queueable, SerializesModels;
@@ -18,7 +17,6 @@ use Illuminate\Queue\SerializesModels;
     public $subject;
 
     public $username;
-
 
     public function __construct($username, $subject, $template_type, $otp = null)
     {

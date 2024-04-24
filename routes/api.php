@@ -1,18 +1,27 @@
 <?php
 
+use App\Http\Controllers\Asset\AssetController;
+use App\Http\Controllers\Asset\InsuranceController;
+use App\Http\Controllers\Asset\MaintenanceController;
 use App\Http\Controllers\Authentication\OAuthController;
-use App\Http\Controllers\Backend\SuperAdminController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\Settings\{AuthenticationSettingsController, ProfileSettingsController};
-use App\Http\Controllers\SalesOrderController;
-use App\Http\Controllers\Inventory\{InventoryController, SkuController, WarehouseController};
-use App\Http\Controllers\Asset\{AssetController, InsuranceController, MaintenanceController};
-use App\Http\Controllers\Schedule\{DeliveryController, PickupController, RouteController ,DeliveryScheduleController};
-use App\Http\Controllers\Ticket\{TicketController, WastageController};
+use App\Http\Controllers\Backend\SuperAdminController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\Inventory\InventoryController;
+use App\Http\Controllers\Inventory\SkuController;
+use App\Http\Controllers\Inventory\WarehouseController;
 use App\Http\Controllers\Report\{ReportController};
-use App\Http\Controllers\Driver\DriverController;
+use App\Http\Controllers\SalesOrderController;
+use App\Http\Controllers\Schedule\DeliveryController;
+use App\Http\Controllers\Schedule\DeliveryScheduleController;
+use App\Http\Controllers\Schedule\DeliveryTripController;
+use App\Http\Controllers\Schedule\PickupController;
+use App\Http\Controllers\Schedule\RouteController;
+use App\Http\Controllers\Settings\AuthenticationSettingsController;
+use App\Http\Controllers\Settings\ProfileSettingsController;
+use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\Ticket\WastageController;
+use Illuminate\Support\Facades\Route;
 
 // User routes
 Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');
@@ -41,6 +50,11 @@ Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallb
 Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
 Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 
+// Xero Settings routes
+Route::get('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@getXeroCredential');
+Route::post('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@storeXeroCredential');
+Route::patch('/xero/settings/{id}', 'App\Http\Controllers\Settings\XeroSettingsController@updateXeroCredential');
+
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
 Route::post('/inventory', [InventoryController::class, 'createInventory']);
@@ -57,7 +71,6 @@ Route::delete('/warehouse/{id}', [WarehouseController::class, 'deleteWarehouse']
 Route::post('/warehouse/restore/{id}', [WarehouseController::class, 'restoreWarehouse']);
 Route::delete('/warehouse/delete/{id}', [WarehouseController::class, 'permanentDeleteWarehouse']);
 
-
 // SKU routes
 Route::get('/sku', [SkuController::class, 'sku']);
 Route::post('/sku', [SkuController::class, 'createSku']);
@@ -69,13 +82,12 @@ Route::post('/forgot-password', [AuthenticationController::class, 'forgotPasswor
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/verify-otp', [AuthenticationController::class, 'verifyOtp']);
 
-
 Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 // Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware(RoleAuthentication::class);
 Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware('auth:sanctum');
 
 Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
-
+Route::patch('/reset-password', [ProfileSettingsController::class, 'resetPassword'])->middleware('auth:sanctum');
 
 // Super Admin Routes
 Route::get('/setting/auth-attempts', [AuthenticationSettingsController::class, 'authAttempts'])->middleware('auth:sanctum', 'role:super-admin');
@@ -88,7 +100,6 @@ Route::get('/super-admins', [SuperAdminController::class, 'getAll'])->middleware
 Route::delete('/super-admin/{id}', [SuperAdminController::class, 'destroy']);
 Route::post('/create-user', [AuthenticationController::class, 'createUser'])->middleware('auth:sanctum,', 'role:super-admin');
 Route::delete('/admins/{id}', [ProfileSettingsController::class, 'getAllSAdmin'])->middleware('auth:sanctum', 'role:super-admin');
-
 
 //Asset Module Routes
 
@@ -152,6 +163,15 @@ Route::delete('/delivery/{id}', [DeliveryScheduleController::class, 'destroy']);
 Route::post('/delivery/restore/{id}', [DeliveryScheduleController::class, 'restore']);
 Route::delete('/delivery/delete/{id}', [DeliveryScheduleController::class, 'permanentDelete']);
 
+//Delivery Trip Routes
+Route::get('/delivery-trip', [DeliveryTripController::class, 'index']);
+Route::get('/delivery-trip/{id}', [DeliveryTripController::class, 'get']);
+Route::post('/delivery-trip', [DeliveryTripController::class, 'create']);
+Route::patch('/delivery-trip/{id}', [DeliveryTripController::class, 'update']);
+Route::delete('/delivery-trip/{id}', [DeliveryTripController::class, 'delete']);
+Route::post('/delivery-trip/restore/{id}', [DeliveryTripController::class, 'restore']);
+Route::delete('/delivery-trip/delete/{id}', [DeliveryTripController::class, 'permanentDelete']);
+
 // Delivery Schedule routes
 Route::post('/schedule/delivery', [DeliveryController::class, 'createDelivery']);
 Route::patch('/schedule/delivery/{id}', [DeliveryController::class, 'updateDelivery']);
@@ -160,7 +180,6 @@ Route::patch('/schedule/delivery/{id}', [DeliveryController::class, 'updateDeliv
 Route::post('/2fa/generate', [AuthenticationController::class, 'twoFactorGenerate']);
 Route::post('/2fa/verify', [AuthenticationController::class, 'verify2FACode']);
 Route::post('/2fa/disable', [AuthenticationController::class, 'disable2FA']);
-
 
 // OAuth for Google
 Route::post('/oauth/google', [OAuthController::class, 'OAuthReceive']);
@@ -193,5 +212,6 @@ Route::get('/assets/totalorspecific', [ReportController::class, 'getTotalAssets'
 // Logged in user details
 Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('auth:sanctum');
 
-    Route::get('/pickups/{id}/done', [DriverController::class, 'markPickupAsDone']);
-    Route::post('/logout', [DriverController::class, 'logout']);
+//faq
+Route::get('/faq', [FaqController::class, 'getFaq']);
+Route::post('/faq', [FaqController::class, 'insertFaq']);

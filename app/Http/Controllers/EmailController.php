@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Mail\BrevoEmail;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\EmailTemplate;
+use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
     //
-
-
 
     public function sendEmail()
     {
@@ -20,7 +16,7 @@ class EmailController extends Controller
 
         $username = 'John Doe'; // Replace 'John Doe' with the actual username
         $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
-        $otp=1234;
+        $otp = 1234;
         $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
 
         // Create a new instance of the mailable and pass the email template to it
@@ -29,8 +25,10 @@ class EmailController extends Controller
         // Send the email
         Mail::to('soviamdr@gmail.com')->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
 
-        return response()->json(['message' => 'Email sent successfully']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Email sent successfully',
+            'data' => null,
+        ], 200);
     }
-
-
 }

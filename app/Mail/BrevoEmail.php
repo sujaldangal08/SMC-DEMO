@@ -1,13 +1,9 @@
 <?php
+
 namespace App\Mail;
 
-
-
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class BrevoEmail extends Mailable
@@ -15,10 +11,12 @@ class BrevoEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $body;
+
     public $template;
+
     public $data;
 
-    public function __construct($subject, $body, $template = 'email.email', $data)
+    public function __construct($subject, $body, $template, $data)
     {
         $this->subject = $subject;
         $this->body = $body;
