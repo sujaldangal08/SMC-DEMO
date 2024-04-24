@@ -23,6 +23,7 @@ class PickupSchedule extends Model
         'weighing_type',
         'tare_weight',
         'image',
+        'amount',
         'coordinates',
     ];
 
@@ -55,13 +56,17 @@ class PickupSchedule extends Model
     //         'weighing_type' => 'array',
     //     ];
     // }
-    protected $casts = [
-        'coordinates' => 'array',
-        'image' => 'array',
-        'materials' => 'array',
-        'weighing_type' => 'array',
-        'tare_weight' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'coordinates' => 'array',
+            'image' => 'array',
+            'materials' => 'array',
+            'weighing_type' => 'array',
+            'tare_weight' => 'array',
+            'amount' => 'array', //is not set as an array to calculate the sum of the amount in route controller
+        ];
+    }
 
     protected static function booted()
     {

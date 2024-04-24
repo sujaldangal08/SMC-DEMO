@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Delivery;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DeliverySeeder extends Seeder
 {
@@ -13,11 +12,11 @@ class DeliverySeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('deliveries')->insert([
+        Delivery::factory()->create([
             'status' => 'pending',
             'truck_id' => 1,
-            'driver_id' => 1, 
-            'customer_id' => 1, // assuming a customer with id 1 exists
+            'driver_id' => 2,
+            'customer_id' => 4, 
             'delivery_location' => '123 Main St, Anytown, USA',
             'delivery_start_date' => now()->format('Y-m-d'),
             'delivery_end_date' => now()->addDays(3)->format('Y-m-d'),

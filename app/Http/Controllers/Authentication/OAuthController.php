@@ -48,7 +48,7 @@ class OAuthController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Unauthorized',
-                'data' => null
+                'data' => null,
             ], 401);
         } else {
             // The user exists, authenticate them with Laravel Sanctum

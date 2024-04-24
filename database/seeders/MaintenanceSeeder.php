@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Maintenance;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class MaintenanceSeeder extends Seeder
 {
@@ -13,7 +12,7 @@ class MaintenanceSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('maintenances')->insert([
+        Maintenance::factory()->create([
             'asset_id' => 1, // assuming an asset with id 1 exists
             'maintenance_type' => 'Regular Checkup',
             'contact_meta' => json_encode([

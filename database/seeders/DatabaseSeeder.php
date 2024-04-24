@@ -6,7 +6,6 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -25,6 +24,16 @@ class DatabaseSeeder extends Seeder
         $this->call(InsuranceSeeder::class);
         $this->call(MaintenanceSeeder::class);
         $this->call(DeliverySeeder::class);
-        // $this->call(DeliveryScheduleSeeder::class);
+        $this->call(DeliveryScheduleSeeder::class);
+        $this->call(DeliveryTripSeeder::class);
+        $this->call(RouteSeeder::class);
+        $this->call(PickupScheduleSeeder::class);
+        $this->call(SkuSeeder::class);
+        $this->call(WarehouseSeeder::class);
+        $this->call(InventorySeeder::class);
+        $this->call(TicketSeeder::class);
+        $this->call(WasteSeeder::class);
+        $this->call(FaqSeeder::class);
+        $this->call(SettingSeeder::class);
     }
 }

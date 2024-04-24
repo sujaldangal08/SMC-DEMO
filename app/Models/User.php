@@ -13,6 +13,7 @@ class User extends Authenticatable
 {
     use CanResetPassword, HasApiTokens, HasFactory, Notifiable;
 
+    public int $login_attempts;
 
     /**
      * The attributes that are mass assignable.

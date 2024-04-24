@@ -14,7 +14,9 @@ class Route extends Model
      * @var \Illuminate\Support\Collection|mixed
      */
     public mixed $customer_names;
+
     public mixed $total_materials;
+
     protected $fillable = [
         'start_date',
         'name',
