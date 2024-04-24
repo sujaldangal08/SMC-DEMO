@@ -31,6 +31,8 @@ class DatabaseSeeder extends Seeder
         $this->call(SkuSeeder::class);
         $this->call(WarehouseSeeder::class);
         $this->call(InventorySeeder::class);
-
+        $this->call(TicketSeeder::class);
+        $this->call(WasteSeeder::class);
+        $this->call(FaqSeeder::class);
     }
 }
