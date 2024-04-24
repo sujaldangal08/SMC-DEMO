@@ -6,11 +6,12 @@ use App\Http\Controllers\Asset\MaintenanceController;
 use App\Http\Controllers\Authentication\OAuthController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\Backend\SuperAdminController;
+use App\Http\Controllers\Driver\DriverController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\Inventory\InventoryController;
 use App\Http\Controllers\Inventory\SkuController;
 use App\Http\Controllers\Inventory\WarehouseController;
 use App\Http\Controllers\Report\{ReportController};
-use App\Http\Controllers\FaqController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Schedule\DeliveryController;
 use App\Http\Controllers\Schedule\DeliveryScheduleController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Settings\ProfileSettingsController;
 use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\WastageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Settings\DataSettingController;
 
 // User routes
 Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');
@@ -51,10 +53,11 @@ Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant'
 Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 Route::get('/xero/contacts', 'App\Http\Controllers\Xero\XeroSyncController@syncContacts');
 
-// Xero Settings routes
-Route::get('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@getXeroCredential');
-Route::post('/xero/settings', 'App\Http\Controllers\Settings\XeroSettingsController@storeXeroCredential');
-Route::patch('/xero/settings/{id}', 'App\Http\Controllers\Settings\XeroSettingsController@updateXeroCredential');
+// Setting routes
+Route::get('/settings', [DataSettingController::class, 'getAll']);
+Route::get('/settings/{setting_name}', [DataSettingController::class, 'getOne']);
+Route::post('/settings', [DataSettingController::class, 'insertSetting']);
+Route::patch('/settings/{setting_name}', [DataSettingController::class, 'updateSettingValue']);
 
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);
@@ -89,7 +92,6 @@ Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middle
 
 Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
 Route::patch('/reset-password', [ProfileSettingsController::class, 'resetPassword'])->middleware('auth:sanctum');
-
 
 // Super Admin Routes
 Route::get('/setting/auth-attempts', [AuthenticationSettingsController::class, 'authAttempts'])->middleware('auth:sanctum', 'role:super-admin');
@@ -144,7 +146,7 @@ Route::get('/route/{id}', [RouteController::class, 'show']);
 Route::post('/route', [RouteController::class, 'store']);
 Route::patch('/route/{id}', [RouteController::class, 'update']);
 Route::delete('/route/{id}', [RouteController::class, 'delete']);
-Route::post('/route/restore/{id}', [RouteController::class, 'restore']);
+Route::get('/route/restore/{id}', [RouteController::class, 'restore']);
 Route::delete('/route/delete/{id}', [RouteController::class, 'permanentDelete']);
 
 // Pickup Schedule routes
@@ -217,3 +219,10 @@ Route::get('/fetch-data', [ReportController::class, 'fetchData'])->middleware('a
 //faq
 Route::get('/faq', [FaqController::class, 'getFaq']);
 Route::post('/faq', [FaqController::class, 'insertFaq']);
+
+//Driver Module Routes
+Route::get('/driver/route', [DriverController::class, 'driverRoute'])->middleware('auth:sanctum');
+Route::get('/driver/route/{id}', [DriverController::class, 'detailRoute'])->middleware('auth:sanctum');
+Route::patch('/driver/route/{id}', [DriverController::class, 'updateRoute'])->middleware('auth:sanctum');
+Route::get('driver/schedule/{id}', [DriverController::class, 'detailSchedule'])->middleware('auth:sanctum');
+Route::patch('/driver/schedule/{id}', [DriverController::class, 'updateSchedule'])->middleware('auth:sanctum');

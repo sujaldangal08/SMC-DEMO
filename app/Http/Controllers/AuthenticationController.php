@@ -49,6 +49,7 @@ class AuthenticationController extends Controller
             if (! Hash::check($credentials['password'], $user['password'])) {
                 $user->incrementLoginAttempts();
                 return response()->json(['message' => 'Invalid Credentials'], 401);
+
             }
 
             // Create a new token for the user
@@ -63,7 +64,11 @@ class AuthenticationController extends Controller
                 'token_type' => 'Bearer',
             ], 200);
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()], 400);
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
         }
     }
 
@@ -117,12 +122,24 @@ class AuthenticationController extends Controller
 
             $user->save();
 
-            return response()->json(['message' => 'Account created successfully, please check your email for the OTP'], 201);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Account created successfully, please check your email for the OTP',
+                'data' => $user,
+            ], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['errors' => $e->validator->errors()], 400);
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e->validator->errors(),
+                'data' => null,
+            ], 400);
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()], 400);
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
         }
 
     }
@@ -150,11 +167,19 @@ class AuthenticationController extends Controller
 
             $checkUser->save();
 
-            return response()->json(['message' => 'OTP verified successfully. Please login to continue'], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP verified successfully. Please login to continue',
+                'data' => $checkUser,
+            ], 200);
         } else {
             // If the OTP provided in the request does not match the OTP stored in the user record,
             // return a JSON response with an error message
-            return response()->json(['message' => 'Invalid OTP'], 401);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Invalid OTP',
+                'data' => null,
+            ], 401);
         }
     }
 
@@ -186,14 +211,24 @@ class AuthenticationController extends Controller
             //  Mail::to($request->email)->send(new AccountCreation($request->email, $password,));
 
             return response()->json([
+                'status' => 'success',
                 'message' => 'User created successfully',
                 'password' => $password,
                 'user' => $user,
             ], 201);
         } catch (ValidationException $e) {
-            return response()->json(['error' => $e->validator->errors()->getMessages()], 401);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Validation error',
+                'error' => $e->validator->errors()->getMessages(),
+                'data' => null,
+            ], 401);
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()], 400);
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
         }
     }
 
@@ -202,15 +237,27 @@ class AuthenticationController extends Controller
         try {
             $request->user()->tokens()->delete();
 
-            return response()->json(['message' => 'Logout successful'], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Logout successful',
+                'data' => null,
+            ], 200);
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()], 400);
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
         }
     }
 
     public function dashboard(): JsonResponse
     {
-        return response()->json(['message' => 'Dashboard'], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Dashboard',
+            'data' => 'Welcome to the dashboard',
+        ], 200);
     }
 
     public function forgotPassword(Request $request): JsonResponse
@@ -223,7 +270,11 @@ class AuthenticationController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if (! $user) {
-                return response()->json(['message' => 'User not found'], 404);
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'User not found',
+                    'data' => null,
+                ], 404);
             }
             $otp = rand(100000, 999999);
             $user->otp = Crypt::encryptString($otp);
@@ -241,9 +292,17 @@ class AuthenticationController extends Controller
             // Send the email
             Mail::to($user->email)->send($mailable); // Replace 'recipient@example.com' with the recipient's email address
 
-            return response()->json(['message' => 'OTP sent to your email'], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP sent to your email',
+                'data' => $user,
+            ], 200);
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()], 400);
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
         }
     }
 
@@ -267,11 +326,16 @@ class AuthenticationController extends Controller
             $plainTextToken = $tokenResult->plainTextToken;
 
             return response()->json([
+                'status' => 'success',
                 'message' => 'Login successful',
                 'token' => $plainTextToken,
             ], 200);
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()], 400);
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
         }
     }
 
@@ -280,7 +344,11 @@ class AuthenticationController extends Controller
         $user = User::where('id', $request->user)->first();
         $check2fa = $user->tfa_secret;
         if ($check2fa) {
-            return response()->json(['message' => '2FA already enabled']);
+            return response()->json([
+                'status' => 'failure',
+                'message' => '2FA already enabled',
+                'data' => null,
+            ]);
         } else {
             $google2fa = new Google2FA();
             $companyName = env('APP_NAME');
@@ -358,11 +426,16 @@ class AuthenticationController extends Controller
             $plainTextToken = $tokenResult->plainTextToken;
 
             return response()->json([
+                'status' => 'success',
                 'message' => '2FA code verified successfully',
                 'token' => $plainTextToken,
             ], 200);
         } else {
-            return response()->json(['message' => 'Invalid 2FA code'], 400);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Invalid 2FA code',
+                'data' => null,
+            ], 400);
         }
 
     }
@@ -377,6 +450,10 @@ class AuthenticationController extends Controller
         $user->tfa_secret = null;
         $user->save();
 
-        return response()->json(['message' => '2FA disabled successfully'], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => '2FA disabled successfully',
+            'data' => null,
+        ], 200);
     }
 }

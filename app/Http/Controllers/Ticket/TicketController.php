@@ -39,13 +39,15 @@ class TicketController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Ticket not found',
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -124,7 +126,9 @@ class TicketController extends Controller
                 'data' => $tickets,
             ], 201);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            return response()->json(['status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null], 500);
         }
     }
 
@@ -202,13 +206,15 @@ class TicketController extends Controller
             ], 201);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Ticket not found',
+                'data' => null,
             ], 401);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -222,16 +228,19 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket deleted successfully',
+                'data' => $ticket,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Ticket not found',
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -245,16 +254,19 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket restored successfully',
+                'data' => $ticket,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Ticket not found',
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -268,16 +280,19 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket permanently deleted successfully',
+                'data' => $ticket,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Ticket not found',
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }

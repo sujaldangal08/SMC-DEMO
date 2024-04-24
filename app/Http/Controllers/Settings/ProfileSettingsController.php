@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Hash;
 
 class ProfileSettingsController extends Controller
 {
@@ -44,9 +44,15 @@ class ProfileSettingsController extends Controller
 
             $user_data = $user->only('name', 'email', 'phone_number', 'city', 'state', 'country', 'zip_code', 'language', 'image');
 
-            return response()->json(['message' => 'Profile updated successfully', 'user' => $user_data], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Profile updated successfully',
+                'user' => $user_data], 200);
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()], 400);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Profile update failed',
+                'exception' => $e->getMessage()], 400);
         }
     }
 
@@ -67,16 +73,27 @@ class ProfileSettingsController extends Controller
             $user = $request->user();
 
             if (! Hash::check($request->current_password, $user->password)) {
-                return response()->json(['message' => 'Current password does not match'], 400);
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'Current password does not match',
+                    'data' => null,
+                ], 400);
             }
 
             $user->password = Hash::make($request->new_password);
             $user->save();
 
-            return response()->json(['message' => 'Password reset successful'], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Password reset successful',
+                'data' => null,
+            ], 200);
         } catch (\Exception $e) {
-            return response()->json(['exception' => $e->getMessage()], 400);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Password reset failed',
+                'exception' => $e->getMessage(),
+            ], 400);
         }
     }
-
 }

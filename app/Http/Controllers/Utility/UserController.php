@@ -18,6 +18,7 @@ class UserController extends Controller
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'No authenticated user',
+                    'data' => null,
                 ], 401);
             }
 
@@ -29,8 +30,9 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -48,8 +50,9 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -69,8 +72,9 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -90,8 +94,9 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -111,8 +116,9 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -132,8 +138,9 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -153,8 +160,9 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }

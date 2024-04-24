@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('pickup_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('route_id')->nullable()->constrained('routes')->cascadeOnDelete();
-            $table->foreignId('driver_id')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->foreignId('asset_id')->nullable()->constrained('assets')->cascadeOnDelete();
+            $table->foreignId('route_id')->nullable()->constrained('routes')->cascadeOnDelete()->nullable();
+            $table->foreignId('driver_id')->nullable()->constrained('users')->cascadeOnDelete()->nullable();
+            $table->foreignId('asset_id')->nullable()->constrained('assets')->cascadeOnDelete()->nullable();
             $table->foreignId('customer_id')->constrained('users')->cascadeOnDelete();
             $table->date('pickup_date');
-            $table->enum('status', ['pending', 'active', 'inactive', 'done', 'unloading', 'full', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'active', 'inactive', 'done', 'unloading', 'cancelled'])->default('pending');
             $table->string('notes')->nullable();
             $table->string('materials')->nullable();
             $table->string('amount')->nullable();
