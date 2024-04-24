@@ -45,11 +45,10 @@ class AuthenticationController extends Controller
                     return response()->json(['message' => 'Please verify your email'], 401);
                 }
 
-                if (! Hash::check($credentials['password'], $user['password'])) {
-                    $user->incrementLoginAttempts();
-
-                    return response()->json(['message' => 'Invalid Credentials'], 401);
-                }
+            }
+            if (! Hash::check($credentials['password'], $user['password'])) {
+                $user->incrementLoginAttempts();
+                return response()->json(['message' => 'Invalid Credentials'], 401);
 
             }
 
@@ -385,7 +384,7 @@ class AuthenticationController extends Controller
             Storage::disk('public')->put($filePath, $qrCode);
 
             return response()->json([
-                'status' => 'success',
+                'status' => 'success', // 'status' => 'success' or 'error'
                 'message' => '2FA enabled successfully',
                 'qr_code_url' => url(Storage::url($filePath)),
                 'secret_key' => $secretKey,

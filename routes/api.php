@@ -51,6 +51,7 @@ Route::get('/xero/connect', 'App\Http\Controllers\Xero\XeroController@xeroConnec
 Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallback');
 Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
 Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
+Route::get('/xero/contacts', 'App\Http\Controllers\Xero\XeroSyncController@syncContacts');
 
 // Setting routes
 Route::get('/settings', [DataSettingController::class, 'getAll']);
