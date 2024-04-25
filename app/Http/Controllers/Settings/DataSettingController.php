@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Setting;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
 class DataSettingController extends Controller
@@ -17,6 +17,7 @@ class DataSettingController extends Controller
                 $setting->setting_value = Crypt::decryptString($setting->setting_value);
             }
         }
+
         return response()->json([
             'status' => 'success',
             'message' => 'Settings found',
@@ -67,6 +68,7 @@ class DataSettingController extends Controller
                 $value = Crypt::encryptString($value);
             }
             $setting->update(['setting_value' => $value]);
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Setting updated successfully',

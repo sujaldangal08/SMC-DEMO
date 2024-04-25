@@ -24,6 +24,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'image',
+        'phone_number',
+        'city',
+        'state',
+        'country',
+        'zip_code',
+        'language',
     ];
 
     /**
@@ -34,6 +41,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at',
+        'created_at',
+        'updated_at',
+        'login_attempts',
+        'status',
+        'role_id',
+        'tfa_secret',
+        'is_tfa',
+        'otp',
+        'otp_expiry',
     ];
 
     /**
@@ -49,11 +66,21 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Check if the user is active
+     *
+     * @return bool
+     */
+
     public function deactivate(): void
     {
         $this->status = 'inactive';
         $this->save();
     }
+
+    /**
+     * Reset the login attempts
+     */
 
     public function resetLoginAttempts(): void
     {
@@ -61,26 +88,54 @@ class User extends Authenticatable
         $this->save();
     }
 
+    /*`
+     * Increment the login attempts
+     */
+
     public function incrementLoginAttempts(): void
     {
         $this->login_attempts++;
         $this->save();
     }
 
+    /**
+     * Get the role of the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * Check if the user has a role
+     *
+     * @param string $role
+     * @return bool
+     */
     public function hasRole(string $role): bool
-    { //Function role      value role assigned to role
+    {
         return $this->role->role === $role;
     }
+
+    /**
+     * Check if the user is active
+     *
+     * @return bool
+     */
 
     public function schedule()
     {
         return $this->hasMany(PickupSchedule::class);
     }
+
+    /**
+     * Check if the user is active
+     *
+     * @return bool
+     */
 
     public function scopeHasRole($query, $role)
     {
@@ -88,6 +143,12 @@ class User extends Authenticatable
             $q->where('role', $role);
         });
     }
+
+    /**
+     * Check if the user is active
+     *
+     * @return bool
+     */
 
     public function delivery()
     {
