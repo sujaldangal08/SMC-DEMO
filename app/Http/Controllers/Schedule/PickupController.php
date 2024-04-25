@@ -8,6 +8,7 @@ use App\Traits\ValidatesRoles;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class PickupController extends Controller
@@ -70,13 +71,24 @@ class PickupController extends Controller
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
+                'amount' => ['nullable', 'array', 'size:' . count($request->input('materials'))],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . count($request->input('materials'))],
                 'n_bins' => 'nullable|integer',
                 'tare_weight' => ['nullable'],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);
+            $image = [];
+            foreach ($validatedRequest['image'] as $image) {
+                $image = $request->file('image');
+                $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+                $destinationPath = public_path('uploads/profile/');
+                $image->move($destinationPath, $image_name);
+                $image_location = 'uploads/profile/' . $image_name;
+                $image[] = $image_location;
+            }
+
+            $validatedRequest['image'] = $image;
 
             $schedule = PickupSchedule::create($validatedRequest);
             //TODO: Implement notification to related parties after the schedule is created
@@ -115,10 +127,10 @@ class PickupController extends Controller
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
+                'amount' => ['nullable', 'array', 'size:' . count($request->input('materials'))],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . count($request->input('materials'))],
                 'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:'.(is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
+                'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);
