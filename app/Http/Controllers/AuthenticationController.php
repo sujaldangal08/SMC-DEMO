@@ -47,9 +47,9 @@ class AuthenticationController extends Controller
 
                 if (! Hash::check($credentials['password'], $user['password'])) {
                     $user->incrementLoginAttempts();
+
                     return response()->json(['message' => 'Invalid Credentials'], 401);
                 }
-
 
             }
 
@@ -60,7 +60,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Login successful',
-                '2fa' => (bool) $user->tfa_secret,
+                '2fa' => (bool) $user->is_tfa,
                 'access_token' => $tokenResult->plainTextToken,
                 'token_type' => 'Bearer',
             ], 200);
@@ -343,7 +343,7 @@ class AuthenticationController extends Controller
     public function twoFactorGenerate(Request $request): JsonResponse
     {
         $user = User::where('id', $request->user)->first();
-        $check2fa = $user->tfa_secret;
+        $check2fa = $user->is_tfa;
         if ($check2fa) {
             return response()->json([
                 'status' => 'failure',
@@ -357,7 +357,7 @@ class AuthenticationController extends Controller
             $secretKey = $google2fa->generateSecretKey();
 
             // Save the secret key to the user's record
-            $user->tfa_secret = $secretKey;
+            $user->tfa_secret = encrypt($secretKey);
             $user->save();
 
             $qrCodeUrl = $google2fa->getQRCodeUrl(
@@ -385,7 +385,7 @@ class AuthenticationController extends Controller
             Storage::disk('public')->put($filePath, $qrCode);
 
             return response()->json([
-                'message' => '2FA enabled successfully',
+                'message' => '2FA generated successfully',
                 'qr_code_url' => url(Storage::url($filePath)),
                 'secret_key' => $secretKey,
             ], 200);
@@ -409,7 +409,7 @@ class AuthenticationController extends Controller
         $user = User::where('id', $request->user)->first();
 
         // Ensure that the secret key is a string
-        $secretKey = (string) $secretKey;
+        $secretKey = (string) decrypt($secretKey);
 
         // Ensure that the OTP is a string
         $otp = (string) $request->otp;
@@ -424,6 +424,16 @@ class AuthenticationController extends Controller
             $token->save();
 
             $plainTextToken = $tokenResult->plainTextToken;
+            if (! $user->is_tfa) {
+                $user->is_tfa = true;
+                $user->save();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => '2FA enabled for the user',
+                    'token' => $plainTextToken,
+                ], 200);
+            }
 
             return response()->json([
                 'status' => 'success',
@@ -448,6 +458,7 @@ class AuthenticationController extends Controller
 
         $user = User::where('id', $request->user)->first();
         $user->tfa_secret = null;
+        $user->is_tfa = false;
         $user->save();
 
         return response()->json([

@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('zip_code')->nullable();
             $table->string('language')->default('en');
             $table->string('tfa_secret')->nullable();
+            $table->boolean('is_tfa')->default(false);
             $table->string('otp')->nullable();
             $table->timestamp('otp_expiry')->nullable();
             $table->rememberToken();
