@@ -2,33 +2,37 @@
 
 namespace Database\Factories;
 
-use App\Models\DeliverySchedule;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DeliverySchedule>
+ */
 class DeliveryScheduleFactory extends Factory
 {
-    protected $model = DeliverySchedule::class;
-
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [
-            'customer_id' => $this->faker->randomNumber(),
-            'driver_id' => $this->faker->randomNumber(),
-            'truck_id' => $this->faker->randomNumber(),
-            'coordinates' => $this->faker->words(),
-            'materials' => $this->faker->words(),
-            'amount' => $this->faker->words(),
-            'n_trips' => $this->faker->randomNumber(),
-            'n_trips_done' => $this->faker->randomNumber(),
-            'interval' => $this->faker->randomNumber(),
-            'start_date' => Carbon::now(),
-            'end_date' => Carbon::now(),
-            'status' => $this->faker->word(),
-            'delivery_notes' => $this->faker->word(),
-            'meta' => $this->faker->words(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'customer_id' => \App\Models\User::all()->random()->id,
+            'driver_id' => \App\Models\User::all()->random()->id,
+            'truck_id' => \App\Models\Asset::all()->random()->id,
+            'coordinates' => $this->faker->latitude.', '.$this->faker->longitude,
+            'materials' => $this->faker->word,
+            'amount' => $this->faker->randomNumber(2),
+            'n_trips' => $this->faker->numberBetween(1, 10),
+            'n_trips_done' => $this->faker->numberBetween(0, 10),
+            'interval' => $this->faker->numberBetween(0, 10),
+            'start_date' => $this->faker->date(),
+            'delivery_date' => $this->faker->date(),
+            'end_date' => $this->faker->date(),
+            'status' => $this->faker->randomElement(['pending', 'in_progress', 'completed']),
+            'delivery_notes' => $this->faker->sentence,
+            'locale' => $this->faker->randomElement(['domestic', 'international']),
+            'meta' => json_encode(['key' => $this->faker->word, 'value' => $this->faker->word]),
         ];
     }
 }

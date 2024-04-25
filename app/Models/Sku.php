@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class sku extends Model
+class Sku extends Model
 {
     use HasFactory;
 
@@ -16,24 +16,23 @@ class sku extends Model
         'status',
     ];
 
-
     public function inventory()
-{
-    return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
-}
+    {
+        return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
+    }
 
-public function warehouses()
-{
-    return $this->belongsToMany(Warehouse::class, 'sku_warehouse', 'sku_id', 'warehouse_id');
-}
+    public function warehouses()
+    {
+        return $this->belongsToMany(Warehouse::class, 'sku_warehouse', 'sku_id', 'warehouse_id');
+    }
 
-public static function boot()
-{
-    parent::boot();
+    public static function boot()
+    {
+        parent::boot();
 
-    static::creating(function ($sku) {
-        $maxId = Sku::max('id') + 1;
-        $sku->SKU = 'SKU' . str_pad($maxId, 3, '0', STR_PAD_LEFT);
-    });
-}
+        static::creating(function ($sku) {
+            $maxId = Sku::max('id') + 1;
+            $sku->SKU = 'SKU'.str_pad($maxId, 3, '0', STR_PAD_LEFT);
+        });
+    }
 }

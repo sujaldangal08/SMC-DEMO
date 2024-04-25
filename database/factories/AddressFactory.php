@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class XeroTenantFactory extends Factory
+class AddressFactory extends Factory
 {
     public function definition(): array
     {

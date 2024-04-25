@@ -28,5 +28,4 @@ class Contact extends Model
     {
         return $this->hasMany(PurchaseOrder::class);
     }
-
 }

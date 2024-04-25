@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ticket;
+use App\Traits\ValidatesRoles;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\Ticket;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Traits\ValidatesRoles;
 use Illuminate\Support\Str;
-
 
 class TicketController extends Controller
 {
@@ -18,11 +17,12 @@ class TicketController extends Controller
     public function index(): JsonResponse
     {
         $ticket = Ticket::all();
+
         return response()->json([
             'status' => 'success',
             'message' => 'All tickets fetched successfully',
             'total' => $ticket->count(),
-            'data' => $ticket
+            'data' => $ticket,
         ], 200);
     }
 
@@ -31,6 +31,7 @@ class TicketController extends Controller
         try {
             $ticket = Ticket::where('ticket_number', $ticketNumber)->get();
             $ticket->load('wastes');
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket fetched successfully',
@@ -38,16 +39,19 @@ class TicketController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Ticket not found'
+                'status' => 'failure',
+                'message' => 'Ticket not found',
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
+
     //Manual Entry of Ticket
     public function store(Request $request): JsonResponse
     {
@@ -57,12 +61,12 @@ class TicketController extends Controller
                 'driver_id' => ['required', $this->roleRule('driver')],
                 'customer_id' => ['required', $this->roleRule('customer'), 'array'],
                 'route_id' => 'nullable|exists:routes,id',  //For automation of ticket generation for schedule
-                'material' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
+                'material' => ['required', 'array', 'size:'.count($request->input('customer_id'))],
                 'weighing_type' => 'required|in:bridge,pallet',
-                'initial_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:' . count($request->input('customer_id'))],
-                'next_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:' . count($request->input('customer_id'))],
-                'tare_bin' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
-                'full_bin_weight' => $request->input('weighing_type') === 'pallet' ? ['required', 'array', 'size:' . count($request->input('customer_id'))] : 'nullable',
+                'initial_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:'.count($request->input('customer_id'))],
+                'next_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:'.count($request->input('customer_id'))],
+                'tare_bin' => ['required', 'array', 'size:'.count($request->input('customer_id'))],
+                'full_bin_weight' => $request->input('weighing_type') === 'pallet' ? ['required', 'array', 'size:'.count($request->input('customer_id'))] : 'nullable',
                 'ticked_type' => 'in:direct,schedule',
                 'in_time' => 'required|date',
                 'out_time' => 'required|date',
@@ -91,9 +95,8 @@ class TicketController extends Controller
                     $gross_weight = $previousWeight - $truckWeight - $tareBin;
                 }
                 $material = isset($materials[$index]) ? $materials[$index] : null;
-                $customerId =  $customerIds[$index];
-                $ticketNumber = 'TICKET-' . strtoupper(dechex($customerId)) . '-' . Str::random(10);
-
+                $customerId = $customerIds[$index];
+                $ticketNumber = 'TICKET-'.strtoupper(dechex($customerId)).'-'.Str::random(10);
 
                 $ticketData = [
                     'rego_number' => $request->input('rego_number'),
@@ -120,10 +123,12 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket created successfully',
-                'data' => $tickets
+                'data' => $tickets,
             ], 201);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            return response()->json(['status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null], 500);
         }
     }
 
@@ -135,12 +140,12 @@ class TicketController extends Controller
                 'driver_id' => ['required', $this->roleRule('driver')],
                 'customer_id' => ['required', $this->roleRule('customer'), 'array'],
                 'route_id' => 'nullable|exists:routes,id',  //For automation of ticket generation for schedule
-                'material' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
+                'material' => ['required', 'array', 'size:'.count($request->input('customer_id'))],
                 'weighing_type' => 'required|in:bridge,pallet',
-                'initial_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:' . count($request->input('customer_id'))],
-                'next_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:' . count($request->input('customer_id'))],
-                'tare_bin' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
-                'full_bin_weight' => $request->input('weighing_type') === 'pallet' ? ['required', 'array', 'size:' . count($request->input('customer_id'))] : 'nullable',
+                'initial_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:'.count($request->input('customer_id'))],
+                'next_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:'.count($request->input('customer_id'))],
+                'tare_bin' => ['required', 'array', 'size:'.count($request->input('customer_id'))],
+                'full_bin_weight' => $request->input('weighing_type') === 'pallet' ? ['required', 'array', 'size:'.count($request->input('customer_id'))] : 'nullable',
                 'ticked_type' => 'in:direct,schedule',
                 'in_time' => 'required|date',
                 'out_time' => 'required|date',
@@ -169,9 +174,8 @@ class TicketController extends Controller
                     $gross_weight = $previousWeight - $truckWeight - $tareBin;
                 }
                 $material = isset($materials[$index]) ? $materials[$index] : null;
-                $customerId =  $customerIds[$index];
-                $ticketNumber = 'TICKET-' . strtoupper(dechex($customerId)) . '-' . Str::random(10);
-
+                $customerId = $customerIds[$index];
+                $ticketNumber = 'TICKET-'.strtoupper(dechex($customerId)).'-'.Str::random(10);
 
                 $ticketData = [
                     'rego_number' => $request->input('rego_number'),
@@ -198,17 +202,19 @@ class TicketController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket updated successfully',
-                'data' => $tickets
+                'data' => $tickets,
             ], 201);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Ticket not found'
+                'status' => 'failure',
+                'message' => 'Ticket not found',
+                'data' => null,
             ], 401);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -218,19 +224,23 @@ class TicketController extends Controller
         try {
             $ticket = Ticket::where('ticket_number', $ticketId)->first();
             $ticket->delete();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Ticket deleted successfully'
+                'message' => 'Ticket deleted successfully',
+                'data' => $ticket,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Ticket not found'
-            ],  404);
+                'status' => 'failure',
+                'message' => 'Ticket not found',
+                'data' => null,
+            ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -240,19 +250,23 @@ class TicketController extends Controller
         try {
             $ticket = Ticket::withTrashed()->where('ticket_number', $ticketId)->first();
             $ticket->restore();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Ticket restored successfully'
+                'message' => 'Ticket restored successfully',
+                'data' => $ticket,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Ticket not found'
+                'status' => 'failure',
+                'message' => 'Ticket not found',
+                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -262,19 +276,23 @@ class TicketController extends Controller
         try {
             $ticket = Ticket::withTrashed()->where('ticket_number', $ticketId)->first();
             $ticket->forceDelete();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Ticket permanently deleted successfully'
-            ]);
+                'message' => 'Ticket permanently deleted successfully',
+                'data' => $ticket,
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Ticket not found'
-            ],  404);
+                'status' => 'failure',
+                'message' => 'Ticket not found',
+                'data' => null,
+            ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }

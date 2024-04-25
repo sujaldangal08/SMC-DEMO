@@ -22,12 +22,11 @@ class Branch extends Model
         'branch_code',
         'branch_status',
         'branch_country_id',
-        'company_id'
+        'company_id',
     ];
 
     public function company()
     {
         return $this->belongsTo(Company::class);
     }
-
 }

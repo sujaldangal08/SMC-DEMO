@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Xero;
 use App\Http\Controllers\Controller;
 use App\Models\Xero\Contact;
 use App\Models\Xero\XeroConnect;
+use App\Models\Xero\XeroSetting;
 use App\Models\Xero\XeroTenant;
-use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class XeroController extends Controller
 {
-
     public function xeroConnect(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $query = http_build_query([
@@ -22,7 +23,7 @@ class XeroController extends Controller
             'scope' => 'email profile openid accounting.settings accounting.transactions accounting.contacts offline_access', // Adjust scope as needed
         ]);
 
-        return redirect('https://login.xero.com/identity/connect/authorize?' . $query);
+        return redirect('https://login.xero.com/identity/connect/authorize?'.$query);
     }
 
     /**
@@ -64,9 +65,8 @@ class XeroController extends Controller
             'message' => 'Successfully connected to Xero',
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken,
-        ]);
+        ], 200);
     }
-
 
     public function xeroRefresh(): \Illuminate\Http\JsonResponse
     {
@@ -95,7 +95,7 @@ class XeroController extends Controller
             'message' => 'Successfully refreshed the access token',
             'access_token' => $responseBody['access_token'],
             'refresh_token' => $responseBody['refresh_token'],
-        ]);
+        ], 200);
     }
 
     public function xeroTenant()
@@ -105,7 +105,7 @@ class XeroController extends Controller
         $client = new Client();
         $response = $client->get('https://api.xero.com/connections', [
             'headers' => [
-                'Authorization' => 'Bearer ' . $xeroConnect->access_token,
+                'Authorization' => 'Bearer '.$xeroConnect->access_token,
             ],
         ]);
 
@@ -129,7 +129,7 @@ class XeroController extends Controller
         return response()->json([
             'message' => 'Successfully fetched and saved the tenants',
             'tenants' => $responseBody,
-        ]);
+        ], 200);
     }
 
     public function getXeroData(): \Illuminate\Http\JsonResponse
@@ -175,8 +175,64 @@ class XeroController extends Controller
             'Status' => 'OK',
             'ProviderName' => 'LaravelApp',
             'DateTimeUTC' => now()->timestamp,
-            'Contacts' => $transformedContacts
+            'Contacts' => $transformedContacts,
         ], 200);
+    }
+
+    public function getXeroCredentials(): \Illuminate\Http\JsonResponse
+    {
+        $xeroSetting = XeroSetting::first();
+
+        if (! $xeroSetting) {
+            return response()->json(['message' => 'XeroSetting not found'], 404);
+        }
+
+        return response()->json([
+            'xero_client_id' => $xeroSetting->xero_client_id,
+            'xero_client_secret' => $xeroSetting->xero_client_secret,
+        ], 200);
+    }
+
+    public function storeXeroCredentials(Request $request): JsonResponse
+    {
+        // Validate the request...
+        $request->validate([
+            'xero_client_id' => 'required',
+            'xero_client_secret' => 'required',
+        ]);
+
+        // Get the first XeroSetting record or create a new one if it doesn't exist
+        $xeroSetting = XeroSetting::first() ?? new XeroSetting();
+
+        // Update the encrypted XeroSetting record with the provided credentials
+        $xeroSetting->xero_client_id = encrypt($request->xero_client_id);
+        $xeroSetting->xero_client_secret = encrypt($request->xero_client_secret);
+        $xeroSetting->save();
+
+        return response()->json(['message' => 'Xero credentials stored successfully'], 200);
+    }
+
+    public function updateXeroCredentials(Request $request, $id): JsonResponse
+    {
+        // Validate the request...
+        $request->validate([
+            'xero_client_id' => 'required',
+            'xero_client_secret' => 'required',
+        ]);
+
+        // Get the XeroSetting record with the given ID
+        $xeroSetting = XeroSetting::find($id);
+
+        if (! $xeroSetting) {
+            return response()->json(['message' => 'XeroSetting not found'], 404);
+        }
+
+        // Update the XeroSetting record with the provided credentials
+        $xeroSetting->xero_client_id = encrypt($request->xero_client_id);
+        $xeroSetting->xero_client_secret = encrypt($request->xero_client_secret);
+        $xeroSetting->save();
+
+        return response()->json(['message' => 'Xero credentials updated successfully'], 200);
     }
 
     public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
@@ -185,14 +241,13 @@ class XeroController extends Controller
         $contact = Contact::with(['addresses', 'phones', 'balances', 'purchaseOrder'])->first();
         $purchaseOrder = $contact->purchaseOrder;
 
-
         $transformedPurchaseOrder = $purchaseOrder->map(function ($purchaseOrder) {
             return [
                 'PurchaseOrderID' => $purchaseOrder->purchase_order_id,
                 'PurchaseOrderNumber' => $purchaseOrder->purchase_order_number,
                 'DateString' => $purchaseOrder->date_string,
-                'Date' => '/Date(' . (new \DateTime($purchaseOrder->date))->getTimestamp() . '000+0000)/',
-                'DeliveryDate' => '/Date(' . (new \DateTime($purchaseOrder->delivery_date))->getTimestamp() . '000+0000)/',
+                'Date' => '/Date('.(new \DateTime($purchaseOrder->date))->getTimestamp().'000+0000)/',
+                'DeliveryDate' => '/Date('.(new \DateTime($purchaseOrder->delivery_date))->getTimestamp().'000+0000)/',
                 'DeliveryAddress' => $purchaseOrder->delivery_address,
                 'AttentionTo' => $purchaseOrder->attention_to,
                 'Telephone' => $purchaseOrder->telephone,
@@ -209,7 +264,7 @@ class XeroController extends Controller
                     'Name' => $purchaseOrder->contact->name,
                     'Addresses' => $purchaseOrder->contact->addresses,
                     'Phones' => $purchaseOrder->contact->phones,
-                    'UpdatedDateUTC' => '/Date(' . (new \DateTime($purchaseOrder->contact->updated_at))->getTimestamp() . '000+0000)/',
+                    'UpdatedDateUTC' => '/Date('.(new \DateTime($purchaseOrder->contact->updated_at))->getTimestamp().'000+0000)/',
                     'ContactGroups' => $purchaseOrder->contact->contactGroups,
                     'DefaultCurrency' => $purchaseOrder->contact->defaultCurrency,
                     'ContactPersons' => $purchaseOrder->contact->contactPersons,
@@ -232,14 +287,12 @@ class XeroController extends Controller
             ];
         });
 
-
         return response()->json([
             'Id' => '58b5344c-edf0-44ce-9e54-f5540b525888',
             'Status' => 'OK',
             'ProviderName' => 'LaravelApp',
             'DateTimeUTC' => now()->timestamp,
-            'Contacts' => $transformedPurchaseOrder
+            'Contacts' => $transformedPurchaseOrder,
         ], 200);
     }
-
 }

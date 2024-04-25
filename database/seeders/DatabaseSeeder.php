@@ -15,16 +15,25 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call(RoleSeeder::class);
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
+        $this->call(UserSeeder::class);
         $this->call(CompanySeeder::class);
         $this->call(BranchSeeder::class);
-
         $this->call(BackendSeeder::class);
         $this->call(EmailSeeder::class);
+        $this->call(AssetSeeder::class);
+        $this->call(InsuranceSeeder::class);
+        $this->call(MaintenanceSeeder::class);
+        $this->call(DeliverySeeder::class);
+        $this->call(DeliveryScheduleSeeder::class);
+        $this->call(DeliveryTripSeeder::class);
+        $this->call(RouteSeeder::class);
+        $this->call(PickupScheduleSeeder::class);
+        $this->call(SkuSeeder::class);
+        $this->call(WarehouseSeeder::class);
+        $this->call(InventorySeeder::class);
+        $this->call(TicketSeeder::class);
+        $this->call(WasteSeeder::class);
+        $this->call(FaqSeeder::class);
+        $this->call(SettingSeeder::class);
     }
 }

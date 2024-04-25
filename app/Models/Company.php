@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'company_name',
         'company_street',
@@ -18,9 +19,10 @@ class Company extends Model
         'company_phone',
         'company_email',
         'company_code',
-        'company_country_id'
+        'company_country_id',
     ];
-    public function branches() : \Illuminate\Database\Eloquent\Relations\HasMany
+
+    public function branches(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Branch::class);
     }

@@ -2,32 +2,37 @@
 
 namespace Database\Factories;
 
-use App\Models\Delivery;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Delivery>
+ */
 class DeliveryFactory extends Factory
 {
-    protected $model = Delivery::class;
-
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
+        $startDate = $this->faker->dateTimeBetween('-1 month', '+1 month');
+        $endDate = (clone $startDate)->modify('+3 days');
+
         return [
-            'status' => $this->faker->word(),
+            'status' => 'pending',
             'truck_id' => $this->faker->randomNumber(),
             'driver_id' => $this->faker->randomNumber(),
             'customer_id' => $this->faker->randomNumber(),
-            'delivery_location' => $this->faker->word(),
-            'delivery_start_date' => $this->faker->word(),
-            'delivery_end_date' => $this->faker->word(),
-            'delivery_start_time' => $this->faker->word(),
-            'delivery_end_time' => $this->faker->word(),
-            'delivery_file' => $this->faker->word(),
-            'delivery_interval' => $this->faker->word(),
-            'delivery_status' => $this->faker->word(),
-            'delivery_notes' => $this->faker->word(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'delivery_location' => $this->faker->address,
+            'delivery_start_date' => $startDate->format('Y-m-d'),
+            'delivery_end_date' => $endDate->format('Y-m-d'),
+            'delivery_start_time' => $this->faker->time(),
+            'delivery_end_time' => $this->faker->time(),
+            'delivery_file' => $this->faker->imageUrl(),
+            'delivery_interval' => '3 days',
+            'delivery_status' => 'pending',
+            'delivery_notes' => $this->faker->sentence,
         ];
     }
 }
