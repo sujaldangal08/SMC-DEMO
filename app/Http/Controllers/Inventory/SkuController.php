@@ -57,13 +57,13 @@ class SkuController extends Controller
         // Find the SKU by its ID
         $sku = Sku::find($id);
 
-        if (! $sku) {
-            return response()->json([
+         if (!$sku) {
+             return response()->json([
                 'status' => 'failure',
                 'message' => 'SKU not found',
-                'data' => null,
-            ], 404);
-        }
+                'data' => null
+             ], 404);
+         }
 
         // Update the SKU with the new data
         $sku->update($data);

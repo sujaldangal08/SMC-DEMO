@@ -77,8 +77,8 @@ class XeroController extends Controller
         $response = $client->post('https://identity.xero.com/connect/token', [
             'form_params' => [
                 'grant_type' => 'refresh_token',
-                'client_id' => config('services.xero.client_id'),
-                'client_secret' => config('services.xero.client_secret'),
+                'client_id' => env('XERO_CLIENT_ID'),
+                'client_secret' => env('XERO_CLIENT_SECRET'),
                 'refresh_token' => $xeroConnect->refresh_token,
             ],
         ]);
@@ -102,13 +102,6 @@ class XeroController extends Controller
     public function xeroTenant()
     {
         $xeroConnect = XeroConnect::first();
-
-        if(! $xeroConnect) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Xero Connection not found, Please connect xero first before calling tenant.'
-            ], 404);
-        }
 
         $client = new Client();
         $response = $client->get('https://api.xero.com/connections', [
