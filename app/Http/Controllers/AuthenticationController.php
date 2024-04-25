@@ -36,37 +36,29 @@ use PragmaRX\Google2FA\Google2FA;
 class AuthenticationController extends Controller
 {
     public function login(Request $request): JsonResponse
-    {
-        try {
-            $credentials = $request->only('email', 'password');
-            $user = User::where('email', $credentials['email'])->first();
+{
+    try {
+        $credentials = $request->only('email', 'password');
+        $user = User::where('email', $credentials['email'])->first();
 
-            if (! $user) {
-                return response()->json(['message' => 'Invalid Credentials 1'], 401);
-            if (! $user) {
-                return response()->json(['message' => 'Invalid Credentials 1'], 401);
+        if (! $user) {
+            return response()->json(['message' => 'Invalid Credentials'], 401);
+        }
+
+        if ($user->login_attempts >= $user->role->max_login_attempts) {
+            $user->deactivate();
+            return response()->json(['message' => 'Your account has been deactivated. Please contact your admin in order to activate it again'], 401);
+        }
+
+        if (auth()->attempt($credentials)) {
+            $user->resetLoginAttempts();
+            if ($user->role->role === 'customer' && $user->email_verified_at === null) {
+                return response()->json(['message' => 'Please verify your email'], 401);
             }
 
-            if ($user['login_attempts'] >= $user->role->max_login_attempts) {
-            if ($user['login_attempts'] >= $user->role->max_login_attempts) {
-                $user->deactivate();
-
-
-                return response()->json(['message' => 'You account has been deactivated. Please contact your admin in order to activate it again'], 401);
-            }
-
-            if (auth()->attempt($credentials)) {
-                $user->resetLoginAttempts();
-                if ($user->role->role === 'customer' && $user->email_verified_at === null) {
-                    return response()->json(['message' => 'Please verify your email'], 401);
-                }
-
-                if (! Hash::check($credentials['password'], $user['password'])) {
-                    $user->incrementLoginAttempts();
-
-                    return response()->json(['message' => 'Invalid Credentials'], 401);
-                }
-
+            if (! Hash::check($credentials['password'], $user->password)) {
+                $user->incrementLoginAttempts();
+                return response()->json(['message' => 'Invalid Credentials'], 401);
             }
 
             // Create a new token for the user
@@ -80,19 +72,18 @@ class AuthenticationController extends Controller
                 'access_token' => $tokenResult->plainTextToken,
                 'token_type' => 'Bearer',
             ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failure',
-                'exception' => $e->getMessage(),
-                'data' => null,
-            ], 400);
-            return response()->json([
-                'status' => 'failure',
-                'exception' => $e->getMessage(),
-                'data' => null,
-            ], 400);
         }
+
+        return response()->json(['message' => 'Invalid Credentials'], 401);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'failure',
+            'exception' => $e->getMessage(),
+            'data' => null,
+        ], 400);
     }
+}
+
 
     public function register(Request $request): JsonResponse
     {
