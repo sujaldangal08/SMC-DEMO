@@ -30,7 +30,7 @@ class TicketSeeder extends Seeder
             'lot_number' => 'LOT123',
             'ticket_number' => 'TICKET12345',
             'in_time' => now(),
-            'out_time' => now()->addHours(1),
+            // 'out_time' => now(),
         ]);
     }
 }
