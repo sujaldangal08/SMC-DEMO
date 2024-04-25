@@ -33,7 +33,8 @@ class DeliveryScheduleSeeder extends Seeder
                 'delivery_location' => 'Manchester, UK',
                 'special_instructions' => 'Deliver between 9am to 5pm',
                 'contact_person' => 'Jane Doe',
-                'contact_phone' => '+44 20 1234 5678', ]),
+                'contact_phone' => '+44 20 1234 5678',
+            ]),
         ]);
         DeliverySchedule::factory()->create([
             'customer_id' => 7,
@@ -56,7 +57,8 @@ class DeliveryScheduleSeeder extends Seeder
                 'delivery_location' => 'Tokyo, Japan',
                 'special_instructions' => 'Handle with care, fragile materials',
                 'contact_person' => 'John Doe',
-                'contact_phone' => '+1 234 567 890', ]),
+                'contact_phone' => '+1 234 567 890',
+            ]),
         ]);
     }
 }
