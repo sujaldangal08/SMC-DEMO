@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,6 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class Backend extends Authenticatable
 {
+    use CanResetPassword, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     use CanResetPassword, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [

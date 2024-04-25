@@ -41,6 +41,5 @@ class AssetSeeder extends Seeder
             ]),
             'branch_id' => 2,
         ]);
-
     }
 }

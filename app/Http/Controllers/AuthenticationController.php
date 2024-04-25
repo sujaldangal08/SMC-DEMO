@@ -12,7 +12,19 @@ use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use App\Models\Backend;
+use App\Models\Role;
+use App\Models\User;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -31,10 +43,14 @@ class AuthenticationController extends Controller
 
             if (! $user) {
                 return response()->json(['message' => 'Invalid Credentials 1'], 401);
+            if (! $user) {
+                return response()->json(['message' => 'Invalid Credentials 1'], 401);
             }
 
             if ($user['login_attempts'] >= $user->role->max_login_attempts) {
+            if ($user['login_attempts'] >= $user->role->max_login_attempts) {
                 $user->deactivate();
+
 
                 return response()->json(['message' => 'You account has been deactivated. Please contact your admin in order to activate it again'], 401);
             }
@@ -70,6 +86,11 @@ class AuthenticationController extends Controller
                 'exception' => $e->getMessage(),
                 'data' => null,
             ], 400);
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
         }
     }
 
@@ -81,6 +102,13 @@ class AuthenticationController extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
+                'confirm_password' => 'required|same:password',
+            ], [
+                'password.required' => 'The password field is required.',
+                'password.min' => 'The password must be at least 8 characters.',
+                'password.regex' => 'The password must include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+                'confirm_password.required' => 'The confirmation password field is required.',
+                'confirm_password.same' => 'The confirmation password must match the password.',
                 'confirm_password' => 'required|same:password',
             ], [
                 'password.required' => 'The password field is required.',
@@ -101,12 +129,14 @@ class AuthenticationController extends Controller
 
             $otp = rand(100000, 999999);
             $user->otp = $otp;
+            $user->otp = $otp;
 
             // Set otp_expiry to be 5 minutes from now
             $user->otp_expiry = Carbon::now()->addMinutes(5);
             $username = $request->name;
 
             $welcomeTemplate = \App\Models\EmailTemplate::where('template_type', 'welcome')->first();
+
 
             $subjectWelcome = $welcomeTemplate->subject; // Retrieve the subject from the emailTemplate model
             $welcome_type = $welcomeTemplate->template_type; // Retrieve the template type from the emailTemplate model
@@ -128,8 +158,24 @@ class AuthenticationController extends Controller
                 'message' => 'Account created successfully, please check your email for the OTP',
                 'data' => $user,
             ], 201);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Account created successfully, please check your email for the OTP',
+                'data' => $user,
+            ], 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e->validator->errors(),
+                'data' => null,
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
             return response()->json([
                 'status' => 'failure',
                 'errors' => $e->validator->errors(),
@@ -159,10 +205,14 @@ class AuthenticationController extends Controller
 
         // Check if the current time is greater than or equal to the OTP expiry time
         if ($second >= $secondTwo) {
+        if ($second >= $secondTwo) {
             // If the OTP has expired, return a JSON response with an error message
             return response()->json(['message' => 'OTP has expired'], 401);
         } elseif (Crypt::decryptString($checkUser->otp) === $request->otp) {
+        } elseif (Crypt::decryptString($checkUser->otp) === $request->otp) {
             // If the OTP provided in the request matches the OTP stored in the user record,
+            $checkUser->email_verified_at = Carbon::now(); // set the email_verified_at field to the current time
+            $checkUser->otp = null; // set the otp field to null
             $checkUser->email_verified_at = Carbon::now(); // set the email_verified_at field to the current time
             $checkUser->otp = null; // set the otp field to null
 
@@ -173,9 +223,19 @@ class AuthenticationController extends Controller
                 'message' => 'OTP verified successfully. Please login to continue',
                 'data' => $checkUser,
             ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP verified successfully. Please login to continue',
+                'data' => $checkUser,
+            ], 200);
         } else {
             // If the OTP provided in the request does not match the OTP stored in the user record,
             // return a JSON response with an error message
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Invalid OTP',
+                'data' => null,
+            ], 401);
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Invalid OTP',
@@ -192,6 +252,7 @@ class AuthenticationController extends Controller
                 'name' => 'required|min:3',
                 'email' => 'required|email|unique:users',
                 'role_id' => 'required|exists:roles,id',
+                'branch_id' => 'nullable|exists:branches,id',
                 'branch_id' => 'nullable|exists:branches,id',
             ]);
 
@@ -213,8 +274,10 @@ class AuthenticationController extends Controller
 
             return response()->json([
                 'status' => 'success',
+                'status' => 'success',
                 'message' => 'User created successfully',
                 'password' => $password,
+                'user' => $user,
                 'user' => $user,
             ], 201);
         } catch (ValidationException $e) {
@@ -224,7 +287,18 @@ class AuthenticationController extends Controller
                 'error' => $e->validator->errors()->getMessages(),
                 'data' => null,
             ], 401);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Validation error',
+                'error' => $e->validator->errors()->getMessages(),
+                'data' => null,
+            ], 401);
         } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
@@ -243,7 +317,18 @@ class AuthenticationController extends Controller
                 'message' => 'Logout successful',
                 'data' => null,
             ], 200);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Logout successful',
+                'data' => null,
+            ], 200);
         } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
@@ -259,12 +344,18 @@ class AuthenticationController extends Controller
             'message' => 'Dashboard',
             'data' => 'Welcome to the dashboard',
         ], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Dashboard',
+            'data' => 'Welcome to the dashboard',
+        ], 200);
     }
 
     public function forgotPassword(Request $request): JsonResponse
     {
         try {
             $request->validate([
+                'email' => 'required|email',
                 'email' => 'required|email',
             ]);
 
@@ -276,8 +367,15 @@ class AuthenticationController extends Controller
                     'message' => 'User not found',
                     'data' => null,
                 ], 404);
+            if (! $user) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'User not found',
+                    'data' => null,
+                ], 404);
             }
             $otp = rand(100000, 999999);
+            $user->otp = Crypt::encryptString($otp);
             $user->otp = Crypt::encryptString($otp);
             $user->otp_expiry = Carbon::now()->addMinutes(5);
             $user->save();
@@ -298,7 +396,17 @@ class AuthenticationController extends Controller
                 'message' => 'OTP sent to your email',
                 'data' => $user,
             ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP sent to your email',
+                'data' => $user,
+            ], 200);
         } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
@@ -316,6 +424,7 @@ class AuthenticationController extends Controller
             $user = Backend::where('email', $credentials['email'])->first();
 
             if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            if (! $user || ! Hash::check($credentials['password'], $user->password)) {
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
 
@@ -328,10 +437,17 @@ class AuthenticationController extends Controller
 
             return response()->json([
                 'status' => 'success',
+                'status' => 'success',
                 'message' => 'Login successful',
                 'token' => $plainTextToken,
             ], 200);
+            ], 200);
         } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
@@ -340,6 +456,7 @@ class AuthenticationController extends Controller
         }
     }
 
+    public function twoFactorGenerate(Request $request): JsonResponse
     public function twoFactorGenerate(Request $request): JsonResponse
     {
         $user = User::where('id', $request->user)->first();
@@ -353,6 +470,7 @@ class AuthenticationController extends Controller
         } else {
             $google2fa = new Google2FA();
             $companyName = env('APP_NAME');
+            $companyEmail = $user->email;
             $companyEmail = $user->email;
             $secretKey = $google2fa->generateSecretKey();
 
@@ -375,8 +493,10 @@ class AuthenticationController extends Controller
 
             // Define the file path
             $filePath = 'qrcodes/'.Str::random(10).'.svg';
+            $filePath = 'qrcodes/'.Str::random(10).'.svg';
 
             // Check if the 'qrcodes' directory exists and create it if it doesn't
+            if (! Storage::disk('public')->exists('qrcodes')) {
             if (! Storage::disk('public')->exists('qrcodes')) {
                 Storage::disk('public')->makeDirectory('qrcodes');
             }
@@ -397,7 +517,10 @@ class AuthenticationController extends Controller
     {
         //        $otp = $request->input('otp');
 
+        //        $otp = $request->input('otp');
+
         $request->validate([
+            'otp' => 'required|regex:/^[0-9]{6}$/', // OTP must be a 6-digit number
             'otp' => 'required|regex:/^[0-9]{6}$/', // OTP must be a 6-digit number
             'user' => 'required|integer',
         ]);
@@ -405,6 +528,8 @@ class AuthenticationController extends Controller
         $google2fa = new Google2FA();
 
         // Retrieve the secret key from your storage
+        $secretKey = User::where('id', $request->user)->first()->tfa_secret;
+        $user = User::where('id', $request->user)->first();
         $secretKey = User::where('id', $request->user)->first()->tfa_secret;
         $user = User::where('id', $request->user)->first();
 
@@ -446,7 +571,13 @@ class AuthenticationController extends Controller
                 'message' => 'Invalid 2FA code',
                 'data' => null,
             ], 400);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Invalid 2FA code',
+                'data' => null,
+            ], 400);
         }
+
 
     }
 
