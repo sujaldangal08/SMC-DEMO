@@ -47,9 +47,9 @@ class AuthenticationController extends Controller
 
                 if (! Hash::check($credentials['password'], $user['password'])) {
                     $user->incrementLoginAttempts();
+
                     return response()->json(['message' => 'Invalid Credentials'], 401);
                 }
-
 
             }
 
@@ -408,8 +408,6 @@ class AuthenticationController extends Controller
         $secretKey = User::where('id', $request->user)->first()->tfa_secret;
         $user = User::where('id', $request->user)->first();
 
-
-
         // Ensure that the secret key is a string
         $secretKey = (string) decrypt($secretKey);
 
@@ -426,9 +424,10 @@ class AuthenticationController extends Controller
             $token->save();
 
             $plainTextToken = $tokenResult->plainTextToken;
-            if(!$user->is_tfa){
+            if (! $user->is_tfa) {
                 $user->is_tfa = true;
                 $user->save();
+
                 return response()->json([
                     'status' => 'success',
                     'message' => '2FA enabled for the user',
