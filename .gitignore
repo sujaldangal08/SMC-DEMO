@@ -1,0 +1,37 @@
+# .gitignore
+
+# PHP
+/vendor/
+
+# Composer
+/composer.phar
+/composer.lock
+/composer.json
+
+# Node
+/node_modules/
+/package-lock.json
+
+# Python
+*.pyc
+__pycache__/
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# SQL
+*.sql
+
+# JetBrains IDE
+.idea/
+
+# macOS
+.DS_Store
+
+# Logs and databases
+*.log
+*.sqlite
+
+# OS generated files
+Thumbs.db
