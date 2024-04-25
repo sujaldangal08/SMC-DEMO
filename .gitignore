@@ -35,3 +35,7 @@ pip-delete-this-directory.txt
 
 # OS generated files
 Thumbs.db
+
+.env
+
+/vscode/
