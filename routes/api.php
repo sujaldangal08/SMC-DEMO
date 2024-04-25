@@ -24,6 +24,7 @@ use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\WastageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Settings\DataSettingController;
+use App\Http\Controllers\SettingController;
 
 // User routes
 Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');

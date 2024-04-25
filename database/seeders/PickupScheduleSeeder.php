@@ -26,7 +26,7 @@ class PickupScheduleSeeder extends Seeder
             'n_bins' => 10,
             'tare_weight' => [50, 60],
             'image' => ['image1.jpg', 'image2.jpg'],
-            'coordinates' => '0.0, 0.0',
+            'coordinates' => ['0.0', '0.0'],
         ]);
     }
 }
