@@ -9,6 +9,7 @@ use App\Models\Xero\XeroSetting;
 use App\Models\Xero\XeroTenant;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class XeroController extends Controller
@@ -178,7 +179,7 @@ class XeroController extends Controller
         ], 200);
     }
 
-    public function getXeroCredentials(): JsonResponse
+    public function getXeroCredentials(): \Illuminate\Http\JsonResponse
     {
         $xeroSetting = XeroSetting::first();
 

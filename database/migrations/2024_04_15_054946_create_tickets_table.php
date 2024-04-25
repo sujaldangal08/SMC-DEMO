@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -29,8 +29,8 @@ return new class extends Migration
             $table->enum('ticked_type', ['direct', 'schedule'])->default('direct');
             $table->string('lot_number');
             $table->string('ticket_number');
-            $table->timestamp('in_time');
-            $table->timestamp('out_time');
+            $table->timestamp('in_time')->nullable(false); // Example of a timestamp column without a default value;
+            $table->timestamp('out_time')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
