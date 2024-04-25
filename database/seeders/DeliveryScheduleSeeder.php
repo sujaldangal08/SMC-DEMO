@@ -33,7 +33,7 @@ class DeliveryScheduleSeeder extends Seeder
                 'delivery_location' => 'Manchester, UK',
                 'special_instructions' => 'Deliver between 9am to 5pm',
                 'contact_person' => 'Jane Doe',
-                'contact_phone' => '+44 20 1234 5678',]),
+                'contact_phone' => '+44 20 1234 5678', ]),
         ]);
         DeliverySchedule::factory()->create([
             'customer_id' => 7,
@@ -41,7 +41,7 @@ class DeliveryScheduleSeeder extends Seeder
             'truck_id' => 2,
             'coordinates' => ['34.052235', '-118.243683'],
             'materials' => ['Steel', 'Iron'],
-            'amount' =>  [1000, 800],
+            'amount' => [1000, 800],
             'n_trips' => 10,
             'n_trips_done' => 5,
             'interval' => 0,
@@ -56,7 +56,7 @@ class DeliveryScheduleSeeder extends Seeder
                 'delivery_location' => 'Tokyo, Japan',
                 'special_instructions' => 'Handle with care, fragile materials',
                 'contact_person' => 'John Doe',
-                'contact_phone' => '+1 234 567 890',]),
+                'contact_phone' => '+1 234 567 890', ]),
         ]);
     }
 }
