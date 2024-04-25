@@ -32,7 +32,6 @@ return new class extends Migration
             $table->string('ticket_number');
             $table->timestamp('in_time');
             $table->timestamp('out_time')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
-
             $table->softDeletes();
             $table->timestamps();
         });
