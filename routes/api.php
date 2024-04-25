@@ -231,3 +231,4 @@ Route::get('/settings', [SettingController::class, 'index']);
 Route::post('/settings', [SettingController::class, 'store']);
 Route::get('/settings/{id}', [SettingController::class, 'show']);
 Route::put('/settings/{id}', [SettingController::class, 'update']);
+
