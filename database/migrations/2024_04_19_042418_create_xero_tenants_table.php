@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('tenantType');
             $table->string('tenantName');
             $table->unsignedBigInteger('xero_connect_id');
-            $table->timestamp('createdDateUtc');
-            $table->timestamp('updatedDateUtc');
+            $table->timestamp('createdDateUtc')->useCurrent();;
+            $table->timestamp('updatedDateUtc')->useCurrent();;
             $table->foreign('xero_connect_id')->references('id')->on('xero_connects');
             $table->timestamps();
         });

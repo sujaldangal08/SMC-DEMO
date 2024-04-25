@@ -226,3 +226,8 @@ Route::get('/driver/route/{id}', [DriverController::class, 'detailRoute'])->midd
 Route::patch('/driver/route/{id}', [DriverController::class, 'updateRoute'])->middleware('auth:sanctum');
 Route::get('driver/schedule/{id}', [DriverController::class, 'detailSchedule'])->middleware('auth:sanctum');
 Route::patch('/driver/schedule/{id}', [DriverController::class, 'updateSchedule'])->middleware('auth:sanctum');
+
+Route::get('/settings', [SettingController::class, 'index']);
+Route::post('/settings', [SettingController::class, 'store']);
+Route::get('/settings/{id}', [SettingController::class, 'show']);
+Route::put('/settings/{id}', [SettingController::class, 'update']);

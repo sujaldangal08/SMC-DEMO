@@ -133,7 +133,7 @@ class DriverController extends Controller
     }
 
     /**
-     * Get the schedule data  
+     * Get the schedule data
      */
 
     public function detailSchedule(int $id): JsonResponse
