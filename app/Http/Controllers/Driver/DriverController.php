@@ -135,7 +135,6 @@ class DriverController extends Controller
     /**
      * Get the schedule data
      */
-
     public function detailSchedule(int $id): JsonResponse
     {
         try {
@@ -146,7 +145,7 @@ class DriverController extends Controller
                 'message' => 'Schedule fetched successfully',
                 'data' => [
                     'schedule' => $schedule,
-                ]
+                ],
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -171,10 +170,11 @@ class DriverController extends Controller
                 'materials' => 'nullable|array',
                 'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
                 'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'n_bins' => 'nullable|integer',
-                'image' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
+                'tare_weight' => ['nullable', 'array', 'size:' . $request->input('n_bins')],
+                'image' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'array', 'size:' . ($request->has('n_bins') ? $request->input('n_bins') : 2)],
             ]);
+            $schedule = PickupSchedule::findOrFail($id)->where('driver_id', request()->user()->id)->first();
             // Upload image
             $images = [];
             // Check if request has image
@@ -192,7 +192,6 @@ class DriverController extends Controller
             // Replace image with the uploaded image
             $validatedData['image'] = $images;
 
-            $schedule = PickupSchedule::findOrFail($id)->where('driver_id', request()->user()->id)->first();
             $schedule->update($validatedData);
 
             return response()->json([

@@ -9,6 +9,7 @@ use App\Models\Xero\XeroSetting;
 use App\Models\Xero\XeroTenant;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class XeroController extends Controller
@@ -17,8 +18,8 @@ class XeroController extends Controller
     {
         $query = http_build_query([
             'response_type' => 'code',
-            'client_id' => env('XERO_CLIENT_ID'),
-            'redirect_uri' => env('XERO_REDIRECT_URI'),
+            'client_id' => config('services.xero.client_id'),
+            'redirect_uri' => config('services.xero.redirect_uri'),
             'scope' => 'email profile openid accounting.settings accounting.transactions accounting.contacts offline_access', // Adjust scope as needed
         ]);
 
@@ -36,9 +37,9 @@ class XeroController extends Controller
         $response = $client->post('https://identity.xero.com/connect/token', [
             'form_params' => [
                 'grant_type' => 'authorization_code',
-                'client_id' => env('XERO_CLIENT_ID'),
-                'client_secret' => env('XERO_CLIENT_SECRET'),
-                'redirect_uri' => env('XERO_REDIRECT_URI'),
+                'client_id' => config('services.xero.client_id'),
+                'client_secret' => config('services.xero.client_secret'),
+                'redirect_uri' => config('services.xero.redirect_uri'),
                 'code' => $code,
             ],
         ]);
@@ -48,7 +49,8 @@ class XeroController extends Controller
         $accessToken = $responseBody['access_token'];
         $refreshToken = $responseBody['refresh_token'];
 
-        $xeroConnect = XeroConnect::first();
+        // Get the first XeroConnect record or create a new one if it doesn't exist
+        $xeroConnect = XeroConnect::first() ?? new XeroConnect();
 
         // Save the data to the XeroConnect model
         $xeroConnect->update([
@@ -178,7 +180,7 @@ class XeroController extends Controller
         ], 200);
     }
 
-    public function getXeroCredentials(): JsonResponse
+    public function getXeroCredentials(): \Illuminate\Http\JsonResponse
     {
         $xeroSetting = XeroSetting::first();
 
