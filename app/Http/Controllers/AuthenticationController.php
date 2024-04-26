@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use PragmaRX\Google2FA\Google2FA;
 
+
 class AuthenticationController extends Controller
 {
     public function login(Request $request): JsonResponse
@@ -55,6 +56,15 @@ class AuthenticationController extends Controller
 
             // Create a new token for the user
             $tokenResult = $user->createToken('authToken');
+            $accessToken = $user->createToken('access_token', [TokenAbility::ACCESS_API->value], config('sanctum.expiration'));
+            $refreshToken = $user->createToken('refresh_token', [TokenAbility::ISSUE_ACCESS_TOKEN->value], config('sanctum.rt_expiration'));
+
+            // $refreshToken = RefreshToken::create([
+            //     'current_token' => $tokenResult->plainTextToken,
+            //     'refresh_token' => Str::random(60),
+            //     'refresh_token_creation' => Carbon::now(),
+            //     'refresh_expiry_time' => Carbon::now()->addDays(7),
+            // ]);
 
             // Return the token in the response
             return response()->json([
@@ -62,6 +72,8 @@ class AuthenticationController extends Controller
                 'message' => 'Login successful',
                 '2fa' => (bool) $user->is_tfa,
                 'access_token' => $tokenResult->plainTextToken,
+                // 'token' => $accessToken->plainTextToken,
+                // 'refresh_token' => $refreshToken->plainTextToken,
                 'token_type' => 'Bearer',
             ], 200);
         } catch (\Exception $e) {
