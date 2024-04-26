@@ -82,6 +82,8 @@ Route::get('/sku', [SkuController::class, 'sku']);
 Route::post('/sku', [SkuController::class, 'createSku']);
 Route::patch('/sku/{id}', [SkuController::class, 'updateSku']);
 
+
+//Authentication routes for normal users and backend users
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/backend-login', [AuthenticationController::class, 'backendLogin']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
@@ -229,8 +231,11 @@ Route::patch('/driver/route/{id}', [DriverController::class, 'updateRoute'])->mi
 Route::get('driver/schedule/{id}', [DriverController::class, 'detailSchedule'])->middleware('auth:sanctum');
 Route::patch('/driver/schedule/{id}', [DriverController::class, 'updateSchedule'])->middleware('auth:sanctum');
 
+//Driver Delivery Routes
+Route::get('/driver/trips', [DriverController::class, 'deliveryTrips'])->middleware('auth:sanctum');
+Route::get('/driver/trips/{id}', [DriverController::class, 'detailDeliveryTrip'])->middleware('auth:sanctum');
+
 Route::get('/setting', [SettingController::class, 'index']);
 Route::post('/setting', [SettingController::class, 'store']);
 Route::get('/setting/{id}', [SettingController::class, 'show']);
 Route::put('/setting/{id}', [SettingController::class, 'update']);
-

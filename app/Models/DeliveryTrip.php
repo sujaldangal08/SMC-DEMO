@@ -15,6 +15,7 @@ class DeliveryTrip extends Model
         'schedule_id',
         'driver_id',
         'truck_id',
+        'trip_name',
         'materials_loaded',
         'amount_loaded',
         'trip_number',

@@ -17,10 +17,11 @@ return new class extends Migration
             $table->foreignId('schedule_id')->constrained('delivery_schedules');
             $table->foreignId('driver_id')->constrained('users');
             $table->foreignId('truck_id')->constrained('assets');
+            $table->string('trip_name');
             $table->string('materials_loaded');
             $table->string('amount_loaded');
             $table->string('trip_number');
-            $table->enum('status', ['pending', 'in_progress', 'completed']);
+            $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled']);
             $table->date('trip_date');
             $table->softDeletes();
             $table->timestamps();
