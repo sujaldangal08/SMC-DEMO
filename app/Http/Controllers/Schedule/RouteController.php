@@ -16,7 +16,7 @@ class RouteController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $routes = Route::with(['schedule.customer'])->get();
+            $routes = Route::paginate(10);
 
             return response()->json([
                 'status' => 'success',
@@ -26,9 +26,8 @@ class RouteController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => null,
             ], 500);
         }
     }
@@ -47,15 +46,13 @@ class RouteController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => 'Route not found',
-                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => null,
             ], 500);
         }
     }
@@ -81,9 +78,8 @@ class RouteController extends Controller
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => null,
             ], 500);
         }
     }
@@ -112,15 +108,13 @@ class RouteController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => 'Route not found',
-                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => null,
             ], 500);
         }
     }
@@ -134,19 +128,16 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Route deleted successfully',
-                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => 'Route not found',
-                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => null,
             ], 500);
         }
     }
@@ -160,19 +151,16 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Route restored successfully',
-                'data' => $route,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => 'Route not found',
-                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => null,
             ], 500);
         }
     }
@@ -186,19 +174,16 @@ class RouteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Route permanently deleted successfully',
-                'data' => null,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => 'Route not found',
-                'data' => null,
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => null,
             ], 500);
         }
     }

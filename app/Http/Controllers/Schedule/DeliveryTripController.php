@@ -20,10 +20,10 @@ class DeliveryTripController extends Controller
             $trips = DeliveryTrip::all();
 
             return response()->json([
-                'status' => 'success',
+                'status' => 'successful',
                 'count' => count($trips), // Add this line to return the count of the trips
                 'message' => 'Delivery trips retrieved successfully.',
-                'data' => $trips,
+                'trips' => $trips,
             ], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error occurred while creating delivery trips.'], 500);
@@ -36,22 +36,14 @@ class DeliveryTripController extends Controller
             $trip = DeliveryTrip::find($id);
 
             return response()->json([
-                'status' => 'success',
+                'status' => 'successful',
                 'message' => 'Delivery trip retrieved successfully.',
-                'data' => $trip,
+                'trip' => $trip,
             ], 200);
         } catch (ModelNotFoundException) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Delivery trip not found.',
-                'data' => null,
-            ], 404);
+            return response()->json(['message' => 'Delivery trip not found.'], 404);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'An error occurred while retrieving delivery trip.',
-                'data' => null,
-            ], 500);
+            return response()->json(['message' => 'An error occurred while retrieving delivery trip.'], 500);
         }
     }
 
@@ -70,16 +62,12 @@ class DeliveryTripController extends Controller
             $trip = DeliveryTrip::create($validatedRequest);
 
             return response()->json([
-                'status' => 'success',
+                'status' => 'successful',
                 'message' => 'Delivery trip created successfully.',
-                'data' => $trip,
+                'trip' => $trip,
             ], 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'An error occurred while creating delivery trip.',
-                'data' => null,
-            ], 500);
+            return response()->json(['message' => 'An error occurred while creating delivery trip.'], 500);
         }
     }
 
@@ -97,7 +85,7 @@ class DeliveryTripController extends Controller
             $trip->update($validatedRequest);
 
             return response()->json([
-                'status' => 'success',
+                'status' => 'successful',
                 'message' => 'Delivery trip updated successfully.',
                 'trip' => $trip,
             ], 200);
@@ -115,22 +103,13 @@ class DeliveryTripController extends Controller
             $trip->delete();
 
             return response()->json([
-                'status' => 'success',
+                'status' => 'successful',
                 'message' => 'Delivery trip deleted successfully.',
-                'data' => null,
             ], 200);
         } catch (ModelNotFoundException) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Delivery trip not found.',
-                'data' => null,
-            ], 404);
+            return response()->json(['message' => 'Delivery trip not found.'], 404);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'An error occurred while deleting delivery trip.',
-                'data' => null,
-            ], 500);
+            return response()->json(['message' => 'An error occurred while deleting delivery trip.'], 500);
         }
     }
 
@@ -143,20 +122,11 @@ class DeliveryTripController extends Controller
             return response()->json([
                 'status' => 'successful',
                 'message' => 'Delivery trip restored successfully.',
-                'data' => null,
             ], 200);
         } catch (ModelNotFoundException) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Delivery trip not found.',
-                'data' => null,
-            ], 404);
+            return response()->json(['message' => 'Delivery trip not found.'], 404);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'An error occurred while restoring delivery trip.',
-                'data' => null,
-            ], 500);
+            return response()->json(['message' => 'An error occurred while restoring delivery trip.'], 500);
         }
     }
 
@@ -169,20 +139,11 @@ class DeliveryTripController extends Controller
             return response()->json([
                 'status' => 'successful',
                 'message' => 'Delivery trip permanently deleted successfully.',
-                'data' => null,
             ], 200);
         } catch (ModelNotFoundException) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Delivery trip not found.',
-                'data' => null,
-            ], 404);
+            return response()->json(['message' => 'Delivery trip not found.'], 404);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'An error occurred while permanently deleting delivery trip.',
-                'data' => null,
-            ], 500);
+            return response()->json(['message' => 'An error occurred while permanently deleting delivery trip.'], 500);
         }
     }
 }

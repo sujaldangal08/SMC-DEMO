@@ -1,22 +1,41 @@
-/node_modules
-/public/hot
-/public/storage
-/storage/*.key
-/vendor
-# Laravel logs
-/storage/logs/laravel.log
+# .gitignore
 
-# PhpStorm (IDEA) files
+# PHP
+/vendor/
+
+# Composer
+/composer.phar
+/composer.lock
+/composer.json
+
+# Node
+/node_modules/
+/package-lock.json
+
+# Python
+*.pyc
+__pycache__/
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# SQL
+*.sql
+
+# JetBrains IDE
 .idea/
 
+# macOS
+.DS_Store
+
+# Logs and databases
+*.log
+*.sqlite
+
+# OS generated files
+Thumbs.db
+
 .env
-.env.backup
-.env.example
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
-/storage/logs/*
-.vscode/
-azure-pipelines.yml
+/vscode/
+

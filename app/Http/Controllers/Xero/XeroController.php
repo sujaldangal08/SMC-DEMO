@@ -10,14 +10,19 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Setting;
+use Illuminate\Support\Facades\Crypt;
 
 class XeroController extends Controller
 {
     public function xeroConnect(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
+        $credentials = $this->getXero();
+
+
         $query = http_build_query([
             'response_type' => 'code',
-            'client_id' => config('services.xero.client_id'),
+            'client_id' => $credentials['xero_client_id'],
             'redirect_uri' => config('services.xero.redirect_uri'),
             'scope' => 'email profile openid accounting.settings accounting.transactions accounting.contacts offline_access', // Adjust scope as needed
         ]);
@@ -28,16 +33,33 @@ class XeroController extends Controller
     /**
      * @throws GuzzleException
      */
+
+     protected function getXero(){
+        $xeroSetting = Setting::all();
+        $client_id = $xeroSetting['0']['setting_value'];
+        $client_secret = $xeroSetting['1']['setting_value'];
+
+        if (! $xeroSetting) {
+            return response()->json(['message' => 'XeroSetting not found'], 404);
+        }
+
+        return [
+            'xero_client_id' => Crypt::decryptString($client_id),
+            'xero_client_secret' => Crypt::decryptString($client_secret),
+        ];
+    }
     public function xeroCallback(Request $request)
     {
         $code = $request->query('code');
+        $credentials = $this->getXero();
+
 
         $client = new Client();
         $response = $client->post('https://identity.xero.com/connect/token', [
             'form_params' => [
                 'grant_type' => 'authorization_code',
-                'client_id' => config('services.xero.client_id'),
-                'client_secret' => config('services.xero.client_secret'),
+                'client_id' => $credentials['xero_client_id'],
+                'client_secret' => $credentials['xero_client_secret'],
                 'redirect_uri' => config('services.xero.redirect_uri'),
                 'code' => $code,
             ],
@@ -61,7 +83,6 @@ class XeroController extends Controller
             'scope' => $responseBody['scope'],
         ]);
 
-        //        return redirect('http://localhost:3000/xero/connect');
         return response()->json([
             'message' => 'Successfully connected to Xero',
             'access_token' => $accessToken,
@@ -72,13 +93,13 @@ class XeroController extends Controller
     public function xeroRefresh(): \Illuminate\Http\JsonResponse
     {
         $xeroConnect = XeroConnect::first();
-
+        $credentials = $this->getXero();
         $client = new Client();
         $response = $client->post('https://identity.xero.com/connect/token', [
             'form_params' => [
                 'grant_type' => 'refresh_token',
-                'client_id' => config('services.xero.client_id'),
-                'client_secret' => config('services.xero.client_secret'),
+                'client_id' => $credentials['xero_client_id'],
+                'client_secret' => $credentials['xero_client_secret'],
                 'refresh_token' => $xeroConnect->refresh_token,
             ],
         ]);
@@ -102,13 +123,6 @@ class XeroController extends Controller
     public function xeroTenant()
     {
         $xeroConnect = XeroConnect::first();
-
-        if (! $xeroConnect) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Xero Connection not found, Please connect xero first before calling tenant.',
-            ], 404);
-        }
 
         $client = new Client();
         $response = $client->get('https://api.xero.com/connections', [
@@ -187,6 +201,8 @@ class XeroController extends Controller
         ], 200);
     }
 
+
+
     public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
     {
 
@@ -247,4 +263,5 @@ class XeroController extends Controller
             'Contacts' => $transformedPurchaseOrder,
         ], 200);
     }
+
 }
