@@ -16,17 +16,7 @@ class RouteController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $routes = Route::with(['schedule.customer'])->get()->map(function ($route) {
-                $route->customer_names = $route->schedule->map(function ($schedule) {
-                    return $schedule->customer->name;
-                });
-                $route->total_materials = $route->schedule->map(function ($schedule) {
-                    return array_sum(json_decode($schedule->amount, true));
-                })->sum();
-                unset($route->schedule);
-
-                return $route;
-            });
+            $routes = Route::paginate(10);
 
             return response()->json([
                 'status' => 'success',

@@ -14,6 +14,7 @@ class DeliverySchedule extends Model
         'customer_id',
         'driver_id',
         'truck_id',
+        'name',
         'coordinates',
         'materials',
         'amount',
@@ -70,6 +71,7 @@ class DeliverySchedule extends Model
             // These are assigned as they can be changed
             $deliveryTrip->driver_id = $deliverySchedule->driver_id;
             $deliveryTrip->truck_id = $deliverySchedule->truck_id;
+            $deliveryTrip->trip_name = $deliverySchedule->name;
             $deliveryTrip->materials_loaded = $deliverySchedule->materials;
             $deliveryTrip->amount_loaded = $deliverySchedule->amount;
             $deliveryTrip->trip_number = 1;
@@ -116,6 +118,7 @@ class DeliverySchedule extends Model
         $deliveryTrip->schedule_id = $this->id;
         $deliveryTrip->driver_id = $this->driver_id;
         $deliveryTrip->truck_id = $this->truck_id;
+        $deliveryTrip->trip_name = $this->name;
         $deliveryTrip->materials_loaded = $this->materials;
         $deliveryTrip->amount_loaded = $this->amount;
         $deliveryTrip->trip_number = $lastDeliveryTrip->trip_number + 1;

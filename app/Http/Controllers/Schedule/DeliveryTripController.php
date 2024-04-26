@@ -17,13 +17,20 @@ class DeliveryTripController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $trips = DeliveryTrip::all();
+            $trips = DeliveryTrip::all()->map(function ($trip) {
+                $amount = $trip->amount_loaded;
+                $weight = is_array($amount) ? array_sum($amount) : 0;
+                $trip->weight_of_materials = $weight;
+                return $trip;
+            });
 
             return response()->json([
                 'status' => 'successful',
                 'count' => count($trips), // Add this line to return the count of the trips
                 'message' => 'Delivery trips retrieved successfully.',
-                'trips' => $trips,
+                'data' => [
+                    'trips' => $trips,
+                ],
             ], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error occurred while creating delivery trips.'], 500);

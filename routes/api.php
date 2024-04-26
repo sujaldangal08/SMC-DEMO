@@ -1,31 +1,30 @@
 <?php
 
-use App\Http\Controllers\Asset\AssetController;
-use App\Http\Controllers\Asset\InsuranceController;
-use App\Http\Controllers\Asset\MaintenanceController;
-use App\Http\Controllers\Authentication\OAuthController;
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\Backend\SuperAdminController;
-use App\Http\Controllers\Driver\DriverController;
-use App\Http\Controllers\FaqController;
-use App\Http\Controllers\Inventory\InventoryController;
-use App\Http\Controllers\Inventory\SkuController;
-use App\Http\Controllers\Inventory\WarehouseController;
-use App\Http\Controllers\Report\{ReportController};
-use App\Http\Controllers\SalesOrderController;
-use App\Http\Controllers\Schedule\DeliveryController;
-use App\Http\Controllers\Schedule\DeliveryScheduleController;
-use App\Http\Controllers\Schedule\DeliveryTripController;
-use App\Http\Controllers\Schedule\PickupController;
-use App\Http\Controllers\Schedule\RouteController;
-use App\Http\Controllers\Settings\AuthenticationSettingsController;
-use App\Http\Controllers\Settings\ProfileSettingsController;
-use App\Http\Controllers\Ticket\TicketController;
-use App\Http\Controllers\Ticket\WastageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SalesOrderController;
+use App\Http\Controllers\Asset\AssetController;
+use App\Http\Controllers\Driver\DriverController;
+use App\Http\Controllers\Inventory\SkuController;
+use App\Http\Controllers\Ticket\TicketController;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\Schedule\RouteController;
+use App\Http\Controllers\Ticket\WastageController;
+use App\Http\Controllers\Asset\InsuranceController;
+use App\Http\Controllers\Report\{ReportController};
+use App\Http\Controllers\Schedule\PickupController;
+use App\Http\Controllers\Asset\MaintenanceController;
+use App\Http\Controllers\Schedule\DeliveryController;
+use App\Http\Controllers\Backend\SuperAdminController;
+use App\Http\Controllers\Inventory\InventoryController;
+use App\Http\Controllers\Inventory\WarehouseController;
+use App\Http\Controllers\Authentication\OAuthController;
 use App\Http\Controllers\Settings\DataSettingController;
-use App\Http\Controllers\Xero\XeroSyncController;
-
+use App\Http\Controllers\Schedule\DeliveryTripController;
+use App\Http\Controllers\Settings\ProfileSettingsController;
+use App\Http\Controllers\Schedule\DeliveryScheduleController;
+use App\Http\Controllers\Settings\AuthenticationSettingsController;
 
 // User routes
 Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');
@@ -54,7 +53,7 @@ Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallb
 Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
 Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 Route::get('/xero/contacts', 'App\Http\Controllers\Xero\XeroSyncController@syncContacts');
-Route::get('/xero/purchaseorder', [XeroSyncController::class, 'syncPurchaseOrders']);
+Route::get('/xero/invoices', 'App\Http\Controllers\Xero\XeroSyncController@syncInvoices');
 
 // Setting routes
 Route::get('/settings', [DataSettingController::class, 'getAll']);
@@ -83,6 +82,8 @@ Route::get('/sku', [SkuController::class, 'sku']);
 Route::post('/sku', [SkuController::class, 'createSku']);
 Route::patch('/sku/{id}', [SkuController::class, 'updateSku']);
 
+
+//Authentication routes for normal users and backend users
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/backend-login', [AuthenticationController::class, 'backendLogin']);
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
@@ -230,11 +231,11 @@ Route::patch('/driver/route/{id}', [DriverController::class, 'updateRoute'])->mi
 Route::get('driver/schedule/{id}', [DriverController::class, 'detailSchedule'])->middleware('auth:sanctum');
 Route::patch('/driver/schedule/{id}', [DriverController::class, 'updateSchedule'])->middleware('auth:sanctum');
 
-Route::get('/settings', [SettingController::class, 'index']);
-Route::post('/settings', [SettingController::class, 'store']);
-Route::get('/settings/{id}', [SettingController::class, 'show']);
-Route::put('/settings/{id}', [SettingController::class, 'update']);
+//Driver Delivery Routes
+Route::get('/driver/trips', [DriverController::class, 'deliveryTrips'])->middleware('auth:sanctum');
+Route::get('/driver/trips/{id}', [DriverController::class, 'detailDeliveryTrip'])->middleware('auth:sanctum');
 
-// Route::post('/refresh-token', [RefreshTokenController::class, 'refreshToken']);
-
-
+Route::get('/setting', [SettingController::class, 'index']);
+Route::post('/setting', [SettingController::class, 'store']);
+Route::get('/setting/{id}', [SettingController::class, 'show']);
+Route::put('/setting/{id}', [SettingController::class, 'update']);
