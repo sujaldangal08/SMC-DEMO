@@ -77,6 +77,7 @@ class DeliverySchedule extends Model
             $deliveryTrip->trip_number = 1;
             $deliveryTrip->status = 'pending';
             $deliveryTrip->trip_date = $deliverySchedule->start_date; // Assign the start date as the trip date
+            $deliveryTrip->note = $deliverySchedule->delivery_notes;
             // Save the delivery trip
             $deliveryTrip->save();
         });
@@ -123,6 +124,7 @@ class DeliverySchedule extends Model
         $deliveryTrip->amount_loaded = $this->amount;
         $deliveryTrip->trip_number = $lastDeliveryTrip->trip_number + 1;
         $deliveryTrip->status = 'pending';
+        $deliveryTrip->note = $lastDeliveryTrip->note;
         // Assign the passed trip date to the tip date to get the correct date for the trip
         $deliveryTrip->trip_date = $tripDate;
         $deliveryTrip->save();

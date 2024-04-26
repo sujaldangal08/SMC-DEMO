@@ -21,6 +21,7 @@ class DeliveryTripSeeder extends Seeder
             'amount_loaded' => [100, 200, 300],
             'trip_number' => 1,
             'status' => 'pending',
+            'note' => 'This is a nore',
             'trip_date' => now(),
         ]);
     }

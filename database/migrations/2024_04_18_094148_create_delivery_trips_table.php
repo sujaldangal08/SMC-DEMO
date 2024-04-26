@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('trip_number');
             $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled']);
             $table->date('trip_date');
+            $table->string('note');
             $table->softDeletes();
             $table->timestamps();
         });
