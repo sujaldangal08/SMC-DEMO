@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
@@ -12,6 +11,7 @@ class SettingController extends Controller
     {
         $settings = Setting::all();
         $settings = $this->decryptSettings($settings);
+
         return response()->json(['settings' => $settings]);
     }
 
@@ -35,6 +35,7 @@ class SettingController extends Controller
     {
         $setting = Setting::findOrFail($id);
         $setting = $this->decryptSetting($setting);
+
         return response()->json(['setting' => $setting]);
     }
 
@@ -63,6 +64,7 @@ class SettingController extends Controller
     private function decryptSetting($setting)
     {
         $setting->setting_value = decrypt($setting->setting_value);
+
         return $setting;
     }
 
@@ -72,6 +74,7 @@ class SettingController extends Controller
         foreach ($settings as $setting) {
             $setting->setting_value = decrypt($setting->setting_value);
         }
+
         return $settings;
     }
 }

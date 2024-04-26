@@ -62,6 +62,7 @@ class XeroController extends Controller
             'scope' => $responseBody['scope'],
         ]);
 
+        //        return redirect('http://localhost:3000/xero/connect');
         return response()->json([
             'message' => 'Successfully connected to Xero',
             'access_token' => $accessToken,
@@ -103,10 +104,10 @@ class XeroController extends Controller
     {
         $xeroConnect = XeroConnect::first();
 
-        if(! $xeroConnect) {
+        if (! $xeroConnect) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Xero Connection not found, Please connect xero first before calling tenant.'
+                'message' => 'Xero Connection not found, Please connect xero first before calling tenant.',
             ], 404);
         }
 
