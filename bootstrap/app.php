@@ -19,6 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->api(append: [RoleAuthentication::class]);  this applies to all routes
         $middleware->redirectGuestsTo('/login');
         $middleware->alias(['role' => RoleAuthentication::class]);
+
+        // $middleware->allias(['abilities' => CheckAbilities::class]);
+        // $middleware->allias(['ability' => CheckForAnyAbility::class]);
+
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
