@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('purchase_order_id');
             $table->string('purchase_order_number');
             $table->dateTime('date');
-            $table->dateTime('delivery_date');
+            $table->dateTime('delivery_date')->nullable();
             $table->text('delivery_address');
             $table->string('attention_to');
             $table->string('telephone');
@@ -25,9 +25,9 @@ return new class extends Migration
             $table->boolean('is_discounted');
             $table->string('reference');
             $table->string('type');
-            $table->decimal('currency_rate', 10, 10);
+            $table->decimal('currency_rate', 15, 10); // Adjusted precision and scale
             $table->string('currency_code');
-            $table->unsignedBigInteger('contact_id');
+            $table->foreignId('contact_id')->constrained('contacts');
             $table->uuid('branding_theme_id');
             $table->string('status');
             $table->string('line_amount_types');
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->boolean('has_attachments');
             $table->timestamps();
 
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+
 
         });
     }
