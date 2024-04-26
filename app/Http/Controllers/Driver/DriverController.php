@@ -257,8 +257,65 @@ class DriverController extends Controller
             return response()->json([
                 'status' => 'successful',
                 'message' => 'Delivery trip retrieved successfully.',
+                'data' => $trip,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null,
+            ], 500);
+        }
+    }
+
+    public function updateDeliveryTrip(Request $request, int $id): JsonResponse
+    {
+        try {
+            $validatedData = $request->validate([
+                'status' => 'required|string|in:completed,in_progress,pending,full',
+                'amount_loaded' => 'nullable|array',
+                'notes' => 'nullable',
+                'materials' => 'nullable|array',
+                'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
+                'n_bins' => 'nullable|integer',
+                'tare_weight' => ['nullable', 'array', 'size:' . $request->input('n_bins')],
+                'image' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'array', 'size:' . ($request->has('n_bins') ? $request->input('n_bins') : 2)],
+            ]);
+
+            $trip = DeliveryTrip::findOrFail($id)->where('driver_id', request()->user()->id)->first();
+            // Upload image
+            if ($validatedData['status'] === 'completed' && (!$request->hasFile('image') || $trip['image'] === null)) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'Image is required when status is done.',
+                    'data' => null,
+                ], 422);
+            }
+            $images = [];
+            // Check if request has image
+
+            if ($request->hasFile('image')) {
+                // Loop through each image
+                foreach ($request->file('image') as $image) {
+                    // Generate random name
+                    $imageName = Str::random(6) . '.' . $image->extension();
+                    $image->move(public_path('uploads/assets'), $imageName); // upload image to public/uploads/assets
+                    $destinationPath = 'uploads/assets/' . $imageName;
+                    // Push image to images array
+                    $images[] = $destinationPath;
+                }
+            }
+            // Replace image with the uploaded image
+            $validatedData['image'] = $images;
+
+            $trip->update($validatedData);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Delivery trip updated successfully',
                 'data' => [
-                    $trip,
+                    'trip' => $trip,
                 ],
             ], 200);
         } catch (\Exception $e) {
