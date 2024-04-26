@@ -54,6 +54,7 @@ Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant'
 Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 Route::get('/xero/contacts', 'App\Http\Controllers\Xero\XeroSyncController@syncContacts');
 Route::get('/xero/invoices', 'App\Http\Controllers\Xero\XeroSyncController@syncInvoices');
+Route::get('/xero/purchase-orders', 'App\Http\Controllers\Xero\XeroSyncController@syncPurchaseOrders');
 
 // Setting routes
 Route::get('/settings', [DataSettingController::class, 'getAll']);

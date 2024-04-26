@@ -11,6 +11,8 @@ use App\Models\Xero\XeroConnect;
 use App\Models\Xero\XeroTenant;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use App\Models\Xero\PurchaseOrder;
+use App\Models\Xero\LineItem;
 
 class XeroSyncController extends Controller
 {
@@ -203,47 +205,5 @@ class XeroSyncController extends Controller
         }
     }
 
-    public function syncInvoices()
-    {
-        $token = XeroConnect::get()->first(); // Replace with your actual access token
-        $accessToken = $token->access_token;
-        $tenant = XeroTenant::get()->first(); // Replace with your actual tenant
-        $tenantId = $tenant->tenantId;
-        $contact = Contact::get()->first(); // Replace with your actual contact
 
-        $client = new Client();
-
-        try {
-            $response = $client->request('GET', uri: 'https://api.xero.com/api.xro/2.0/Invoices', options: [
-                'headers' => [
-                    'Authorization' => 'Bearer '.$accessToken,
-                    'Xero-tenant-id' => $tenantId,
-                    'Accept' => 'application/json',
-                    'Content-Type' => 'application/json',
-                ],
-            ]);
-            $invoices = json_decode($response->getBody()->getContents(), true)['Invoices'];
-            foreach ($invoices as $xeroInvoice) {
-                $invoice = new SalesOrder();
-                $invoice->invoice_id = $xeroInvoice['InvoiceID'];
-                $invoice->invoice_number = $xeroInvoice['InvoiceNumber'];
-                $invoice->reference = $xeroInvoice['Reference'];
-                $invoice->amount_due = $xeroInvoice['AmountDue'];
-                $invoice->amount_paid = $xeroInvoice['AmountPaid'];
-                $invoice->amount_credited = $xeroInvoice['AmountCredited'];
-                $invoice->contact_id = $contact->id; // Assuming the ContactID is available in the Contact object of the invoice
-                $invoice->save();
-            }
-
-            return response()->json(['message' => 'Invoices synced successfully']);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Exception when calling Xero API: '.$e->getMessage(),
-            ]);
-        } catch (GuzzleException $e) {
-            return response()->json([
-                'message' => 'Exception when calling Xero API: '.$e->getMessage(),
-            ]);
-        }
-    }
 }
