@@ -29,7 +29,7 @@ class AuthenticationController extends Controller
             $credentials = $request->only('email', 'password');
             $user = User::where('email', $credentials['email'])->first();
 
-            if (! $user) {
+            if (!$user) {
                 return response()->json(['message' => 'Invalid Credentials 1'], 401);
             }
 
@@ -128,7 +128,6 @@ class AuthenticationController extends Controller
                 'message' => 'Account created successfully, please check your email for the OTP',
                 'data' => $user,
             ], 201);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'status' => 'failure',
@@ -142,7 +141,6 @@ class AuthenticationController extends Controller
                 'data' => null,
             ], 400);
         }
-
     }
 
     public function verifyOtp(Request $request): JsonResponse
@@ -270,7 +268,7 @@ class AuthenticationController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
-            if (! $user) {
+            if (!$user) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'User not found',
@@ -374,10 +372,10 @@ class AuthenticationController extends Controller
             $qrCode = $writer->writeString($qrCodeUrl);
 
             // Define the file path
-            $filePath = 'qrcodes/'.Str::random(10).'.svg';
+            $filePath = 'qrcodes/' . Str::random(10) . '.svg';
 
             // Check if the 'qrcodes' directory exists and create it if it doesn't
-            if (! Storage::disk('public')->exists('qrcodes')) {
+            if (!Storage::disk('public')->exists('qrcodes')) {
                 Storage::disk('public')->makeDirectory('qrcodes');
             }
 
@@ -390,7 +388,6 @@ class AuthenticationController extends Controller
                 'secret_key' => $secretKey,
             ], 200);
         }
-
     }
 
     public function verify2FACode(Request $request): JsonResponse
@@ -424,7 +421,7 @@ class AuthenticationController extends Controller
             $token->save();
 
             $plainTextToken = $tokenResult->plainTextToken;
-            if (! $user->is_tfa) {
+            if (!$user->is_tfa) {
                 $user->is_tfa = true;
                 $user->save();
 
@@ -447,7 +444,6 @@ class AuthenticationController extends Controller
                 'data' => null,
             ], 400);
         }
-
     }
 
     public function disable2FA(Request $request): JsonResponse

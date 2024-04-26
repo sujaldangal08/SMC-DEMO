@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->constraint('users');
             $table->foreignId('driver_id')->constraint('users')->nullable();
             $table->foreignId('truck_id')->constraint('assets')->nullable();
+            $table->string('name');
             $table->string('coordinates');
             $table->string('materials');
             $table->string('amount');

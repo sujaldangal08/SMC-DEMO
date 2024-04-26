@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Driver;
 use App\Http\Controllers\Controller;
 use App\Models\PickupSchedule;
 use App\Models\Route;
+use App\Models\DeliveryTrip;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -199,6 +200,65 @@ class DriverController extends Controller
                 'message' => 'Schedule updated successfully',
                 'data' => [
                     'schedule' => $schedule,
+                ],
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null,
+            ], 500);
+        }
+    }
+
+    public function deliveryTrips(): JsonResponse
+    {
+        try {
+            $trip = DeliveryTrip::where('driver_id', request()->user()->id)->get()->map(function ($trip) {
+                $trip->weight_of_materials = is_array($trip->amount_loaded) ? array_sum($trip->amount_loaded) : 0;
+                $trip->coordinate = $trip->schedule->coordinates;
+                unset($trip->schedule);
+                return $trip;
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Delivery trips retrieved successfully.',
+                'data' => $trip,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null,
+            ], 500);
+        }
+    }
+
+    public function detailDeliveryTrip(int $id): JsonResponse
+    {
+        try {
+            $trip = DeliveryTrip::findOrFail($id)->where('driver_id', request()->user()->id)->with('schedule')->first();
+            $trip->customer = [
+                'name' => $trip->schedule->customer->name,
+                'phone_number' => $trip->schedule->customer->phone_number,
+                'address' => $trip->schedule->customer->address,
+            ];
+            $weight = is_array($trip->amount_loaded) ? array_sum($trip->amount_loaded) : 0;
+            $trip->weight_of_materials = $weight;
+            $trip->coordinate = $trip->schedule->coordinates;
+            $trip->emergency_contact = [
+                'name' => 'John Doe',
+                'phone_number' => '08012345678',
+                'message' => 'This is an emergency message. Please call me back.'
+            ];
+            unset($trip->schedule);
+
+            return response()->json([
+                'status' => 'successful',
+                'message' => 'Delivery trip retrieved successfully.',
+                'data' => [
+                    $trip,
                 ],
             ], 200);
         } catch (\Exception $e) {
