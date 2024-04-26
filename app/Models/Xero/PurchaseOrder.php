@@ -14,8 +14,9 @@ class PurchaseOrder extends Model
         return $this->belongsTo(Contact::class);
     }
 
-    public function line_items(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function lineItems(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(LineItem::class);
     }
+
 }

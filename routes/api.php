@@ -24,6 +24,7 @@ use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\WastageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Settings\DataSettingController;
+use App\Http\Controllers\Xero\XeroSyncController;
 
 
 // User routes
@@ -47,12 +48,13 @@ Route::get('/company', 'App\Http\Controllers\Company\CompanyController@Company')
 
 // xero routes
 Route::get('/xerodata', 'App\Http\Controllers\Xero\XeroController@getXeroData');
-Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
+// Route::get('/purchaseorder', 'App\Http\Controllers\Xero\XeroController@getPurchaseOrder');
 Route::get('/xero/connect', 'App\Http\Controllers\Xero\XeroController@xeroConnect');
 Route::get('/xero/callback', 'App\Http\Controllers\Xero\XeroController@xeroCallback');
 Route::get('/xero/tenant', 'App\Http\Controllers\Xero\XeroController@xeroTenant');
 Route::get('/xero/refresh', 'App\Http\Controllers\Xero\XeroController@xeroRefresh');
 Route::get('/xero/contacts', 'App\Http\Controllers\Xero\XeroSyncController@syncContacts');
+Route::get('/xero/purchaseorder', [XeroSyncController::class, 'syncPurchaseOrders']);
 
 // Setting routes
 Route::get('/settings', [DataSettingController::class, 'getAll']);
@@ -234,4 +236,5 @@ Route::get('/settings/{id}', [SettingController::class, 'show']);
 Route::put('/settings/{id}', [SettingController::class, 'update']);
 
 // Route::post('/refresh-token', [RefreshTokenController::class, 'refreshToken']);
+
 
