@@ -21,6 +21,7 @@ class DeliveryTripController extends Controller
                 $amount = $trip->amount_loaded;
                 $weight = is_array($amount) ? array_sum($amount) : 0;
                 $trip->weight_of_materials = $weight;
+
                 return $trip;
             });
 

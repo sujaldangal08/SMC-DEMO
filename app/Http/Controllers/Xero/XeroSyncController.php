@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\SalesOrder;
 use App\Models\Xero\Address;
 use App\Models\Xero\Contact;
+use App\Models\Xero\LineItem;
 use App\Models\Xero\Phone;
+use App\Models\Xero\PurchaseOrder;
 use App\Models\Xero\XeroConnect;
 use App\Models\Xero\XeroTenant;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use App\Models\Xero\PurchaseOrder;
-use App\Models\Xero\LineItem;
 
 class XeroSyncController extends Controller
 {
@@ -141,7 +141,7 @@ class XeroSyncController extends Controller
             ]);
             $purchaseOrders = json_decode($response->getBody()->getContents(), true)['PurchaseOrders'];
 
-            foreach($purchaseOrders as $xeroPurchaseOrders){
+            foreach ($purchaseOrders as $xeroPurchaseOrders) {
                 $purchaseOrder = new PurchaseOrder();
                 $purchaseOrder->purchase_order_id = $xeroPurchaseOrders['PurchaseOrderID'];
                 $purchaseOrder->purchase_order_number = $xeroPurchaseOrders['PurchaseOrderNumber'];
@@ -193,6 +193,7 @@ class XeroSyncController extends Controller
                 }
 
             }
+
             return response()->json(['message' => 'Purchase Orders synced successfully']);
         } catch (\Exception $e) {
             return response()->json([
@@ -204,6 +205,4 @@ class XeroSyncController extends Controller
             ]);
         }
     }
-
-
 }

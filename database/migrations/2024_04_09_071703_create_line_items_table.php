@@ -27,7 +27,6 @@ return new class extends Migration
             $table->foreignId('tracking_id')->nullable()->constrained('trackings');
             $table->timestamps();
 
-
         });
 
     }
