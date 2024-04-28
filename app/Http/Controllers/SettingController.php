@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
+    /**
+     * Get all settings
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $settings = Setting::all();
@@ -15,6 +20,12 @@ class SettingController extends Controller
         return response()->json(['settings' => $settings]);
     }
 
+    /**
+     * Create a new setting
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -31,7 +42,13 @@ class SettingController extends Controller
         return response()->json(['message' => 'Setting created successfully', 'setting' => $setting]);
     }
 
-    public function show($id)
+    /**
+     * Get a single setting
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(int $id)
     {
         $setting = Setting::findOrFail($id);
         $setting = $this->decryptSetting($setting);
@@ -39,7 +56,14 @@ class SettingController extends Controller
         return response()->json(['setting' => $setting]);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update a setting
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, int $id)
     {
         $request->validate([
             'setting_value' => 'required',
@@ -60,7 +84,12 @@ class SettingController extends Controller
     //     return response()->json(['message' => 'Setting deleted successfully']);
     // }
 
-    // Helper function to decrypt a single setting
+    /**
+     * Helper function to decrypt a single setting
+     *
+     * @param $setting
+     * @return mixed
+     */
     private function decryptSetting($setting)
     {
         $setting->setting_value = decrypt($setting->setting_value);
@@ -68,7 +97,12 @@ class SettingController extends Controller
         return $setting;
     }
 
-    // Helper function to decrypt multiple settings
+    /**
+     * Helper function to decrypt all settings
+     *
+     * @param $settings
+     * @return mixed
+     */
     private function decryptSettings($settings)
     {
         foreach ($settings as $setting) {

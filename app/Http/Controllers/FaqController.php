@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
+    /**
+     * Get all faqs
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getFaq()
     {
         try {
@@ -26,6 +31,12 @@ class FaqController extends Controller
         }
     }
 
+    /**
+     * Insert a new faq
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function insertFaq(Request $request)
     {
         try {

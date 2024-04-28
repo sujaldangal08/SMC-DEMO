@@ -9,8 +9,11 @@ use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
-    //
-    // Method to get warehouse details
+    /**
+     * Get all warehouses
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function warehouse(): \Illuminate\Http\JsonResponse
     {
         $warehouseData = Warehouse::all();
@@ -22,6 +25,12 @@ class WarehouseController extends Controller
         ], 200);
     }
 
+    /**
+     * Get a single warehouse
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createWarehouse(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
@@ -60,7 +69,7 @@ class WarehouseController extends Controller
             // Find the warehouse by its ID
             $warehouse = Warehouse::find($id);
 
-            if (! $warehouse) {
+            if (!$warehouse) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'Warehouse not found',
@@ -86,13 +95,18 @@ class WarehouseController extends Controller
     }
 
 
-    // Method to delete warehouse
+    /**
+     * Get a single warehouse
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
         $warehouse = Warehouse::find($id);
 
-        if (! $warehouse) {
+        if (!$warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -108,13 +122,18 @@ class WarehouseController extends Controller
         ], 200);
     }
 
-    // Method to restore warehouse
+    /**
+     * Get a single warehouse
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function restoreWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
         $warehouse = Warehouse::withTrashed()->find($id);
 
-        if (! $warehouse) {
+        if (!$warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -130,13 +149,18 @@ class WarehouseController extends Controller
         ], 200);
     }
 
-    // Method to permanently delete warehouse
+    /**
+     * Get a single warehouse
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function permanentDeleteWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
         $warehouse = Warehouse::withTrashed()->find($id);
 
-        if (! $warehouse) {
+        if (!$warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);

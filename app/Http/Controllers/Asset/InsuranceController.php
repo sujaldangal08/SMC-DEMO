@@ -11,6 +11,11 @@ use Illuminate\Support\Str;
 
 class InsuranceController extends Controller
 {
+    /**
+     * Get all insurances
+     *
+     * @return JsonResponse
+     */
     public function getAllInsurance()
     {
         try {
@@ -30,6 +35,12 @@ class InsuranceController extends Controller
         }
     }
 
+    /**
+     * Get a single insurance
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getOneInsurance(int $id)
     {
         try {
@@ -55,6 +66,12 @@ class InsuranceController extends Controller
         }
     }
 
+    /**
+     * Create a new insurance
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createInsurance(Request $request): JsonResponse
     {
         try {
@@ -75,9 +92,9 @@ class InsuranceController extends Controller
             if ($request->hasFile('attachment')) {
                 $files = $request->file('attachment');
                 foreach ($files as $file) {
-                    $filename = Str::random(10).'.'.$file->getClientOriginalExtension();
+                    $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path('uploads/attachments'), $filename);
-                    $attachments[] = 'uploads/attachments/'.$filename;
+                    $attachments[] = 'uploads/attachments/' . $filename;
                 }
             }
             $insurance = new Insurance();
@@ -101,12 +118,19 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => 'Database Error:' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
     }
 
+    /**
+     * Update an insurance
+     *
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
     public function updateInsurance(Request $request, int $id): JsonResponse
     {
         try {
@@ -127,9 +151,9 @@ class InsuranceController extends Controller
             if ($request->hasFile('attachment')) {
                 $files = $request->file('attachment');
                 foreach ($files as $file) {
-                    $filename = Str::random(10).'.'.$file->getClientOriginalExtension();
+                    $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
                     $file->move(public_path('uploads/attachments'), $filename);
-                    $attachments[] = 'uploads/attachments/'.$filename;
+                    $attachments[] = 'uploads/attachments/' . $filename;
                 }
             }
             $insurance->asset_id = $request->asset_id ?? $insurance->asset_id;
@@ -159,12 +183,18 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => 'Database Error:' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
     }
 
+    /**
+     * Delete an insurance
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
     public function deleteInsurance(int $id)
     {
         try {
@@ -185,12 +215,18 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => 'Database Error:' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
     }
 
+    /**
+     * Restore a soft deleted insurance
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
     public function restoreInsurance(int $id)
     {
         try {
@@ -211,12 +247,18 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => 'Database Error:' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
     }
 
+    /**
+     * Permanently delete an insurance
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
     public function permanentDeleteInsurance(int $id)
     {
         try {
@@ -237,7 +279,7 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => 'Database Error:' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }

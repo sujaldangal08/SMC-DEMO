@@ -8,8 +8,11 @@ use Illuminate\Http\Request;
 
 class SkuController extends Controller
 {
-    //
-    // Method to get SKU details
+    /**
+     * Get all SKU
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function sku(): \Illuminate\Http\JsonResponse
     {
         $skuData = Sku::all();
@@ -21,7 +24,12 @@ class SkuController extends Controller
         ], 200);
     }
 
-    // Method to create a new SKU
+    /**
+     * Get a single SKU
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createSku(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
@@ -33,7 +41,7 @@ class SkuController extends Controller
                 'status' => 'required|string',
             ]);
 
-            $skuCode = 'SKU'.str_pad((Sku::max('id') + 1), 5, '0', STR_PAD_LEFT);
+            $skuCode = 'SKU' . str_pad((Sku::max('id') + 1), 5, '0', STR_PAD_LEFT);
 
             // Create a new SKU with the generated SKU code
             $sku = Sku::create(array_merge($data, ['SKU' => $skuCode]));
@@ -52,7 +60,12 @@ class SkuController extends Controller
         }
     }
 
-    // Method to update an existing SKU
+    /**
+     * Update a single SKU
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateSku(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         try {
