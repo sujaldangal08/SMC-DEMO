@@ -60,7 +60,7 @@ Route::get('/xero/purchase-orders', 'App\Http\Controllers\Xero\XeroSyncControlle
 Route::get('/settings', [DataSettingController::class, 'getAll']);
 Route::get('/settings/{setting_name}', [DataSettingController::class, 'getOne']);
 Route::post('/settings', [DataSettingController::class, 'insertSetting']);
-Route::patch('/settings/{setting_name}', [DataSettingController::class, 'updateSettingValue']);
+Route::patch('/settings', [DataSettingController::class, 'updateSettingValue']);
 
 // Inventory routes
 Route::get('/inventory', [InventoryController::class, 'inventory']);

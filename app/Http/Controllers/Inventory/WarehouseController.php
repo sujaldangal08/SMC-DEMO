@@ -33,89 +33,67 @@ class WarehouseController extends Controller
      */
     public function createWarehouse(Request $request): \Illuminate\Http\JsonResponse
     {
-        $validatedData = $request->validate([
-            'location' => 'required|max:255',
-            'sku_id' => 'required|max:255|',
-        ]);
-
-        $warehouseLocation = $validatedData['location'];
-        $skuString = $validatedData['sku_id'];
-
-        // Find the SKU by its string
-        $sku = Sku::where('SKU', $skuString)->first();
-
-        if (! $sku) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'SKU not found',
-                'data' => null,
-            ], 404);
-        }
-
-        // Check if the warehouse already exists
-        $warehouse = Warehouse::where('location', $warehouseLocation)->first();
-
-        if ($warehouse) {
-            // Warehouse exists, add the SKU ID to the existing SKU IDs
-            $existingSkuIds = $warehouse->SKU_id;
-
-            if (! in_array($sku->id, $existingSkuIds)) {
-                $existingSkuIds[] = $sku->id;
-            }
-
-            $warehouse->SKU_id = $existingSkuIds;
-            $warehouse->save();
-        } else {
-            // Warehouse doesn't exist, create a new one with the SKU ID
-            $warehouse = Warehouse::create([
-                'location' => $warehouseLocation,
-                'SKU_id' => [$sku->id],
+        try {
+            // Validate the request data
+            $data = $request->validate([
+                'location' => 'required|string',
+                'SKU_id' => 'required|array',
             ]);
-        }
 
-        // Return a JSON response
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Warehouse inserted successfully',
-            'data' => $warehouse,
-        ], 201);
+            // Create a new warehouse with the validated data
+            $warehouse = Warehouse::create($data);
+
+            // Return a JSON response with the status, message, and the created warehouse
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Warehouse created successfully',
+                'data' => $warehouse,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to create warehouse: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
-    /**
-     * Get a single warehouse
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function updateWarehouse(Request $request, $id): \Illuminate\Http\JsonResponse
     {
-        // Validate the request data
-        $data = $request->validate([
-            'location' => 'sometimes|required|string',
-            'SKU_id' => 'sometimes|required|array',
-        ]);
+        try {
+            // Validate the request data
+            $data = $request->validate([
+                'location' => 'sometimes|required|string',
+                'SKU_id' => 'sometimes|required|array',
+            ]);
 
-        // Find the warehouse by its ID
-        $warehouse = Warehouse::find($id);
+            // Find the warehouse by its ID
+            $warehouse = Warehouse::find($id);
 
-        if (! $warehouse) {
+            if (!$warehouse) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'Warehouse not found',
+                    'data' => null
+                ], 404);
+            }
+
+            // Update the warehouse with the new data
+            $warehouse->update($data);
+
+            // Return a JSON response with the status, message, and the updated warehouse
             return response()->json([
-                'status' => 'failure',
-                'message' => 'Warehouse not found',
-                'data' => null,
-            ], 404);
+                'status' => 'success',
+                'message' => 'Warehouse updated successfully',
+                'data' => $warehouse,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update warehouse: ' . $e->getMessage(),
+            ], 500);
         }
-
-        // Update the warehouse with the new data
-        $warehouse->update($data);
-
-        // Return a JSON response with the status, message, and the updated warehouse
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Warehouse updated successfully',
-            'data' => $warehouse,
-        ], 200);
     }
+
 
     /**
      * Get a single warehouse
@@ -128,7 +106,7 @@ class WarehouseController extends Controller
         // Find the warehouse by its ID
         $warehouse = Warehouse::find($id);
 
-        if (! $warehouse) {
+        if (!$warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -155,7 +133,7 @@ class WarehouseController extends Controller
         // Find the warehouse by its ID
         $warehouse = Warehouse::withTrashed()->find($id);
 
-        if (! $warehouse) {
+        if (!$warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -182,7 +160,7 @@ class WarehouseController extends Controller
         // Find the warehouse by its ID
         $warehouse = Warehouse::withTrashed()->find($id);
 
-        if (! $warehouse) {
+        if (!$warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);

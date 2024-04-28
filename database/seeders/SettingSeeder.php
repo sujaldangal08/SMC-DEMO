@@ -16,6 +16,7 @@ class SettingSeeder extends Seeder
             ['setting_name' => 'xero_client_id', 'setting_value' => null],
             ['setting_name' => 'xero_client_secret', 'setting_value' => null],
             ['setting_name' => 'callback_url', 'setting_value' => null],
+            ['setting_name' => 'force_2fa_enable', 'setting_value' => false],
         ]);
     }
 }

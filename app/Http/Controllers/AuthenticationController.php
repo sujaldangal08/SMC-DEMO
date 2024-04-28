@@ -65,6 +65,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Login successful',
+                'f2fa' => (bool) $user->is_tfa,
                 '2fa' => (bool) $user->is_tfa,
                 'access_token' => $tokenResult->plainTextToken,
                 'token_type' => 'Bearer',

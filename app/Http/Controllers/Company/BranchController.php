@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Company;
 
-use App\Http\Controllers\Controller;
+use Log;
 use App\Models\Branch;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 
 class BranchController extends Controller
