@@ -71,8 +71,8 @@ class PickupController extends Controller
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
+                'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
                 'n_bins' => 'nullable|integer',
                 'tare_weight' => ['nullable'],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
@@ -81,10 +81,10 @@ class PickupController extends Controller
             $image = [];
             foreach ($validatedRequest['image'] as $image) {
                 $image = $request->file('image');
-                $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
+                $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
                 $destinationPath = public_path('uploads/profile/');
                 $image->move($destinationPath, $image_name);
-                $image_location = 'uploads/profile/'.$image_name;
+                $image_location = 'uploads/profile/' . $image_name;
                 $image[] = $image_location;
             }
 
@@ -127,10 +127,10 @@ class PickupController extends Controller
                 'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:'.count($request->input('materials'))],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.count($request->input('materials'))],
+                'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
+                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
                 'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:'.(is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
+                'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
                 'coordinates' => 'nullable|array',
             ]);
