@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class SuperAdminController extends Controller
 {
+    /**
+     * Get all super admins
+     *
+     * @return JsonResponse
+     */
     public function createSuperAdmin(Request $request): JsonResponse
     {
         try {
@@ -47,6 +52,11 @@ class SuperAdminController extends Controller
         }
     }
 
+    /**
+     * Get all super admins
+     *
+     * @return JsonResponse
+     */
     public function destroy($id)
     {
         $superAdmin = Backend::find($id);

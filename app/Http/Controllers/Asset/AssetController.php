@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class AssetController extends Controller
 {
+    /**
+     * Get all assets
+     *
+     * @return JsonResponse
+     */
     public function getAll(): JsonResponse
     {
         try {
@@ -30,6 +35,12 @@ class AssetController extends Controller
         }
     }
 
+    /**
+     * Get a single asset
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getOne(int $id): JsonResponse
     {
         try {
@@ -55,6 +66,12 @@ class AssetController extends Controller
         }
     }
 
+    /**
+     * Create a new asset
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createAsset(Request $request): JsonResponse
     {
         try {
@@ -67,9 +84,9 @@ class AssetController extends Controller
             ]);
 
             $image = $request->file('image');
-            $imageName = time().'.'.$image->extension();
+            $imageName = time() . '.' . $image->extension();
             $image->move(public_path('uploads/assets'), $imageName);
-            $destinationPath = 'uploads/assets/'.$imageName;
+            $destinationPath = 'uploads/assets/' . $imageName;
 
             $asset = new Asset();
             $asset->title = $request->title;
@@ -93,6 +110,13 @@ class AssetController extends Controller
         }
     }
 
+    /**
+     * Update an asset
+     *
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
     public function updateAsset(Request $request, int $id): JsonResponse
     {
         try {
@@ -108,9 +132,9 @@ class AssetController extends Controller
 
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $imageName = time().'.'.$image->extension();
+                $imageName = time() . '.' . $image->extension();
                 $image->move(public_path('uploads/assets'), $imageName);
-                $destinationPath = 'uploads/assets/'.$imageName;
+                $destinationPath = 'uploads/assets/' . $imageName;
                 $asset->image = $destinationPath;
             }
 
@@ -144,6 +168,12 @@ class AssetController extends Controller
         }
     }
 
+    /**
+     * Delete an asset
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
     public function deleteAsset(int $id): JsonResponse
     {
         try {
@@ -170,6 +200,12 @@ class AssetController extends Controller
         }
     }
 
+    /**
+     * Restore a soft-deleted asset
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
     public function restoreAsset(int $id): JsonResponse
     {
         try {
@@ -196,6 +232,12 @@ class AssetController extends Controller
         }
     }
 
+    /**
+     * Permanently delete an asset
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
     public function permanentDeleteAsset(int $id): JsonResponse
     {
         try {

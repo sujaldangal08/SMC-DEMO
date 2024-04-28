@@ -12,8 +12,12 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    //Retrieves the total number of deliveries based on optional filtering criteria provided through the 'status' parameter in the request.
-
+    /**
+     * Retrieves the total number of deliveries with optional filtering by status.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTotalDeliveries(Request $request)
     {
         try {
@@ -44,8 +48,12 @@ class ReportController extends Controller
         ], 200);
     }
 
-    // Retrieves the total number of pickups with optional filtering by status.
-
+    /**
+     * Retrieves the total number of pickups with optional filtering by status.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTotalPickups(Request $request)
     {
         try {
@@ -74,8 +82,12 @@ class ReportController extends Controller
         return response()->json(['total_pickups' => $totalPickups], 200);
     }
 
-    // Retrieves the total number of tickets with optional filtering by status.
-
+    /**
+     * Retrieves the total number of tickets with optional filtering by status.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTotalTickets(Request $request)
     {
         try {
@@ -104,8 +116,12 @@ class ReportController extends Controller
         return response()->json(['total_tickets' => $totalTickets], 200);
     }
 
-    // Retrieves the total number of users with optional filtering by status.
-
+    /**
+     * Retrieves the total number of users with optional filtering by status.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTotalUsers(Request $request)
     {
         try {
@@ -134,8 +150,12 @@ class ReportController extends Controller
         return response()->json(['total_users' => $totalUsers], 200);
     }
 
-    // Retrieves the total number of assets with optional filtering by status.
-
+    /**
+     * Retrieves the total number of assets with optional filtering by status.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTotalAssets(Request $request)
     {
         try {
@@ -167,8 +187,12 @@ class ReportController extends Controller
             'total_assets' => $totalAssets], 200);
     }
 
-    // Fetches data based on user role: customer or driver.
-
+    /**
+     * Retrieves the total number of deliveries, pickups, tickets, users, and assets.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function fetchData(Request $request)
     {
         $user = $request->user();

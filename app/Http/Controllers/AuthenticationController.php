@@ -23,13 +23,19 @@ use PragmaRX\Google2FA\Google2FA;
 
 class AuthenticationController extends Controller
 {
+    /**
+     * Login a user and return a token
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function login(Request $request): JsonResponse
     {
         try {
             $credentials = $request->only('email', 'password');
             $user = User::where('email', $credentials['email'])->first();
 
-            if (! $user) {
+            if (!$user) {
                 return response()->json(['message' => 'Invalid Credentials 1'], 401);
             }
 
@@ -45,7 +51,7 @@ class AuthenticationController extends Controller
                     return response()->json(['message' => 'Please verify your email'], 401);
                 }
 
-                if (! Hash::check($credentials['password'], $user['password'])) {
+                if (!Hash::check($credentials['password'], $user['password'])) {
                     $user->incrementLoginAttempts();
 
                     return response()->json(['message' => 'Invalid Credentials'], 401);
@@ -73,6 +79,12 @@ class AuthenticationController extends Controller
         }
     }
 
+    /**
+     * Register a new user
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function register(Request $request): JsonResponse
     {
         try {
@@ -143,6 +155,12 @@ class AuthenticationController extends Controller
         }
     }
 
+    /**
+     * Verify the OTP sent to the user's email
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function verifyOtp(Request $request): JsonResponse
     {
         // Fetch the user record based on the email provided in the request
@@ -182,6 +200,12 @@ class AuthenticationController extends Controller
         }
     }
 
+    /**
+     * Resend the OTP to the user's email
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createUser(Request $request): JsonResponse
     {
         try {
@@ -231,6 +255,12 @@ class AuthenticationController extends Controller
         }
     }
 
+    /**
+     * Logout a user and revoke the token
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function logout(Request $request): JsonResponse
     {
         try {
@@ -250,6 +280,12 @@ class AuthenticationController extends Controller
         }
     }
 
+    /**
+     * Reset the user's password
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function dashboard(): JsonResponse
     {
         return response()->json([
@@ -259,6 +295,12 @@ class AuthenticationController extends Controller
         ], 200);
     }
 
+    /**
+     * Reset the user's password
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function forgotPassword(Request $request): JsonResponse
     {
         try {
@@ -268,7 +310,7 @@ class AuthenticationController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
-            if (! $user) {
+            if (!$user) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'User not found',
@@ -305,15 +347,19 @@ class AuthenticationController extends Controller
         }
     }
 
-    // This is a separate login moult for the backend users
-
+    /**
+     * Reset the user's password
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function backendLogin(Request $request): JsonResponse
     {
         try {
             $credentials = $request->only('email', 'password');
             $user = Backend::where('email', $credentials['email'])->first();
 
-            if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            if (!$user || !Hash::check($credentials['password'], $user->password)) {
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
 
@@ -338,6 +384,12 @@ class AuthenticationController extends Controller
         }
     }
 
+    /**
+     * Reset the user's password
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function twoFactorGenerate(Request $request): JsonResponse
     {
         $user = User::where('id', $request->user)->first();
@@ -372,10 +424,10 @@ class AuthenticationController extends Controller
             $qrCode = $writer->writeString($qrCodeUrl);
 
             // Define the file path
-            $filePath = 'qrcodes/'.Str::random(10).'.svg';
+            $filePath = 'qrcodes/' . Str::random(10) . '.svg';
 
             // Check if the 'qrcodes' directory exists and create it if it doesn't
-            if (! Storage::disk('public')->exists('qrcodes')) {
+            if (!Storage::disk('public')->exists('qrcodes')) {
                 Storage::disk('public')->makeDirectory('qrcodes');
             }
 
@@ -390,6 +442,12 @@ class AuthenticationController extends Controller
         }
     }
 
+    /**
+     * Verify the 2FA code
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function verify2FACode(Request $request): JsonResponse
     {
         //        $otp = $request->input('otp');
@@ -421,7 +479,7 @@ class AuthenticationController extends Controller
             $token->save();
 
             $plainTextToken = $tokenResult->plainTextToken;
-            if (! $user->is_tfa) {
+            if (!$user->is_tfa) {
                 $user->is_tfa = true;
                 $user->save();
 
@@ -446,6 +504,12 @@ class AuthenticationController extends Controller
         }
     }
 
+    /**
+     * Disable 2FA for a user
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function disable2FA(Request $request): JsonResponse
     {
         $request->validate([

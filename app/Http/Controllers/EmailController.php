@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
-    //
+    /**
+     * Send an email to the recipient
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
 
     public function sendEmail()
     {

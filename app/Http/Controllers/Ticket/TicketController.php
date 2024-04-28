@@ -14,18 +14,36 @@ class TicketController extends Controller
 {
     use ValidatesRoles;
 
+    /**
+     * Fetch all tickets
+     *
+     * @return JsonResponse
+     */
     public function index(): JsonResponse
     {
-        $ticket = Ticket::all();
+        try {
+            $ticket = Ticket::all();
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'All tickets fetched successfully',
-            'total' => $ticket->count(),
-            'data' => $ticket,
-        ], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'All tickets fetched successfully',
+                'total' => $ticket->count(),
+                'data' => $ticket,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
+    /**
+     * Fetch a single ticket
+     *
+     * @param string $ticketNumber
+     * @return JsonResponse
+     */
     public function show(string $ticketNumber): JsonResponse
     {
         try {
@@ -50,7 +68,12 @@ class TicketController extends Controller
         }
     }
 
-    //Manual Entry of Ticket
+    /**
+     * Create a new ticket
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request): JsonResponse
     {
         try {
@@ -128,6 +151,14 @@ class TicketController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
+
+    /**
+     * Update ticket details
+     *
+     * @param Request $request
+     * @param string $ticketId
+     * @return JsonResponse
+     */
 
     public function update(Request $request, string $ticketId): JsonResponse
     {
@@ -209,6 +240,12 @@ class TicketController extends Controller
         }
     }
 
+    /**
+     * Delete a ticket
+     *
+     * @param string $ticketId
+     * @return JsonResponse
+     */
     public function delete(string $ticketId): JsonResponse
     {
         try {
@@ -232,6 +269,12 @@ class TicketController extends Controller
         }
     }
 
+    /**
+     * Restore a ticket
+     *
+     * @param string $ticketId
+     * @return JsonResponse
+     */
     public function restore(string $ticketId): JsonResponse
     {
         try {
@@ -255,6 +298,12 @@ class TicketController extends Controller
         }
     }
 
+    /**
+     * Permanently delete a ticket
+     *
+     * @param string $ticketId
+     * @return JsonResponse
+     */
     public function permanentDelete(string $ticketId): JsonResponse
     {
         try {
