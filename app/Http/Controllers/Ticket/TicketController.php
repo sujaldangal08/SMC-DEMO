@@ -103,6 +103,7 @@ class TicketController extends Controller
                     'customer_id' => $customerIds[$index],
                     'material' => $material,
                     'weighing_type' => $request->input('weighing_type'),
+                    'initial_truck_weight' => $previousWeight,
                     'next_truck_weight' => $truckWeight,
                     'full_bin_weight' => $fullBinWeight,
                     'tare_bin' => $tareBin,
@@ -143,7 +144,7 @@ class TicketController extends Controller
                 'route_id' => 'nullable|exists:routes,id',  //For automation of ticket generation for schedule
                 'material' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
                 'weighing_type' => 'required|in:bridge,pallet',
-                'initial_truck_weight' => '',
+                'initial_truck_weight' => 'something',
                 'next_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:' . count($request->input('customer_id'))],
                 'tare_bin' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
                 'full_bin_weight' => $request->input('weighing_type') === 'pallet' ? ['required', 'array', 'size:' . count($request->input('customer_id'))] : 'nullable',
@@ -173,7 +174,6 @@ class TicketController extends Controller
                 } else {
                     $truckWeight = isset($truckWeights[$index]) ? $truckWeights[$index] : 0;
                     $gross_weight = $previousWeight - $truckWeight - $tareBin;
-                    echo $previousWeight;
                 }
                 $material = isset($materials[$index]) ? $materials[$index] : null;
 
@@ -183,7 +183,7 @@ class TicketController extends Controller
                     'route_id' => $request->input('route_id'),
                     'customer_id' => $customerIds[$index],
                     'material' => $material,
-                    'initial_truck_weight' => 1, //comes from the machine
+                    'initial_truck_weight' => $previousWeight, //comes from the machine
                     'weighing_type' => $request->input('weighing_type'),
                     'next_truck_weight' => $truckWeight,
                     'full_bin_weight' => $fullBinWeight,
@@ -191,14 +191,10 @@ class TicketController extends Controller
                     'ticket_type' => $request->input('ticket_type'),
                     'gross_weight' => $gross_weight,
                 ];
-                // $previousWeight = $truckWeights[$index];
                 $previousWeight = $truckWeight;  // Update previous weight for next iteration
                 // echo $previousWeight;
                 $ticket->update($ticketData);
-
                 $updatedTickets[] = $ticket;
-
-                // dd($previousWeight);
             }
 
             return response()->json([
@@ -206,11 +202,6 @@ class TicketController extends Controller
                 'message' => 'Ticket updated successfully',
                 'data' => $updatedTickets,
             ], 201);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Ticket not found',
-            ], 401);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
