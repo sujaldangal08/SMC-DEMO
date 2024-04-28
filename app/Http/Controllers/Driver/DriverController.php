@@ -3,15 +3,44 @@
 namespace App\Http\Controllers\Driver;
 
 use App\Http\Controllers\Controller;
+use App\Models\DeliveryTrip;
 use App\Models\PickupSchedule;
 use App\Models\Route;
-use App\Models\DeliveryTrip;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class DriverController extends Controller
 {
+    /**
+     * Get the driver's dashboard 
+     *
+     * @return json dashboard
+     *
+     * @throws \Exception
+     */
+    public function driverDashboard(): JsonResponse
+    {
+        try {
+            $dashboard = [
+                'routes' => Route::where('driver_id', request()->user()->id)->where('status', 'active')->with('schedule')->get(),
+                'delivery' => DeliveryTrip::where('driver_id', request()->user()->id)->where('status', 'in_progress')->get(),
+            ];
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Dashboard fetched successfully',
+                'data' => $dashboard,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'data' => null,
+            ], 500);
+        }
+    }
+
     /**
      * Get the driver's route with the schedule and customer relationship
      *
@@ -218,6 +247,7 @@ class DriverController extends Controller
                 $trip->weight_of_materials = is_array($trip->amount_loaded) ? array_sum($trip->amount_loaded) : 0;
                 $trip->coordinate = $trip->schedule->coordinates;
                 unset($trip->schedule);
+
                 return $trip;
             });
 
@@ -250,12 +280,12 @@ class DriverController extends Controller
             $trip->emergency_contact = [
                 'name' => 'John Doe',
                 'phone_number' => '08012345678',
-                'message' => 'This is an emergency message. Please call me back.'
+                'message' => 'This is an emergency message. Please call me back.',
             ];
             unset($trip->schedule);
 
             return response()->json([
-                'status' => 'successful',
+                'status' => 'success',
                 'message' => 'Delivery trip retrieved successfully.',
                 'data' => $trip,
             ], 200);
@@ -272,7 +302,7 @@ class DriverController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'status' => 'required|string|in:completed,in_progress,pending,full',
+                'status' => 'required|string|in:completed,in_progress,pending',
                 'amount_loaded' => 'nullable|array',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',

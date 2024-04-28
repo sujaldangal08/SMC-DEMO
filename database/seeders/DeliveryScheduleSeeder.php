@@ -41,7 +41,7 @@ class DeliveryScheduleSeeder extends Seeder
             'customer_id' => 7,
             'driver_id' => 6,
             'truck_id' => 2,
-            'name'=> 'Trip 2',
+            'name' => 'Trip 2',
             'coordinates' => ['34.052235', '-118.243683'],
             'materials' => ['Steel', 'Iron'],
             'amount' => [1000, 800],

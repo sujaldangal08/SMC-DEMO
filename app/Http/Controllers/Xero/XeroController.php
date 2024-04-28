@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Xero;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\Xero\Contact;
 use App\Models\Xero\XeroConnect;
 use App\Models\Xero\XeroTenant;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\Setting;
 use Illuminate\Support\Facades\Crypt;
 
 class XeroController extends Controller
@@ -18,7 +17,6 @@ class XeroController extends Controller
     public function xeroConnect(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $credentials = $this->getXero();
-
 
         $query = http_build_query([
             'response_type' => 'code',
@@ -33,8 +31,8 @@ class XeroController extends Controller
     /**
      * @throws GuzzleException
      */
-
-     protected function getXero(){
+    protected function getXero()
+    {
         $xeroSetting = Setting::all();
         $client_id = $xeroSetting['0']['setting_value'];
         $client_secret = $xeroSetting['1']['setting_value'];
@@ -48,11 +46,11 @@ class XeroController extends Controller
             'xero_client_secret' => Crypt::decryptString($client_secret),
         ];
     }
+
     public function xeroCallback(Request $request)
     {
         $code = $request->query('code');
         $credentials = $this->getXero();
-
 
         $client = new Client();
         $response = $client->post('https://identity.xero.com/connect/token', [
@@ -201,8 +199,6 @@ class XeroController extends Controller
         ], 200);
     }
 
-
-
     public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
     {
 
@@ -263,5 +259,4 @@ class XeroController extends Controller
             'Contacts' => $transformedPurchaseOrder,
         ], 200);
     }
-
 }

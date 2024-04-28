@@ -135,7 +135,7 @@ class InventoryController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
-                'data' => null
+                'data' => null,
             ], 404);
         }
 
@@ -146,7 +146,7 @@ class InventoryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Inventory deleted successfully',
-            'data' => null
+            'data' => null,
         ], 200);
     }
 
@@ -160,7 +160,7 @@ class InventoryController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
-                'data' => 'null'
+                'data' => 'null',
             ], 404);
         }
 
@@ -171,7 +171,7 @@ class InventoryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Inventory restored successfully',
-            'data' => $inventory
+            'data' => $inventory,
         ], 200);
     }
 
@@ -185,7 +185,7 @@ class InventoryController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
-                'data' => null
+                'data' => null,
             ], 404);
         }
 
@@ -196,7 +196,7 @@ class InventoryController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Inventory permanently deleted',
-            'data' => null
+            'data' => null,
         ], 200);
     }
 }

@@ -38,8 +38,6 @@ return new class extends Migration
             $table->boolean('has_attachments');
             $table->timestamps();
 
-
-
         });
     }
 

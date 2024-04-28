@@ -18,5 +18,4 @@ class PurchaseOrder extends Model
     {
         return $this->hasMany(LineItem::class);
     }
-
 }
