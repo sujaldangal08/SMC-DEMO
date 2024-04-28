@@ -59,27 +59,62 @@ class DataSettingController extends Controller
     //         'data' => $setting,
     //     ]);
     // }
-    public function updateSettingValue(Request $request, $id)
+    public function updateSettingValue(Request $request)
     {
-        $setting = Setting::where('id', $id)->first();
-        if ($setting) {
-            $value = $request->setting_value;
-            if ($id == 1 || $id == 2) {
-                $value = Crypt::encryptString($value);
-            }
-            $setting->update(['setting_value' => $value]);
+        $settings = $request->settings;
+        $updatedSettings = [];
+        $updatedXeroSettings = false;
+        $updatedForce2fa = false;
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Setting updated successfully',
-                'data' => $setting,
-            ]);
-        } else {
+        foreach ($settings as $settingData) {
+            $setting = Setting::find($settingData['id']);
+
+            if ($setting) {
+                $value = $settingData['setting_value'];
+
+                if ($setting->setting_name == 'force_2fa_enable') {
+                    if (!is_bool($value)) {
+                        return response()->json([
+                            'status' => 'failure',
+                            'message' => 'Invalid value for force_2fa_enable. It should be either true or false.',
+                            'data' => null,
+                        ], 400);
+                    } else {
+                        $updatedForce2fa = true;
+                    }
+                }
+
+                if ($setting->id == 1 || $setting->id == 2) {
+                    $value = Crypt::encryptString($value);
+                    $updatedXeroSettings = true;
+                }
+
+                $setting->update(['setting_value' => $value]);
+                $updatedSettings[] = $setting;
+            }
+        }
+
+        if (empty($updatedSettings)) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Setting not found',
+                'message' => 'No valid settings found',
                 'data' => null,
             ], 404);
         }
+
+        $message = 'Settings updated successfully';
+        if ($updatedXeroSettings && $updatedForce2fa) {
+            $message = 'Xero and force 2FA settings updated successfully';
+        } else if ($updatedXeroSettings) {
+            $message = 'Xero settings updated successfully';
+        } else if ($updatedForce2fa) {
+            $message = 'Force 2FA setting updated successfully';
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => $message,
+            'data' => null,
+        ]);
     }
 }
