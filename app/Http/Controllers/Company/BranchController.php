@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Company;
 
-use App\Http\Controllers\Controller;
+use Log;
 use App\Models\Branch;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 
 class BranchController extends Controller
@@ -26,34 +29,65 @@ class BranchController extends Controller
         ], 200);
     }
 
-    public function branchSingle($id): \Illuminate\Http\JsonResponse
-    {
-        try {
-            $data = Branch::findOrFail($id);
+    // public function branchSingle($id): \Illuminate\Http\JsonResponse
+    // {
+    //     try {
+    //         $data = Branch::findOrFail($id);
 
-            return response()->json([
-                'id' => $data->id,
-                'branch_name' => $data->branch_name,
-                'branch_street' => $data->branch_street,
-                'branch_street2' => $data->branch_street2,
-                'branch_city' => $data->branch_city,
-                'branch_state' => $data->branch_state,
-                'branch_zip' => $data->branch_zip,
-                'branch_phone' => $data->branch_phone,
-                'branch_email' => $data->branch_email,
-                'branch_code' => $data->branch_code,
-                'branch_status' => $data->branch_status,
-                'branch_country_id' => $data->branch_country_id,
-            ], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Resource not found.',
-                'data' => null,
-                'error' => 'Resource not found.',
-            ], 404);
-        }
+    //         return response()->json([
+    //             'id' => $data->id,
+    //             'branch_name' => $data->branch_name,
+    //             'branch_street' => $data->branch_street,
+    //             'branch_street2' => $data->branch_street2,
+    //             'branch_city' => $data->branch_city,
+    //             'branch_state' => $data->branch_state,
+    //             'branch_zip' => $data->branch_zip,
+    //             'branch_phone' => $data->branch_phone,
+    //             'branch_email' => $data->branch_email,
+    //             'branch_code' => $data->branch_code,
+    //             'branch_status' => $data->branch_status,
+    //             'branch_country_id' => $data->branch_country_id,
+    //         ], 200);
+    //     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+    //         return response()->json([
+    //             'status' => 'failure',
+    //             'message' => 'Resource not found.',
+    //             'data' => null,
+    //             'error' => 'Resource not found.',
+    //         ], 404);
+    //     }
+    // }
+
+    public function branchSingle($id)
+{
+    try {
+        // Fetch the branch by its ID
+        $data = Branch::findOrFail($id);
+
+        // Return the branch data as JSON
+        return response()->json([
+            'id' => $data->id,
+            'branch_name' => $data->branch_name,
+            'branch_street' => $data->branch_street,
+            'branch_street2' => $data->branch_street2,
+            'branch_city' => $data->branch_city,
+            'branch_state' => $data->branch_state,
+            'branch_zip' => $data->branch_zip,
+            'branch_phone' => $data->branch_phone,
+            'branch_email' => $data->branch_email,
+            'branch_code' => $data->branch_code,
+            'branch_status' => $data->branch_status,
+            'branch_country_id' => $data->branch_country_id,
+        ], 200);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $userError) {
+        // If the branch is not found, return a JSON response with a 404 status code
+        return response()->json(['error' => 'The requested resource was not found.'], 404);
+    } catch (\Exception $e) {
+        // If any other unexpected error occurs
+        return response()->json(['error' => 'An error occurred while processing your request. Please try again.'], 422);
     }
+
+}
 
     public function createBranch(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -150,12 +184,29 @@ class BranchController extends Controller
         ], 200);
     }
 
+    // public function restoreBranch($id): \Illuminate\Http\JsonResponse
+    // {
+    //     // Find the branch record in the database
+    //     $branch = Branch::withTrashed()->findOrFail($id);
+
+    //     // Restore the branch record
+    //     $branch->restore();
+
+    //     // Return a JSON response with the status and message
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Branch recovered successfully',
+    //         'data' => $branch,
+    //     ], 200);
+    // }
+
     public function restoreBranch($id): \Illuminate\Http\JsonResponse
-    {
-        // Find the branch record in the database
+{
+    try {
+        // Find the soft-deleted branch record in the database
         $branch = Branch::withTrashed()->findOrFail($id);
 
-        // Restore the branch record
+        // Restore the soft-deleted branch record
         $branch->restore();
 
         // Return a JSON response with the status and message
@@ -164,7 +215,14 @@ class BranchController extends Controller
             'message' => 'Branch recovered successfully',
             'data' => $branch,
         ], 200);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        // If the branch with the given ID is not found (either soft-deleted or not existing)
+        return response()->json(['error' => 'Branch not found'], 404);
+    } catch (\Throwable $e) {
+        // If any other unexpected error occurs
+        return response()->json(['error' => 'An unexpected error occurred'], 500);
     }
+}
 
     public function permanentDeleteBranch($id): \Illuminate\Http\JsonResponse
     {
