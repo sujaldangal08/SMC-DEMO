@@ -59,12 +59,12 @@ class TicketController extends Controller
                 'driver_id' => ['required', $this->roleRule('driver')],
                 'customer_id' => ['required', $this->roleRule('customer'), 'array'],
                 'route_id' => 'nullable|exists:routes,id',  //For automation of ticket generation for schedule
-                'material' => ['required', 'array', 'size:'.count($request->input('customer_id'))],
+                'material' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
                 'weighing_type' => 'required|in:bridge,pallet',
-                'initial_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:'.count($request->input('customer_id'))],
-                'next_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:'.count($request->input('customer_id'))],
-                'tare_bin' => ['required', 'array', 'size:'.count($request->input('customer_id'))],
-                'full_bin_weight' => $request->input('weighing_type') === 'pallet' ? ['required', 'array', 'size:'.count($request->input('customer_id'))] : 'nullable',
+                'initial_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:' . count($request->input('customer_id'))],
+                'next_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:' . count($request->input('customer_id'))],
+                'tare_bin' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
+                'full_bin_weight' => $request->input('weighing_type') === 'pallet' ? ['required', 'array', 'size:' . count($request->input('customer_id'))] : 'nullable',
                 'ticked_type' => 'in:direct,schedule',
                 'in_time' => 'required|date',
                 'out_time' => 'required|date',
@@ -94,7 +94,7 @@ class TicketController extends Controller
                 }
                 $material = isset($materials[$index]) ? $materials[$index] : null;
                 $customerId = $customerIds[$index];
-                $ticketNumber = 'TICKET-'.strtoupper(dechex($customerId)).'-'.Str::random(10);
+                $ticketNumber = 'TICKET-' . strtoupper(dechex($customerId)) . '-' . Str::random(10);
 
                 $ticketData = [
                     'rego_number' => $request->input('rego_number'),
@@ -131,25 +131,30 @@ class TicketController extends Controller
     public function update(Request $request, string $ticketId): JsonResponse
     {
         try {
+
+            $tickets = Ticket::where('ticket_number', $ticketId)->get();
+            if ($tickets->isEmpty()) {
+                throw new ModelNotFoundException();
+            }
             $request->validate([
                 'rego_number' => 'required|string',
                 'driver_id' => ['required', $this->roleRule('driver')],
-                'customer_id' => ['required', $this->roleRule('customer'), 'array'],
+                'customer_id' => ['required', $this->roleRule('customer'), 'array', 'size:' . $tickets->count()],
                 'route_id' => 'nullable|exists:routes,id',  //For automation of ticket generation for schedule
-                'material' => ['required', 'array', 'size:'.count($request->input('customer_id'))],
+                'material' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
                 'weighing_type' => 'required|in:bridge,pallet',
-                'initial_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:'.count($request->input('customer_id'))],
-                'next_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:'.count($request->input('customer_id'))],
-                'tare_bin' => ['required', 'array', 'size:'.count($request->input('customer_id'))],
-                'full_bin_weight' => $request->input('weighing_type') === 'pallet' ? ['required', 'array', 'size:'.count($request->input('customer_id'))] : 'nullable',
+                'initial_truck_weight' => '',
+                'next_truck_weight' => $request->input('weighing_type') === 'pallet' ? 'nullable' : ['required', 'array', 'size:' . count($request->input('customer_id'))],
+                'tare_bin' => ['required', 'array', 'size:' . count($request->input('customer_id'))],
+                'full_bin_weight' => $request->input('weighing_type') === 'pallet' ? ['required', 'array', 'size:' . count($request->input('customer_id'))] : 'nullable',
                 'ticked_type' => 'in:direct,schedule',
-                'in_time' => 'required|date',
-                'out_time' => 'required|date',
+                'note' => 'nullable|array|size:' . count($request->input('customer_id')),
+                'in_time' => 'nullable|date',
+                'out_time' => 'nullable|date',
             ]);
 
-            $tickets = [];
+            $updatedTickets = [];
 
-            $lotNumber = Str::random(10);
             $previousWeight = $request->input('initial_truck_weight');
             $customerIds = $request->input('customer_id');
             $truckWeights = $request->input('next_truck_weight');
@@ -158,7 +163,7 @@ class TicketController extends Controller
             $weighingType = $request->input('weighing_type');
             $fullBinWeights = $request->input('full_bin_weight');
 
-            for ($index = 0; $index < count($customerIds); $index++) {
+            foreach ($tickets as $index => $ticket) {
                 $tareBin = isset($tareBins[$index]) ? $tareBins[$index] : 0;
                 $truckWeight = 0;
                 $fullBinWeight = 0;
@@ -168,10 +173,9 @@ class TicketController extends Controller
                 } else {
                     $truckWeight = isset($truckWeights[$index]) ? $truckWeights[$index] : 0;
                     $gross_weight = $previousWeight - $truckWeight - $tareBin;
+                    echo $previousWeight;
                 }
                 $material = isset($materials[$index]) ? $materials[$index] : null;
-                $customerId = $customerIds[$index];
-                $ticketNumber = 'TICKET-'.strtoupper(dechex($customerId)).'-'.Str::random(10);
 
                 $ticketData = [
                     'rego_number' => $request->input('rego_number'),
@@ -179,26 +183,28 @@ class TicketController extends Controller
                     'route_id' => $request->input('route_id'),
                     'customer_id' => $customerIds[$index],
                     'material' => $material,
+                    'initial_truck_weight' => 1, //comes from the machine
                     'weighing_type' => $request->input('weighing_type'),
                     'next_truck_weight' => $truckWeight,
                     'full_bin_weight' => $fullBinWeight,
                     'tare_bin' => $tareBin,
                     'ticket_type' => $request->input('ticket_type'),
-                    'lot_number' => $lotNumber,
-                    'in_time' => $request->input('in_time'),
-                    'out_time' => $request->input('out_time'),
                     'gross_weight' => $gross_weight,
-                    'ticket_number' => $ticketNumber,
                 ];
-                $tickets[] = Ticket::where('ticket_number', $ticketId)->update($ticketData);
+                // $previousWeight = $truckWeights[$index];
+                $previousWeight = $truckWeight;  // Update previous weight for next iteration
+                // echo $previousWeight;
+                $ticket->update($ticketData);
 
-                $previousWeight = $truckWeights;  // Update previous weight for next iteration
+                $updatedTickets[] = $ticket;
+
+                // dd($previousWeight);
             }
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ticket updated successfully',
-                'data' => $tickets,
+                'data' => $updatedTickets,
             ], 201);
         } catch (ModelNotFoundException $e) {
             return response()->json([
