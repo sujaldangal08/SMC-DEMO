@@ -36,89 +36,93 @@ class InventoryController extends Controller
         ], 200);
     }
 
-    // Method to insert inventory
     public function createInventory(Request $request): \Illuminate\Http\JsonResponse
     {
-        // Validate the request data
-        $data = $request->validate([
-            'SKU_id' => 'required|integer',
-            'name' => 'required|string',
-            'thumbnail_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'required|string',
-            'material_type' => 'required|string',
-            'stock' => 'required|integer',
-            'cost_price' => 'required|numeric',
-            'manufacturing' => 'required|string',
-            'supplier' => 'required|string',
-            'serial_number' => 'required|string',
-        ]);
+        try {
+            // Validate the request data
+            $data = $request->validate([
+                'SKU_id' => 'required|integer',
+                'name' => 'required|string',
+                'thumbnail_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'description' => 'required|string',
+                'material_type' => 'required|string',
+                'stock' => 'required|integer',
+                'cost_price' => 'required|numeric',
+                'manufacturing' => 'required|string',
+                'supplier' => 'required|string',
+                'serial_number' => 'required|string',
+            ]);
 
-        // Handle the image upload
-        if ($request->hasFile('thumbnail_image')) {
-            $image = $request->file('thumbnail_image');
-            $imageName = time().'.'.$image->extension();
-            $image->move(public_path('uploads/inventory'), $imageName);
-            $data['thumbnail_image'] = 'uploads/inventory/'.$imageName;
+            // Handle the image upload
+            if ($request->hasFile('thumbnail_image')) {
+                $image = $request->file('thumbnail_image');
+                $imageName = time().'.'.$image->extension();
+                $image->move(public_path('uploads/inventory'), $imageName);
+                $data['thumbnail_image'] = 'uploads/inventory/'.$imageName;
+            }
+
+            // Create a new inventory with the validated data
+            $inventory = Inventory::create($data);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Inventory created successfully',
+                'data' => $inventory,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to create inventory: ' . $e->getMessage(),
+            ], 500);
         }
-
-        // Create a new inventory with the validated data
-        $inventory = Inventory::create($data);
-
-        // Return a JSON response with the status, message, and the created inventory
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Inventory inserted successfully',
-            'data' => $inventory,
-        ], 201);
     }
 
     // Method to update inventory
     public function updateInventory(Request $request, $id): \Illuminate\Http\JsonResponse
     {
-        $inventory = Inventory::find($id);
+        try {
+            $inventory = Inventory::find($id);
 
-        // Validate the request data
-        $data = $request->validate([
-            'name' => 'sometimes|required|string',
-            'thumbnail_image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'description' => 'sometimes|required|string',
-            'material_type' => 'sometimes|required|string',
-            'stock' => 'sometimes|required|integer',
-            'cost_price' => 'sometimes|required|numeric',
-            'manufacturing' => 'sometimes|required|string',
-            'supplier' => 'sometimes|required|string',
-            'serial_number' => 'sometimes|required|string|unique:inventories,serial_number,'.$id,
-            'SKU_id' => 'sometimes|required|integer',
-        ]);
+            // Validate the request data
+            $data = $request->validate([
+                'name' => 'sometimes|required|string',
+                'thumbnail_image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'description' => 'sometimes|required|string',
+                'material_type' => 'sometimes|required|string',
+                'stock' => 'sometimes|required|integer',
+                'cost_price' => 'sometimes|required|numeric',
+                'manufacturing' => 'sometimes|required|string',
+                'supplier' => 'sometimes|required|string',
+                'serial_number' => 'sometimes|required|string|unique:inventories,serial_number,'.$id,
+                'SKU_id' => 'sometimes|required|integer',
+            ]);
 
-        // Find the inventory by its ID
-        $inventory = Inventory::findOrFail($id);
+            // Find the inventory by its ID
+            $inventory = Inventory::findOrFail($id);
 
-        //Handle image upload
-        if ($request->hasFile('thumbnail_image')) {
-            $image = $request->file('thumbnail_image');
-            $imageName = time().'.'.$image->extension();
-            $image->move(public_path('uploads/inventory'), $imageName);
-            $data['thumbnail_image'] = 'uploads/inventory/'.$imageName;
-        }
+            //Handle image upload
+            if ($request->hasFile('thumbnail_image')) {
+                $image = $request->file('thumbnail_image');
+                $imageName = time().'.'.$image->extension();
+                $image->move(public_path('uploads/inventory'), $imageName);
+                $data['thumbnail_image'] = 'uploads/inventory/'.$imageName;
+            }
 
-        if (! $inventory) {
+            // Update the inventory with the new data
+            $inventory->update($data);
+
+            // Return a JSON response with the status, message, and the updated inventory
             return response()->json([
-                'status' => 'failure',
-                'message' => 'Inventory not found',
-                'data' => null,
-            ], 404);
+                'status' => 'success',
+                'message' => 'Inventory updated successfully',
+                'data' => $inventory,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update inventory: ' . $e->getMessage(),
+            ], 500);
         }
-
-        // Update the inventory with the new data
-        $inventory->update($data);
-
-        // Return a JSON response with the status, message, and the updated inventory
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Inventory updated successfully',
-            'data' => $inventory,
-        ], 200);
     }
 
     // Method to delete inventory
