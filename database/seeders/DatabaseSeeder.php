@@ -35,5 +35,7 @@ class DatabaseSeeder extends Seeder
         $this->call(WasteSeeder::class);
         $this->call(FaqSeeder::class);
         $this->call(SettingSeeder::class);
+        $this->call(XeroConnectSeeder::class);
+        $this->call(XeroTenantSeeder::class);
     }
 }

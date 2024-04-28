@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id()->primary();
             $table->string('setting_name');
             $table->text('setting_value')->nullable();
+            $table->boolean('force_2fa_enable')->default(false);
             $table->timestamps();
         });
     }
