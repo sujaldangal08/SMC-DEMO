@@ -66,8 +66,8 @@ class InsuranceController extends Controller
                 'start_date' => 'required|date',
                 'end_date' => 'required|date',
                 'purchase_date' => 'required|date',
-                'attachment' => 'required|file',
-                'contact_meta' => 'required|array',
+                'attachment.*' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
+                'contact_meta' => 'required',
 
             ]);
 
