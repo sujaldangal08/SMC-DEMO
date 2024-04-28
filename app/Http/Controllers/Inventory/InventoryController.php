@@ -10,8 +10,11 @@ use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
-    // Inventory
-    // Method to get inventory details
+    /**
+     * Get all inventory
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function inventory(): \Illuminate\Http\JsonResponse
     {
         // Define SKU ID
@@ -36,7 +39,12 @@ class InventoryController extends Controller
         ], 200);
     }
 
-    // Method to insert inventory
+    /**
+     * Get a single inventory
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createInventory(Request $request): \Illuminate\Http\JsonResponse
     {
         // Validate the request data
@@ -72,7 +80,12 @@ class InventoryController extends Controller
         ], 201);
     }
 
-    // Method to update inventory
+    /**
+     * Get a single inventory
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateInventory(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         $inventory = Inventory::find($id);
@@ -121,7 +134,12 @@ class InventoryController extends Controller
         ], 200);
     }
 
-    // Method to delete inventory
+    /**
+     * Delete inventory
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteInventory($id): \Illuminate\Http\JsonResponse
     {
         // Find the inventory by its ID
@@ -146,7 +164,12 @@ class InventoryController extends Controller
         ], 200);
     }
 
-    // Method to restore inventory
+    /**
+     * Restore inventory
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function restoreInventory($id): \Illuminate\Http\JsonResponse
     {
         // Find the inventory by its ID
@@ -171,7 +194,12 @@ class InventoryController extends Controller
         ], 200);
     }
 
-    // Method to    delete inventory permanently
+    /**
+     * Permanently delete inventory
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function permanentDeleteInventory($id): \Illuminate\Http\JsonResponse
     {
         // Find the inventory by its ID

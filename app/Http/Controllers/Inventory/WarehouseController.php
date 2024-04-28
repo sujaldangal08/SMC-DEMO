@@ -9,8 +9,11 @@ use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
-    //
-    // Method to get warehouse details
+    /**
+     * Get all warehouses
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function warehouse(): \Illuminate\Http\JsonResponse
     {
         $warehouseData = Warehouse::all();
@@ -22,7 +25,12 @@ class WarehouseController extends Controller
         ], 200);
     }
 
-    // Method to insert warehouse
+    /**
+     * Get a single warehouse
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createWarehouse(Request $request): \Illuminate\Http\JsonResponse
     {
         $validatedData = $request->validate([
@@ -73,7 +81,12 @@ class WarehouseController extends Controller
         ], 201);
     }
 
-    // Method to update warehouse
+    /**
+     * Get a single warehouse
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateWarehouse(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         // Validate the request data
@@ -104,7 +117,12 @@ class WarehouseController extends Controller
         ], 200);
     }
 
-    // Method to delete warehouse
+    /**
+     * Get a single warehouse
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
@@ -126,7 +144,12 @@ class WarehouseController extends Controller
         ], 200);
     }
 
-    // Method to restore warehouse
+    /**
+     * Get a single warehouse
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function restoreWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
@@ -148,7 +171,12 @@ class WarehouseController extends Controller
         ], 200);
     }
 
-    // Method to permanently delete warehouse
+    /**
+     * Get a single warehouse
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function permanentDeleteWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID

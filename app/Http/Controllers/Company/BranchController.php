@@ -9,6 +9,11 @@ use Illuminate\Validation\ValidationException;
 
 class BranchController extends Controller
 {
+    /**
+     * Get all branches
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function branch(): \Illuminate\Http\JsonResponse
     {
         // Fetch all branches from the database
@@ -26,6 +31,12 @@ class BranchController extends Controller
         ], 200);
     }
 
+    /**
+     * Get a single branch
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function branchSingle($id): \Illuminate\Http\JsonResponse
     {
         try {
@@ -55,6 +66,12 @@ class BranchController extends Controller
         }
     }
 
+    /**
+     * Create a new branch
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createBranch(Request $request): \Illuminate\Http\JsonResponse
     {
         try { // Validate the incoming request data
@@ -92,6 +109,13 @@ class BranchController extends Controller
         }
     }
 
+    /**
+     * Update a branch
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateBranch(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         try { // Validate the incoming request data
@@ -134,6 +158,12 @@ class BranchController extends Controller
         }
     }
 
+    /**
+     * Delete a branch
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteBranch($id): \Illuminate\Http\JsonResponse
     {
         // Find the branch record in the database
@@ -150,6 +180,12 @@ class BranchController extends Controller
         ], 200);
     }
 
+    /**
+     * Restore a soft deleted branch
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function restoreBranch($id): \Illuminate\Http\JsonResponse
     {
         // Find the branch record in the database
@@ -166,6 +202,12 @@ class BranchController extends Controller
         ], 200);
     }
 
+    /**
+     * Permanently delete a soft deleted branch
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function permanentDeleteBranch($id): \Illuminate\Http\JsonResponse
     {
         // Find the soft deleted branch record in the database

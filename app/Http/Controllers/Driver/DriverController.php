@@ -136,6 +136,8 @@ class DriverController extends Controller
 
     /**
      * Update the route status
+     * @param int $id
+     * @throws \Exception
      */
     public function updateRoute(Request $request, int $id): JsonResponse
     {
@@ -164,6 +166,8 @@ class DriverController extends Controller
 
     /**
      * Get the schedule data
+     * @param int $id
+     * @throws \Exception
      */
     public function detailSchedule(int $id): JsonResponse
     {
@@ -188,6 +192,8 @@ class DriverController extends Controller
 
     /**
      * Update the schedule status
+     * @param int $id
+     * @throws \Exception
      */
     public function updateSchedule(Request $request, int $id): JsonResponse
     {
@@ -240,6 +246,10 @@ class DriverController extends Controller
         }
     }
 
+    /**
+     * Get the driver's delivery trips
+     * @throws \Exception
+     */
     public function deliveryTrips(): JsonResponse
     {
         try {
@@ -265,10 +275,15 @@ class DriverController extends Controller
         }
     }
 
+    /**
+     * Get the driver's delivery trips
+     * @param int $id
+     * @throws \Exception
+     */
     public function detailDeliveryTrip(int $id): JsonResponse
     {
         try {
-            $trip = DeliveryTrip::findOrFail($id)->where('driver_id', request()->user()->id)->with('schedule')->first();
+            $trip = DeliveryTrip::where('id', $id)->where('driver_id', request()->user()->id)->first();
             $trip->customer = [
                 'name' => $trip->schedule->customer->name,
                 'phone_number' => $trip->schedule->customer->phone_number,
@@ -283,7 +298,6 @@ class DriverController extends Controller
                 'message' => 'This is an emergency message. Please call me back.',
             ];
             unset($trip->schedule);
-
             return response()->json([
                 'status' => 'success',
                 'message' => 'Delivery trip retrieved successfully.',
@@ -298,6 +312,11 @@ class DriverController extends Controller
         }
     }
 
+    /**
+     * Update the delivery trip status
+     * @param int $id
+     * @throws \Exception
+     */
     public function updateDeliveryTrip(Request $request, int $id): JsonResponse
     {
         try {
@@ -313,7 +332,7 @@ class DriverController extends Controller
                 'image' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'array', 'size:' . ($request->has('n_bins') ? $request->input('n_bins') : 2)],
             ]);
 
-            $trip = DeliveryTrip::findOrFail($id)->where('driver_id', request()->user()->id)->first();
+            $trip = DeliveryTrip::where('id', $id)->where('driver_id', request()->user()->id)->first();
             // Upload image
             if ($validatedData['status'] === 'completed' && (!$request->hasFile('image') || $trip['image'] === null)) {
                 return response()->json([

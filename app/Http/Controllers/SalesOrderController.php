@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class SalesOrderController extends Controller
 {
+    /**
+     * Get all sales orders
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         // Find the sales order by its ID
@@ -28,6 +33,12 @@ class SalesOrderController extends Controller
         ], 200);
     }
 
+    /**
+     * Insert a new sales order
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
         // $validatedData = $request->validate([

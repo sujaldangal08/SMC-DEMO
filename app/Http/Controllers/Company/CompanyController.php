@@ -9,6 +9,11 @@ use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
+    /**
+     * Get all companies
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function company(): \Illuminate\Http\JsonResponse
     {
         // Fetch all companies from the database
@@ -27,6 +32,12 @@ class CompanyController extends Controller
 
     }
 
+    /**
+     * Get a single company
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateCompany(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         try { // Validate the incoming request data
