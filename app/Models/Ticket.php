@@ -18,6 +18,7 @@ class Ticket extends Model
         'material',
         'full_bin_weight',
         'next_truck_weight',
+        'initial_truck_weight',
         'tare_bin',
         'gross_weight',
         'notes',

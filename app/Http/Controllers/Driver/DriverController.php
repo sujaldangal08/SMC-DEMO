@@ -24,6 +24,7 @@ class DriverController extends Controller
         try {
             $dashboard = [
                 'routes' => Route::where('driver_id', request()->user()->id)->where('status', 'active')->with('schedule')->get(),
+                'delivery' => DeliveryTrip::where('driver_id', request()->user()->id)->where('status', 'in_progress')->get(),
             ];
 
             return response()->json([
@@ -284,7 +285,7 @@ class DriverController extends Controller
             unset($trip->schedule);
 
             return response()->json([
-                'status' => 'successful',
+                'status' => 'success',
                 'message' => 'Delivery trip retrieved successfully.',
                 'data' => $trip,
             ], 200);
@@ -301,7 +302,7 @@ class DriverController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'status' => 'required|string|in:completed,in_progress,pending,full',
+                'status' => 'required|string|in:completed,in_progress,pending',
                 'amount_loaded' => 'nullable|array',
                 'notes' => 'nullable',
                 'materials' => 'nullable|array',
