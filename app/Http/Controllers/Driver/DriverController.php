@@ -24,6 +24,7 @@ class DriverController extends Controller
         try {
             $dashboard = [
                 'routes' => Route::where('driver_id', request()->user()->id)->where('status', 'active')->with('schedule')->get(),
+                'delivery' => DeliveryTrip::where('driver_id', request()->user()->id)->where('status', 'in_progress')->get(),
             ];
 
             return response()->json([
