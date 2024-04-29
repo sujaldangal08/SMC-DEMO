@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sku;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 
@@ -11,8 +10,6 @@ class WarehouseController extends Controller
 {
     /**
      * Get all warehouses
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function warehouse(): \Illuminate\Http\JsonResponse
     {
@@ -28,8 +25,7 @@ class WarehouseController extends Controller
     /**
      * Get a single warehouse
      *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param  int  $id
      */
     public function createWarehouse(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -52,7 +48,7 @@ class WarehouseController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create warehouse: ' . $e->getMessage(),
+                'message' => 'Failed to create warehouse: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -69,11 +65,11 @@ class WarehouseController extends Controller
             // Find the warehouse by its ID
             $warehouse = Warehouse::find($id);
 
-            if (!$warehouse) {
+            if (! $warehouse) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'Warehouse not found',
-                    'data' => null
+                    'data' => null,
                 ], 404);
             }
 
@@ -89,24 +85,22 @@ class WarehouseController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to update warehouse: ' . $e->getMessage(),
+                'message' => 'Failed to update warehouse: '.$e->getMessage(),
             ], 500);
         }
     }
 
-
     /**
      * Get a single warehouse
      *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param  int  $id
      */
     public function deleteWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
         $warehouse = Warehouse::find($id);
 
-        if (!$warehouse) {
+        if (! $warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -125,15 +119,14 @@ class WarehouseController extends Controller
     /**
      * Get a single warehouse
      *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param  int  $id
      */
     public function restoreWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
         $warehouse = Warehouse::withTrashed()->find($id);
 
-        if (!$warehouse) {
+        if (! $warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);
@@ -152,15 +145,14 @@ class WarehouseController extends Controller
     /**
      * Get a single warehouse
      *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param  int  $id
      */
     public function permanentDeleteWarehouse($id): \Illuminate\Http\JsonResponse
     {
         // Find the warehouse by its ID
         $warehouse = Warehouse::withTrashed()->find($id);
 
-        if (!$warehouse) {
+        if (! $warehouse) {
             return response()->json([
                 'message' => 'Warehouse not found',
             ], 404);

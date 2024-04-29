@@ -15,7 +15,6 @@ class ReportController extends Controller
     /**
      * Retrieves the total number of deliveries with optional filtering by status.
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getTotalDeliveries(Request $request)
@@ -51,7 +50,6 @@ class ReportController extends Controller
     /**
      * Retrieves the total number of pickups with optional filtering by status.
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getTotalPickups(Request $request)
@@ -85,7 +83,6 @@ class ReportController extends Controller
     /**
      * Retrieves the total number of tickets with optional filtering by status.
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getTotalTickets(Request $request)
@@ -119,7 +116,6 @@ class ReportController extends Controller
     /**
      * Retrieves the total number of users with optional filtering by status.
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getTotalUsers(Request $request)
@@ -153,7 +149,6 @@ class ReportController extends Controller
     /**
      * Retrieves the total number of assets with optional filtering by status.
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getTotalAssets(Request $request)
@@ -190,7 +185,6 @@ class ReportController extends Controller
     /**
      * Retrieves the total number of deliveries, pickups, tickets, users, and assets.
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function fetchData(Request $request)

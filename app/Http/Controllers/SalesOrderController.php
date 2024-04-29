@@ -36,7 +36,6 @@ class SalesOrderController extends Controller
     /**
      * Insert a new sales order
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)

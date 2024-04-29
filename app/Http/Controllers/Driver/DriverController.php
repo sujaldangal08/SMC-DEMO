@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DeliveryTrip;
 use App\Models\PickupSchedule;
 use App\Models\Route;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 class DriverController extends Controller
 {
     /**
-     * Get the driver's dashboard 
+     * Get the driver's dashboard
      *
      * @return json dashboard
      *
@@ -136,7 +137,7 @@ class DriverController extends Controller
 
     /**
      * Update the route status
-     * @param int $id
+     *
      * @throws \Exception
      */
     public function updateRoute(Request $request, int $id): JsonResponse
@@ -166,7 +167,7 @@ class DriverController extends Controller
 
     /**
      * Get the schedule data
-     * @param int $id
+     *
      * @throws \Exception
      */
     public function detailSchedule(int $id): JsonResponse
@@ -192,40 +193,17 @@ class DriverController extends Controller
 
     /**
      * Update the schedule status
-     * @param int $id
+     *
      * @throws \Exception
      */
     public function updateSchedule(Request $request, int $id): JsonResponse
     {
         try {
-            $validatedData = $request->validate([
-                'status' => 'nullable|in:pending,active,inactive,done,unloading,cancelled',
-                'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'materials' => 'nullable|array',
-                'notes' => 'nullable',
-                'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:' . $request->input('n_bins')],
-                'image' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'array', 'size:' . ($request->has('n_bins') ? $request->input('n_bins') : 2)],
-            ]);
+            $validatedData = $request->validated();
             $schedule = PickupSchedule::findOrFail($id)->where('driver_id', request()->user()->id)->first();
-            // Upload image
-            $images = [];
-            // Check if request has image
-            if ($request->hasFile('image')) {
-                // Loop through each image
-                foreach ($request->file('image') as $image) {
-                    // Generate random name
-                    $imageName = Str::random(6) . '.' . $image->extension();
-                    $image->move(public_path('uploads/assets'), $imageName); // upload image to public/uploads/assets
-                    $destinationPath = 'uploads/assets/' . $imageName;
-                    // Push image to images array
-                    $images[] = $destinationPath;
-                }
-            }
+
             // Replace image with the uploaded image
+            $images = $this->imageUpload($validatedData);
             $validatedData['image'] = $images;
 
             $schedule->update($validatedData);
@@ -248,6 +226,7 @@ class DriverController extends Controller
 
     /**
      * Get the driver's delivery trips
+     *
      * @throws \Exception
      */
     public function deliveryTrips(): JsonResponse
@@ -261,11 +240,21 @@ class DriverController extends Controller
                 return $trip;
             });
 
+            if (!$trip) {
+                throw new ModelNotFoundException('Delivery trips not found');
+            }
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Delivery trips retrieved successfully.',
                 'data' => $trip,
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Delivery trips not found',
+                'data' => null,
+            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
@@ -277,13 +266,16 @@ class DriverController extends Controller
 
     /**
      * Get the driver's delivery trips
-     * @param int $id
+     *
      * @throws \Exception
      */
     public function detailDeliveryTrip(int $id): JsonResponse
     {
         try {
             $trip = DeliveryTrip::where('id', $id)->where('driver_id', request()->user()->id)->first();
+            if (!$trip) {
+                throw new ModelNotFoundException('Delivery trip not found');
+            }
             $trip->customer = [
                 'name' => $trip->schedule->customer->name,
                 'phone_number' => $trip->schedule->customer->phone_number,
@@ -298,6 +290,7 @@ class DriverController extends Controller
                 'message' => 'This is an emergency message. Please call me back.',
             ];
             unset($trip->schedule);
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Delivery trip retrieved successfully.',
@@ -314,7 +307,7 @@ class DriverController extends Controller
 
     /**
      * Update the delivery trip status
-     * @param int $id
+     *
      * @throws \Exception
      */
     public function updateDeliveryTrip(Request $request, int $id): JsonResponse
@@ -345,15 +338,7 @@ class DriverController extends Controller
             // Check if request has image
 
             if ($request->hasFile('image')) {
-                // Loop through each image
-                foreach ($request->file('image') as $image) {
-                    // Generate random name
-                    $imageName = Str::random(6) . '.' . $image->extension();
-                    $image->move(public_path('uploads/assets'), $imageName); // upload image to public/uploads/assets
-                    $destinationPath = 'uploads/assets/' . $imageName;
-                    // Push image to images array
-                    $images[] = $destinationPath;
-                }
+                $images = $this->imageUpload($validatedData);
             }
             // Replace image with the uploaded image
             $validatedData['image'] = $images;
@@ -367,6 +352,12 @@ class DriverController extends Controller
                     'trip' => $trip,
                 ],
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Delivery trip not found',
+                'data' => null,
+            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
@@ -374,5 +365,23 @@ class DriverController extends Controller
                 'data' => null,
             ], 500);
         }
+    }
+
+    private function imageUpload(array $validatedData)
+    {
+        $images = [];
+        // Check if request has image
+        if (request()->hasFile('image')) {
+            // Loop through each image
+            foreach (request()->file('image') as $image) {
+                // Generate random name
+                $imageName = Str::random(6) . '.' . $image->extension();
+                $image->move(public_path('uploads/assets'), $imageName); // upload image to public/uploads/assets
+                $destinationPath = 'uploads/assets/' . $imageName;
+                // Push image to images array
+                $images[] = $destinationPath;
+            }
+        }
+        return $images;
     }
 }

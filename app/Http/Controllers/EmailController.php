@@ -12,7 +12,6 @@ class EmailController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function sendEmail()
     {
         // Fetch the email template from the database

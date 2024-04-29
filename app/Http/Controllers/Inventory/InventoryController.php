@@ -12,8 +12,6 @@ class InventoryController extends Controller
 {
     /**
      * Get all inventory
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function inventory(): \Illuminate\Http\JsonResponse
     {
@@ -42,8 +40,7 @@ class InventoryController extends Controller
     /**
      * Get a single inventory
      *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param  $id
      */
     public function createInventory(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -65,9 +62,9 @@ class InventoryController extends Controller
             // Handle the image upload
             if ($request->hasFile('thumbnail_image')) {
                 $image = $request->file('thumbnail_image');
-                $imageName = time() . '.' . $image->extension();
+                $imageName = time().'.'.$image->extension();
                 $image->move(public_path('uploads/inventory'), $imageName);
-                $data['thumbnail_image'] = 'uploads/inventory/' . $imageName;
+                $data['thumbnail_image'] = 'uploads/inventory/'.$imageName;
             }
 
             // Create a new inventory with the validated data
@@ -81,16 +78,13 @@ class InventoryController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create inventory: ' . $e->getMessage(),
+                'message' => 'Failed to create inventory: '.$e->getMessage(),
             ], 500);
         }
     }
 
     /**
      * Get a single inventory
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function updateInventory(Request $request, $id): \Illuminate\Http\JsonResponse
     {
@@ -107,7 +101,7 @@ class InventoryController extends Controller
                 'cost_price' => 'sometimes|required|numeric',
                 'manufacturing' => 'sometimes|required|string',
                 'supplier' => 'sometimes|required|string',
-                'serial_number' => 'sometimes|required|string|unique:inventories,serial_number,' . $id,
+                'serial_number' => 'sometimes|required|string|unique:inventories,serial_number,'.$id,
                 'SKU_id' => 'sometimes|required|integer',
             ]);
 
@@ -117,9 +111,9 @@ class InventoryController extends Controller
             //Handle image upload
             if ($request->hasFile('thumbnail_image')) {
                 $image = $request->file('thumbnail_image');
-                $imageName = time() . '.' . $image->extension();
+                $imageName = time().'.'.$image->extension();
                 $image->move(public_path('uploads/inventory'), $imageName);
-                $data['thumbnail_image'] = 'uploads/inventory/' . $imageName;
+                $data['thumbnail_image'] = 'uploads/inventory/'.$imageName;
             }
 
             // Update the inventory with the new data
@@ -134,23 +128,20 @@ class InventoryController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to update inventory: ' . $e->getMessage(),
+                'message' => 'Failed to update inventory: '.$e->getMessage(),
             ], 500);
         }
     }
 
     /**
      * Delete inventory
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function deleteInventory($id): \Illuminate\Http\JsonResponse
     {
         // Find the inventory by its ID
         $inventory = Inventory::find($id);
 
-        if (!$inventory) {
+        if (! $inventory) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
@@ -171,16 +162,13 @@ class InventoryController extends Controller
 
     /**
      * Restore inventory
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function restoreInventory($id): \Illuminate\Http\JsonResponse
     {
         // Find the inventory by its ID
         $inventory = Inventory::withTrashed()->find($id);
 
-        if (!$inventory) {
+        if (! $inventory) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
@@ -201,16 +189,13 @@ class InventoryController extends Controller
 
     /**
      * Permanently delete inventory
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function permanentDeleteInventory($id): \Illuminate\Http\JsonResponse
     {
         // Find the inventory by its ID
         $inventory = Inventory::withTrashed()->find($id);
 
-        if (!$inventory) {
+        if (! $inventory) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Inventory not found',
