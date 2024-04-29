@@ -10,8 +10,6 @@ class SkuController extends Controller
 {
     /**
      * Get all SKU
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function sku(): \Illuminate\Http\JsonResponse
     {
@@ -27,8 +25,7 @@ class SkuController extends Controller
     /**
      * Get a single SKU
      *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param  $id
      */
     public function createSku(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -41,7 +38,7 @@ class SkuController extends Controller
                 'status' => 'required|string',
             ]);
 
-            $skuCode = 'SKU' . str_pad((Sku::max('id') + 1), 5, '0', STR_PAD_LEFT);
+            $skuCode = 'SKU'.str_pad((Sku::max('id') + 1), 5, '0', STR_PAD_LEFT);
 
             // Create a new SKU with the generated SKU code
             $sku = Sku::create(array_merge($data, ['SKU' => $skuCode]));
@@ -55,16 +52,13 @@ class SkuController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create SKU: ' . $e->getMessage(),
+                'message' => 'Failed to create SKU: '.$e->getMessage(),
             ], 500);
         }
     }
 
     /**
      * Update a single SKU
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function updateSku(Request $request, $id): \Illuminate\Http\JsonResponse
     {
@@ -80,7 +74,7 @@ class SkuController extends Controller
             // Find the SKU by its ID
             $sku = Sku::find($id);
 
-            if (!$sku) {
+            if (! $sku) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'SKU not found',
@@ -99,7 +93,7 @@ class SkuController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to update SKU: ' . $e->getMessage(),
+                'message' => 'Failed to update SKU: '.$e->getMessage(),
             ], 500);
         }
     }

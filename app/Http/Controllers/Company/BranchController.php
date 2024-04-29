@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers\Company;
 
-use Log;
+use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 
 class BranchController extends Controller
 {
     /**
      * Get all branches
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function branch(): \Illuminate\Http\JsonResponse
     {
@@ -36,9 +31,6 @@ class BranchController extends Controller
 
     /**
      * Get a single branch
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function branchSingle($id): \Illuminate\Http\JsonResponse
     {
@@ -71,9 +63,6 @@ class BranchController extends Controller
 
     /**
      * Create a new branch
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function createBranch(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -114,10 +103,6 @@ class BranchController extends Controller
 
     /**
      * Update a branch
-     *
-     * @param Request $request
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function updateBranch(Request $request, $id): \Illuminate\Http\JsonResponse
     {
@@ -163,9 +148,6 @@ class BranchController extends Controller
 
     /**
      * Delete a branch
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function deleteBranch($id): \Illuminate\Http\JsonResponse
     {
@@ -185,9 +167,6 @@ class BranchController extends Controller
 
     /**
      * Restore a soft deleted branch
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function restoreBranch($id): \Illuminate\Http\JsonResponse
     {
@@ -207,9 +186,6 @@ class BranchController extends Controller
 
     /**
      * Permanently delete a soft deleted branch
-     *
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
      */
     public function permanentDeleteBranch($id): \Illuminate\Http\JsonResponse
     {

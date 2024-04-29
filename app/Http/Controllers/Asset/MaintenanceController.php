@@ -12,8 +12,6 @@ class MaintenanceController extends Controller
 {
     /**
      * Get all maintenance
-     *
-     * @return JsonResponse
      */
     public function getAllMaintenance(): JsonResponse
     {
@@ -36,9 +34,6 @@ class MaintenanceController extends Controller
 
     /**
      * Get a single maintenance
-     *
-     * @param int $id
-     * @return JsonResponse
      */
     public function getOneMaintenance(int $id): JsonResponse
     {
@@ -67,9 +62,6 @@ class MaintenanceController extends Controller
 
     /**
      * Create a new maintenance
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function createMaintenance(Request $request): JsonResponse
     {
@@ -104,10 +96,6 @@ class MaintenanceController extends Controller
 
     /**
      * Update a maintenance
-     *
-     * @param Request $request
-     * @param int $id
-     * @return JsonResponse
      */
     public function updateMaintenance(Request $request, int $id): JsonResponse
     {
@@ -155,9 +143,6 @@ class MaintenanceController extends Controller
 
     /**
      * Delete a maintenance
-     *
-     * @param int $id
-     * @return JsonResponse
      */
     public function deleteMaintenance(int $id): JsonResponse
     {
@@ -187,9 +172,6 @@ class MaintenanceController extends Controller
 
     /**
      * Restore a maintenance
-     *
-     * @param int $id
-     * @return JsonResponse
      */
     public function restoreMaintenance(int $id): JsonResponse
     {
@@ -219,9 +201,6 @@ class MaintenanceController extends Controller
 
     /**
      * Permanently delete a maintenance
-     *
-     * @param int $id
-     * @return JsonResponse
      */
     public function permanentDeleteMaintenance(int $id): JsonResponse
     {

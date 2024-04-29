@@ -23,7 +23,6 @@ class SettingController extends Controller
     /**
      * Create a new setting
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -45,7 +44,6 @@ class SettingController extends Controller
     /**
      * Get a single setting
      *
-     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(int $id)
@@ -59,8 +57,6 @@ class SettingController extends Controller
     /**
      * Update a setting
      *
-     * @param Request $request
-     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, int $id)
@@ -87,7 +83,6 @@ class SettingController extends Controller
     /**
      * Helper function to decrypt a single setting
      *
-     * @param $setting
      * @return mixed
      */
     private function decryptSetting($setting)
@@ -100,7 +95,6 @@ class SettingController extends Controller
     /**
      * Helper function to decrypt all settings
      *
-     * @param $settings
      * @return mixed
      */
     private function decryptSettings($settings)
@@ -108,7 +102,6 @@ class SettingController extends Controller
         foreach ($settings as $setting) {
             $setting->setting_value = decrypt($setting->setting_value);
         }
-
         return $settings;
     }
 }

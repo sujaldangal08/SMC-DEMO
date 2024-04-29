@@ -34,7 +34,6 @@ class FaqController extends Controller
     /**
      * Insert a new faq
      *
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function insertFaq(Request $request)

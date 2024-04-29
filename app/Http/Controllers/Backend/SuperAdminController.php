@@ -11,8 +11,6 @@ class SuperAdminController extends Controller
 {
     /**
      * Get all super admins
-     *
-     * @return JsonResponse
      */
     public function createSuperAdmin(Request $request): JsonResponse
     {

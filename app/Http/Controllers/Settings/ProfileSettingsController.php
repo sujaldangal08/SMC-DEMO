@@ -20,7 +20,7 @@ class ProfileSettingsController extends Controller
             $id = $request->user()->id;
             $validatedData = $request->validate([
                 'name' => 'sometimes|required|string',
-                'email' => 'sometimes|required|email|unique:users,email,' . $id,
+                'email' => 'sometimes|required|email|unique:users,email,'.$id,
                 'phone_number' => 'sometimes|required|regex:/^([0-9\s\-\+\(\)]*)$/|digits:10',
                 'city' => 'sometimes|required|string',
                 'state' => 'sometimes|required|string',
@@ -29,10 +29,10 @@ class ProfileSettingsController extends Controller
             ]);
 
             $image = $request->file('image');
-            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
             $destinationPath = public_path('uploads/profile/');
             $image->move($destinationPath, $image_name);
-            $image_location = 'uploads/profile/' . $image_name;
+            $image_location = 'uploads/profile/'.$image_name;
             $validatedData['image'] = $image_location;
 
             $user = User::findOrFail($id);
@@ -41,13 +41,13 @@ class ProfileSettingsController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Profile updated successfully',
-                'user' => $user
+                'user' => $user,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Profile update failed',
-                'exception' => $e->getMessage()
+                'exception' => $e->getMessage(),
             ], 400);
         }
     }
@@ -55,7 +55,7 @@ class ProfileSettingsController extends Controller
     public function resetPassword(Request $request): JsonResponse
     {
         // Check if the user is authenticated
-        if (!$request->user()) {
+        if (! $request->user()) {
             return response()->json(['message' => 'User not authenticated'], 401);
         }
 
@@ -68,7 +68,7 @@ class ProfileSettingsController extends Controller
 
             $user = $request->user();
 
-            if (!Hash::check($request->current_password, $user->password)) {
+            if (! Hash::check($request->current_password, $user->password)) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'Current password does not match',

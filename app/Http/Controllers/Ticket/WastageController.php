@@ -14,8 +14,6 @@ class WastageController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
@@ -36,8 +34,6 @@ class WastageController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return JsonResponse
      */
     public function show(int $id): JsonResponse
     {
@@ -63,9 +59,6 @@ class WastageController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
@@ -80,9 +73,9 @@ class WastageController extends Controller
 
             $imagePaths = [];
             foreach ($validatedData['image'] as $image) {
-                $imageName = Str::random(10) . '.' . $image->extension();
+                $imageName = Str::random(10).'.'.$image->extension();
                 $image->move(public_path('uploads/wastes'), $imageName);
-                $imagePath = 'uploads/wastes/' . $imageName;
+                $imagePath = 'uploads/wastes/'.$imageName;
                 $imagePaths[] = $imagePath;
             }
             $validatedData['image'] = $imagePaths;
@@ -116,10 +109,6 @@ class WastageController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return JsonResponse
      */
     public function update(Request $request, int $id): JsonResponse
     {
@@ -167,9 +156,6 @@ class WastageController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return JsonResponse
      */
     public function delete(int $id): JsonResponse
     {
@@ -196,9 +182,6 @@ class WastageController extends Controller
 
     /**
      * Restore the specified resource from storage.
-     *
-     * @param int $id
-     * @return JsonResponse
      */
     public function restore(int $id): JsonResponse
     {
@@ -225,9 +208,6 @@ class WastageController extends Controller
 
     /**
      * Permanently delete the specified resource from storage.
-     *
-     * @param int $id
-     * @return JsonResponse
      */
     public function permanentDelete(int $id): JsonResponse
     {

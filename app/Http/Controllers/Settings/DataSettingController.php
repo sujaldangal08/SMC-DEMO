@@ -73,7 +73,7 @@ class DataSettingController extends Controller
                 $value = $settingData['setting_value'];
 
                 if ($setting->setting_name == 'force_2fa_enable') {
-                    if (!is_bool($value)) {
+                    if (! is_bool($value)) {
                         return response()->json([
                             'status' => 'failure',
                             'message' => 'Invalid value for force_2fa_enable. It should be either true or false.',
@@ -105,9 +105,9 @@ class DataSettingController extends Controller
         $message = 'Settings updated successfully';
         if ($updatedXeroSettings && $updatedForce2fa) {
             $message = 'Xero and force 2FA settings updated successfully';
-        } else if ($updatedXeroSettings) {
+        } elseif ($updatedXeroSettings) {
             $message = 'Xero settings updated successfully';
-        } else if ($updatedForce2fa) {
+        } elseif ($updatedForce2fa) {
             $message = 'Force 2FA setting updated successfully';
         }
 

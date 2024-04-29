@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Schedule;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PickupRequest;
 use App\Models\PickupSchedule;
 use App\Traits\ValidatesRoles;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class PickupController extends Controller
 {
     use ValidatesRoles;
 
+    /**
+     * Fetch all pickup schedules
+     */
     public function index(): JsonResponse
     {
         try {
@@ -34,6 +36,9 @@ class PickupController extends Controller
         }
     }
 
+    /**
+     * Fetch a single pickup schedule
+     */
     public function show(int $id): JsonResponse
     {
         try {
@@ -59,43 +64,26 @@ class PickupController extends Controller
         }
     }
 
-    public function store(Request $request): JsonResponse
+    /**
+     * Create a new pickup schedule
+     */
+    public function store(PickupRequest $request): JsonResponse
     {
         try {
-            $validatedRequest = $request->validate([
-                'route_id' => ['nullable', 'exists:routes,id'],
-                'asset_id' => ['nullable', Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
-                'driver_id' => ['nullable', $this->roleRule('driver')],
-                'customer_id' => ['nullable', $this->roleRule('customer')],
-                'pickup_date' => 'required|date',
-                'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
-                'notes' => 'nullable',
-                'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable'],
-                'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
-                'coordinates' => 'nullable|array',
-            ]);
-            $image = [];
-            foreach ($validatedRequest['image'] as $image) {
-                $image = $request->file('image');
-                $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-                $destinationPath = public_path('uploads/profile/');
-                $image->move($destinationPath, $image_name);
-                $image_location = 'uploads/profile/' . $image_name;
-                $image[] = $image_location;
+            $validatedRequest = $request->validated();
+            if (isset($validatedRequest['image'])) {
+                $image = $this->storeImage($validatedRequest, $request);
+                $validatedRequest['image'] = $image;
             }
-
-            $validatedRequest['image'] = $image;
 
             $schedule = PickupSchedule::create($validatedRequest);
             //TODO: Implement notification to related parties after the schedule is created
-            $route = $schedule->route()->first();
-            $driver = $schedule->driver()->first();
-            $customer = $schedule->customer()->first();
-            $asset = $schedule->asset()->first();
+
+            $data = $this->setRelatedData($schedule);
+            $route = $data['route'];
+            $driver = $data['driver'];
+            $customer = $data['customer'];
+            $asset = $data['asset'];
 
             return response()->json([
                 'status' => 'success',
@@ -114,33 +102,28 @@ class PickupController extends Controller
         }
     }
 
-    public function update(Request $request, int $id): JsonResponse
+    /**
+     * Update pickup schedule details
+     */
+    public function update(PickupRequest $request, int $id): JsonResponse
     {
         try {
             $schedule = PickupSchedule::findOrFail($id);
-            $validatedRequest = $request->validate([
-                'route_id' => 'exists:routes,id',
-                'asset_id' => ['nullable', Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
-                'driver_id' => ['nullable', $this->roleRule('driver')],
-                'customer_id' => ['required', $this->roleRule('customer')],
-                'pickup_date' => 'nullable|date',
-                'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
-                'notes' => 'nullable',
-                'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:' . (is_array($request->input('n_bins')) ? count($request->input('n_bins')) : 0)],
-                'image' => 'nullable|mimes:jpeg,png,jpg,pdf',
-                'coordinates' => 'nullable|array',
-            ]);
+            $validatedRequest = $request->validated();
 
+            if (isset($validatedRequest['image'])) {
+                $image = $this->storeImage($validatedRequest, $request);
+                $validatedRequest['image'] = $image;
+            }
             $schedule->update($validatedRequest);
             //TODO: Implement notification to related parties after the schedule is updated
-            $route = $schedule->route()->first();
-            $driver = $schedule->driver()->first();
-            $customer = $schedule->customer()->first();
-            $asset = $schedule->asset()->first();
+
+            $data = $this->setRelatedData($schedule);
+
+            $route = $data['route'];
+            $driver = $data['driver'];
+            $customer = $data['customer'];
+            $asset = $data['asset'];
 
             return response()->json([
                 'status' => 'success',
@@ -231,5 +214,69 @@ class PickupController extends Controller
                 'message' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * Store image
+     */
+    private function storeImage(array $validatedRequest, PickupRequest $request)
+    {
+        $image = [];
+        foreach ($validatedRequest['image'] as $image) {
+            $image = $request->file('image');
+            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('uploads/profile/');
+            $image->move($destinationPath, $image_name);
+            $image_location = 'uploads/profile/' . $image_name;
+            $image[] = $image_location;
+        }
+        return $image;
+    }
+
+    /**
+     * Set related data
+     * @param object $schedule
+     * @return array 
+     */
+    private function setRelatedData(object $schedule)
+    {
+        $route = $schedule->route()->first();
+        $driver = $schedule->driver()->first();
+        $customer = $schedule->customer()->first();
+        $asset = $schedule->asset()->first();
+
+        $route = $route ? [
+            'name' => $route->name,
+            'description' => $route->description,
+            'status' => $route->status,
+            'start_date' => $route->start_date,
+        ] : null;
+
+        $driver = $driver ? [
+            'name' => $driver->name,
+            'email' => $driver->email,
+            'phone' => $driver->phone,
+            'image' => $driver->image,
+        ] : null;
+
+        $customer = $customer ? [
+            'name' => $customer->name,
+            'email' => $customer->email,
+            'phone' => $customer->phone,
+            'image' => $customer->image,
+        ] : null;
+
+        $asset = $asset ? [
+            'title' => $asset->title,
+            'asset_type' => $asset->asset_type,
+            'image' => $asset->image,
+        ] : null;
+
+        return [
+            'route' => $route,
+            'driver' => $driver,
+            'customer' => $customer,
+            'asset' => $asset,
+        ];
     }
 }
