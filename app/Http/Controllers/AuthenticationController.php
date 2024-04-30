@@ -172,6 +172,10 @@ class AuthenticationController extends Controller
 
         // Convert the OTP expiry time to a Unix timestamp
         $secondTwo = strtotime($checkUser->otp_expiry);
+        $checkOtp = Crypt::decryptString($checkUser->otp);
+        $decodedOtp = json_decode($checkOtp, true);
+        dd($decodedOtp);
+
 
         // Check if the current time is greater than or equal to the OTP expiry time
         if ($second >= $secondTwo) {
@@ -190,6 +194,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'OTP verified successfully.',
+                'hash' => $checkUser->otp_hash,
                 'data' => null,
             ], 200);
         } else {
@@ -313,7 +318,7 @@ class AuthenticationController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
-            if (!$user) {
+            if (! $user) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'User not found',
