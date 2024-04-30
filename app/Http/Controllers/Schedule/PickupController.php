@@ -9,6 +9,7 @@ use App\Traits\ValidatesRoles;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PickupController extends Controller
 {
@@ -72,19 +73,10 @@ class PickupController extends Controller
         try {
             $validatedRequest = $request->validated();
             if (isset($validatedRequest['image'])) {
-                $images = [];
-                foreach ($validatedRequest['image'] as $image) {
-                    $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-                    $image->storeAs('public/uploads/pickup', $image_name);
-                    $image_location = 'storage/uploads/pickup/' . $image_name;
-                    $images[] = $image_location;
-                }
-                $validatedRequest['image'] = $images;
+                $validatedRequest = $this->imageUpload($validatedRequest);
             }
-
             $schedule = PickupSchedule::create($validatedRequest);
             //TODO: Implement notification to related parties after the schedule is created
-
             $data = $this->setRelatedData($schedule);
             $route = $data['route'];
             $driver = $data['driver'];
@@ -118,11 +110,9 @@ class PickupController extends Controller
             $validatedRequest = $request->validated();
 
             if (isset($validatedRequest['image'])) {
-                $image = $this->storeImage($validatedRequest, $request);
-                $validatedRequest['image'] = $image;
+                $validatedRequest = $this->imageUpload($validatedRequest);
             }
             $schedule->update($validatedRequest);
-            //TODO: Implement notification to related parties after the schedule is updated
 
             $data = $this->setRelatedData($schedule);
 
@@ -223,23 +213,6 @@ class PickupController extends Controller
     }
 
     /**
-     * Store image
-     */
-    private function storeImage(array $validatedRequest, PickupRequest $request)
-    {
-        $image = [];
-        foreach ($validatedRequest['image'] as $image) {
-            $image = $request->file('image');
-            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('uploads/profile/');
-            $image->move($destinationPath, $image_name);
-            $image_location = 'uploads/profile/' . $image_name;
-            $image[] = $image_location;
-        }
-        return $image;
-    }
-
-    /**
      * Set related data
      * @param object $schedule
      * @return array 
@@ -284,5 +257,32 @@ class PickupController extends Controller
             'customer' => $customer,
             'asset' => $asset,
         ];
+    }
+
+    /**
+     * Upload image
+     * @param array $validatedRequest
+     * @return array
+     */
+    protected function imageUpload(array $validatedRequest)
+    {
+        $images = [];
+        foreach ($validatedRequest['image'] as $image) {
+            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $filePath = 'uploads/pickup/' . $image_name;
+
+            // Check if the 'uploads/pickup' directory exists and create it if it doesn't
+            if (!Storage::disk('public')->exists('uploads/pickup')) {
+                Storage::disk('public')->makeDirectory('uploads/pickup');
+            }
+            // Save the image to a file in the public directory
+            Storage::disk('public')->put($filePath, file_get_contents($image));
+
+            $image_location = 'storage/uploads/pickup/' . $image_name;
+            $images[] = $image_location;
+        }
+        $validatedRequest['image'] = $images;
+
+        return $validatedRequest;
     }
 }

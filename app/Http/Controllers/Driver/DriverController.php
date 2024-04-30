@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Driver;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeliveryRequest;
+use App\Http\Requests\DriverPickup;
 use App\Http\Requests\PickupRequest;
 use App\Models\DeliveryTrip;
 use App\Models\PickupSchedule;
 use App\Models\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -65,7 +67,7 @@ class DriverController extends Controller
                     return is_array($amount) ? array_sum($amount) : 0;
                 });
                 // Hide the schedule attribute other wise the object will be too large
-                $route->makeHidden('schedule');
+                unset($route->schedule);
 
                 return [
                     // Select only the required columns from the route doing this because directly returning teh route was not working
@@ -198,21 +200,14 @@ class DriverController extends Controller
      *
      * @throws \Exception
      */
-    public function updateSchedule(PickupRequest $request, int $id): JsonResponse
+    public function updateSchedule(DriverPickup $request, int $id): JsonResponse
     {
         try {
             $validatedData = $request->validated();
             $schedule = PickupSchedule::findOrFail($id)->where('driver_id', request()->user()->id)->first();
 
             if (isset($validatedRequest['image'])) {
-                $images = [];
-                foreach ($validatedRequest['image'] as $image) {
-                    $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-                    $image->storeAs('public/uploads/pickup', $image_name);
-                    $image_location = 'storage/uploads/pickup/' . $image_name;
-                    $images[] = $image_location;
-                }
-                $validatedRequest['image'] = $images;
+                $validatedData = $this->imageUpload($validatedData);
             }
 
             $schedule->update($validatedData);
@@ -258,12 +253,6 @@ class DriverController extends Controller
                 'message' => 'Delivery trips retrieved successfully.',
                 'data' => $trip,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Delivery trips not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
@@ -362,21 +351,32 @@ class DriverController extends Controller
         }
     }
 
-    private function imageUpload(array $validatedData)
+    /**
+     * Upload image
+     *
+     * @param array $validatedRequest
+     *
+     * @return array
+     */
+    protected function imageUpload(array $validatedRequest)
     {
         $images = [];
-        // Check if request has image
-        if (request()->hasFile('image')) {
-            // Loop through each image
-            foreach (request()->file('image') as $image) {
-                // Generate random name
-                $imageName = Str::random(6) . '.' . $image->extension();
-                $image->move(public_path('uploads/assets'), $imageName); // upload image to public/uploads/assets
-                $destinationPath = 'uploads/assets/' . $imageName;
-                // Push image to images array
-                $images[] = $destinationPath;
+        foreach ($validatedRequest['image'] as $image) {
+            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $filePath = 'uploads/pickup/' . $image_name;
+
+            // Check if the 'uploads/pickup' directory exists and create it if it doesn't
+            if (!Storage::disk('public')->exists('uploads/pickup')) {
+                Storage::disk('public')->makeDirectory('uploads/pickup');
             }
+            // Save the image to a file in the public directory
+            Storage::disk('public')->put($filePath, file_get_contents($image));
+
+            $image_location = 'storage/uploads/pickup/' . $image_name;
+            $images[] = $image_location;
         }
-        return $images;
+        $validatedRequest['image'] = $images;
+
+        return $validatedRequest;
     }
 }
