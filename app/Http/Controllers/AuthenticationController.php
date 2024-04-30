@@ -163,6 +163,10 @@ class AuthenticationController extends Controller
 
         // Convert the OTP expiry time to a Unix timestamp
         $secondTwo = strtotime($checkUser->otp_expiry);
+        $checkOtp = Crypt::decryptString($checkUser->otp);
+        $decodedOtp = json_decode($checkOtp, true);
+        dd($decodedOtp);
+
 
         // Check if the current time is greater than or equal to the OTP expiry time
         if ($second >= $secondTwo) {
@@ -173,7 +177,8 @@ class AuthenticationController extends Controller
             $checkUser->email_verified_at = Carbon::now(); // set the email_verified_at field to the current time
             $checkUser->otp = null; // set the otp field to null
 
-            $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString() . '_' . Str::random(10));
+            $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString().'_'.Str::random(10));
+
             $checkUser->otp_hash = $otp_hash;
 
             $checkUser->save();
@@ -501,7 +506,6 @@ class AuthenticationController extends Controller
         ], 200);
     }
 
-
     public function changePassword(Request $request): JsonResponse
     {
         try {
@@ -519,7 +523,7 @@ class AuthenticationController extends Controller
 
             $user = User::where('otp_hash', $request->password_hash)->first();
 
-            if (!$user) {
+            if (! $user) {
 
                 return response()->json([
                     'status' => 'failure',
