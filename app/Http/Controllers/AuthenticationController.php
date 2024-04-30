@@ -173,7 +173,8 @@ class AuthenticationController extends Controller
             $checkUser->email_verified_at = Carbon::now(); // set the email_verified_at field to the current time
             $checkUser->otp = null; // set the otp field to null
 
-            $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString() . '_' . Str::random(10));
+            $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString().'_'.Str::random(10));
+
             $checkUser->otp_hash = $otp_hash;
 
             $checkUser->save();
@@ -181,6 +182,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'OTP verified successfully.',
+                'hash' => $checkUser->otp_hash,
                 'data' => null,
             ], 200);
         } else {
@@ -500,7 +502,6 @@ class AuthenticationController extends Controller
         ], 200);
     }
 
-
     public function changePassword(Request $request): JsonResponse
     {
         try {
@@ -518,7 +519,7 @@ class AuthenticationController extends Controller
 
             $user = User::where('otp_hash', $request->password_hash)->first();
 
-            if (!$user) {
+            if (! $user) {
 
                 return response()->json([
                     'status' => 'failure',
