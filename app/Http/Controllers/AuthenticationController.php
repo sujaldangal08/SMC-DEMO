@@ -165,7 +165,6 @@ class AuthenticationController extends Controller
         $secondTwo = strtotime($checkUser->otp_expiry);
         $checkOtp = Crypt::decryptString($checkUser->otp);
         $decodedOtp = json_decode($checkOtp, true);
-        dd($decodedOtp);
 
         // Check if the current time is greater than or equal to the OTP expiry time
         if ($second >= $secondTwo) {
