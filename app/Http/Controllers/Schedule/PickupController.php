@@ -75,9 +75,8 @@ class PickupController extends Controller
                 $images = [];
                 foreach ($validatedRequest['image'] as $image) {
                     $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-                    $destinationPath = public_path('uploads/pickup/');
-                    $image->move($destinationPath, $image_name);
-                    $image_location = 'uploads/pickup/' . $image_name;
+                    $image->storeAs('public/uploads/pickup', $image_name);
+                    $image_location = 'storage/uploads/pickup/' . $image_name;
                     $images[] = $image_location;
                 }
                 $validatedRequest['image'] = $images;
