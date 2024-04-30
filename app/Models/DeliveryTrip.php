@@ -28,6 +28,7 @@ class DeliveryTrip extends Model
         return [
             'materials_loaded' => 'array',
             'amount_loaded' => 'array',
+            'attachment' => 'array',
         ];
     }
 
@@ -47,5 +48,10 @@ class DeliveryTrip extends Model
     public function truck()
     {
         return $this->belongsTo(Asset::class);
+    }
+
+    public function getAttachmentAttribute($value)
+    {
+        return $value ? asset('storage/'.$value) : null;
     }
 }

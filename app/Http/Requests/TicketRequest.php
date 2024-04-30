@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Traits\ValidatesRoles;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
 class TicketRequest extends FormRequest
@@ -32,7 +32,7 @@ class TicketRequest extends FormRequest
         $weighingTypeIsPallet = $this->input('weighing_type') === 'pallet';
 
         $dataTimeRule = $isPostRequest ? 'required|date' : 'nullable|date';
-        $arrayOfSizeRule = ['required', 'array', 'size:' . $customerIdCount];
+        $arrayOfSizeRule = ['required', 'array', 'size:'.$customerIdCount];
         $weightRule = $weighingTypeIsPallet ? 'nullable' : $arrayOfSizeRule;
 
         // dd($isPostRequest);

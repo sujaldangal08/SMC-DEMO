@@ -88,4 +88,19 @@ class PickupSchedule extends Model
             }
         });
     }
+
+    public function getImageAttribute($value)
+    {
+        if ($value) {
+            $images = json_decode($value);
+            $imageUrls = [];
+            foreach ($images as $image) {
+                $imageUrls[] = url($image);
+            }
+
+            return $imageUrls;
+        }
+
+        return $value;
+    }
 }
