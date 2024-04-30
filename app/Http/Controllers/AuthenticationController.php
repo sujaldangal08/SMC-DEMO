@@ -167,7 +167,6 @@ class AuthenticationController extends Controller
         $decodedOtp = json_decode($checkOtp, true);
         dd($decodedOtp);
 
-
         // Check if the current time is greater than or equal to the OTP expiry time
         if ($second >= $secondTwo) {
             // If the OTP has expired, return a JSON response with an error message
@@ -295,28 +294,70 @@ class AuthenticationController extends Controller
     {
         try {
             $request->validate([
-                'email' => 'required|email',
+                'email' => 'required|email|exists:users,email',
             ]);
 
             $user = User::where('email', $request->email)->first();
+            if ($user->otp == null) {
+                $otp = rand(100000, 999999);
 
-            if (! $user) {
+                $payload = [
+                    'otp' => $otp,
+                    'attempt' => 5,
+                    'last_attempt' => null,
+                ];
+                $user->otp = Crypt::encryptString(json_encode($payload));
+
+            }
+            $decodeTime = json_decode(Crypt::decryptString($user->otp), true);
+            $lastAttempt = Carbon::parse($decodeTime['last_attempt']);
+            $now = Carbon::now();
+
+            if($now->diffInMinutes($lastAttempt) < 5){
+                $remainingTime = 5 - $now->diffInMinutes($lastAttempt);
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'User not found',
+                    'message' => 'You have exceeded the maximum number of attempts. Please wait for ' . $remainingTime . ' minutes.',
                     'data' => null,
-                ], 404);
+                ], 429); // 429 Too Many Requests
             }
-            $otp = rand(100000, 999999);
-            $user->otp = Crypt::encryptString($otp);
-            $user->otp_expiry = Carbon::now()->addMinutes(5);
+
+            if ($user->otp != null) {
+                $decodedJson = json_decode(Crypt::decryptString($user->otp), true);
+                $otp = $decodedJson['otp'];
+                $attempt = $decodedJson['attempt'] - 1;
+                $decodedJson['last_attempt'] = null;
+                $payload = [
+                    'otp' => $otp,
+                    'attempt' => $attempt,
+                    'last_attempt' => null,
+                ];
+                $user->otp = Crypt::encryptString(json_encode($decodedJson));
+                $user->update();
+            }
+            $decode = json_decode(Crypt::decryptString($user->otp), true);
+            if ($decode['attempt'] === 0) {
+                $payload = [
+                    'otp' => $otp,
+                    'attempt' => 5,
+                    'last_attempt' => Carbon::now()->addMinutes(5),
+                ];
+                $user->otp = Crypt::encryptString(json_encode($payload));
+                $user->update();
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'You have exceeded the maximum number of attempts',
+                    'data' => null,
+                ], 401);
+            }
+            $user->otp = Crypt::encryptString(json_encode($payload));
+            $decodedJson = json_decode(Crypt::decryptString($user->otp), true);
             $user->save();
-            $username = $user->name;
 
             $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first(); // Replace 1 with the ID of the email template you want to fetch
             $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
             $template_type = $emailTemplate->template_type; // Retrieve the template type from the emailTemplate model
-
+            $username = $user->name;
             // Create a new instance of the mailable and pass the email template to it
             $mailable = new EmailTemplate($username, $subject, $template_type, $otp);
 
@@ -325,9 +366,15 @@ class AuthenticationController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'OTP sent to your email',
+                'message' => 'Please check your email for the OTP to reset your password, you have '.$decodedJson['attempt'].' attempts left',
                 'data' => null,
             ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e->validator->errors(),
+                'data' => null,
+            ], 400);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
