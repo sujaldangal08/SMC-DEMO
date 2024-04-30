@@ -173,12 +173,15 @@ class AuthenticationController extends Controller
             $checkUser->email_verified_at = Carbon::now(); // set the email_verified_at field to the current time
             $checkUser->otp = null; // set the otp field to null
 
+            $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString() . '_' . Str::random(10));
+            $checkUser->otp_hash = $otp_hash;
+
             $checkUser->save();
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'OTP verified successfully. Please login to continue',
-                'data' => $checkUser,
+                'message' => 'OTP verified successfully.',
+                'data' => null,
             ], 200);
         } else {
             // If the OTP provided in the request does not match the OTP stored in the user record,
@@ -317,7 +320,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'OTP sent to your email',
-                'data' => $user,
+                'data' => null,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -495,5 +498,56 @@ class AuthenticationController extends Controller
             'message' => '2FA disabled successfully',
             'data' => null,
         ], 200);
+    }
+
+
+    public function changePassword(Request $request): JsonResponse
+    {
+        try {
+            $request->validate([
+                'password_hash' => 'required',
+                'new_password' => 'required|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/',
+                'confirm_password' => 'required|same:new_password',
+            ], [
+                'new_password.required' => 'The new password field is required.',
+                'new_password.min' => 'The new password must be at least 8 characters.',
+                'new_password.regex' => 'The new password must include at least one uppercase letter, one lowercase letter, one number, and one special character.',
+                'confirm_password.required' => 'The confirmation password field is required.',
+                'confirm_password.same' => 'The confirmation password must match the new password.',
+            ]);
+
+            $user = User::where('otp_hash', $request->password_hash)->first();
+
+            if (!$user) {
+
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'Otp doesnt exist',
+                    'data' => null,
+                ], 401);
+            }
+
+            $user->password = Hash::make($request->new_password);
+            $user->otp_hash = null;
+            $user->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Password changed successfully',
+                'data' => null,
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e->validator->errors(),
+                'data' => null,
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'exception' => $e->getMessage(),
+                'data' => null,
+            ], 400);
+        }
     }
 }

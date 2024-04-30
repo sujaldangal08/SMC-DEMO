@@ -89,6 +89,7 @@ Route::post('/backend-login', [AuthenticationController::class, 'backendLogin'])
 Route::post('/forgot-password', [AuthenticationController::class, 'forgotPassword']);
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/verify-otp', [AuthenticationController::class, 'verifyOtp']);
+Route::patch('/change-password', [AuthenticationController::class, 'changePassword']);
 
 Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 // Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware(RoleAuthentication::class);
