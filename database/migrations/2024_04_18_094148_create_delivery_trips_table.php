@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled']);
             $table->date('trip_date');
             $table->string('note');
+            $table->string('attachment')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

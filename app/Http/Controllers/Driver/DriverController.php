@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Driver;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeliveryRequest;
+use App\Http\Requests\PickupRequest;
 use App\Models\DeliveryTrip;
 use App\Models\PickupSchedule;
 use App\Models\Route;
@@ -196,9 +198,10 @@ class DriverController extends Controller
      *
      * @throws \Exception
      */
-    public function updateSchedule(Request $request, int $id): JsonResponse
+    public function updateSchedule(PickupRequest $request, int $id): JsonResponse
     {
         try {
+            dd($request->validated());
             $validatedData = $request->validated();
             $schedule = PickupSchedule::findOrFail($id)->where('driver_id', request()->user()->id)->first();
 
@@ -310,24 +313,19 @@ class DriverController extends Controller
      *
      * @throws \Exception
      */
-    public function updateDeliveryTrip(Request $request, int $id): JsonResponse
+    public function updateDeliveryTrip(DeliveryRequest $request, int $id): JsonResponse
     {
         try {
-            $validatedData = $request->validate([
-                'status' => 'required|string|in:completed,in_progress,pending',
-                'amount_loaded' => 'nullable|array',
-                'notes' => 'nullable',
-                'materials' => 'nullable|array',
-                'amount' => ['nullable', 'array', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . (is_array($request->input('materials')) ? count($request->input('materials')) : 0)],
-                'n_bins' => 'nullable|integer',
-                'tare_weight' => ['nullable', 'array', 'size:' . $request->input('n_bins')],
-                'image' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'array', 'size:' . ($request->has('n_bins') ? $request->input('n_bins') : 2)],
-            ]);
-
             $trip = DeliveryTrip::where('id', $id)->where('driver_id', request()->user()->id)->first();
+
+            if (!$trip) {
+                throw new ModelNotFoundException('Delivery trip not found');
+            }
+
+            $validatedData = $request->validated();
+
             // Upload image
-            if ($validatedData['status'] === 'completed' && (!$request->hasFile('image') || $trip['image'] === null)) {
+            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']) || $trip['attachment'] === null)) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'Image is required when status is done.',
@@ -336,13 +334,10 @@ class DriverController extends Controller
             }
             $images = [];
             // Check if request has image
-
-            if ($request->hasFile('image')) {
+            if (isset($validatedData['attachment']) && $validatedData['attachment'] !== null) {
                 $images = $this->imageUpload($validatedData);
+                $validatedData['attachment'] = $images;
             }
-            // Replace image with the uploaded image
-            $validatedData['image'] = $images;
-
             $trip->update($validatedData);
 
             return response()->json([
@@ -352,12 +347,6 @@ class DriverController extends Controller
                     'trip' => $trip,
                 ],
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Delivery trip not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',

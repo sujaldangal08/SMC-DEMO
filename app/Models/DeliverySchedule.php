@@ -96,19 +96,6 @@ class DeliverySchedule extends Model
         return false;
     }
 
-    // Define an accessor to get the delivery date based on the interval
-    // public function getDeliveryDateAttribute(): array
-    // {
-    //     $deliveryDates = [];
-    //     // Loop through the number of trips
-    //     for ($i = 0; $i < $this->n_trips; $i++) {
-    //         // Calculate the delivery date based on the interval
-    //         $deliveryDate = date('Y-m-d', strtotime($this->start_date . ' + ' . ($i * $this->interval) . ' days'));
-    //         $deliveryDates[] = $deliveryDate;
-    //     }
-    //     return $deliveryDates;
-    // }
-
     public function createDeliveryTrip($tripDate): void
     {
         // Get the last delivery trip

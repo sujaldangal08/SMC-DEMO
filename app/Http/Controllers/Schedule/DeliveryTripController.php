@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Schedule;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeliveryRequest;
 use App\Models\DeliveryTrip;
 use App\Traits\ValidatesRoles;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -55,18 +56,10 @@ class DeliveryTripController extends Controller
         }
     }
 
-    public function create(Request $request): JsonResponse
+    public function create(DeliveryRequest $request): JsonResponse
     {
         try {
-            $validatedRequest = $request->validate([
-                'schedule_id' => 'required|exists:schedules,id',
-                'vehicle_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
-                'driver_id' => ['nullable', $this->roleRule('driver')],
-                'materials' => 'required|array',
-                'amount_loaded' => 'required|array',
-                'status' => 'required|in:pending,in_progress,completed',
-                'trip_number' => 'required|string',
-            ]);
+            $validatedRequest = $request->validated();
             $trip = DeliveryTrip::create($validatedRequest);
 
             return response()->json([
@@ -79,16 +72,10 @@ class DeliveryTripController extends Controller
         }
     }
 
-    public function update(Request $request, int $id): JsonResponse
+    public function update(DeliveryRequest $request, int $id): JsonResponse
     {
         try {
-            $validatedRequest = $request->validate([
-                'schedule_id' => 'required|exists:schedules,id',
-                'vehicle_id' => [Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
-                'driver_id' => ['nullable', $this->roleRule('driver')],
-                'materials' => 'required|array',
-                'amount_loaded' => 'required|array',
-            ]);
+            $validatedRequest = $request->validated();
             $trip = DeliveryTrip::find($id);
             $trip->update($validatedRequest);
 
