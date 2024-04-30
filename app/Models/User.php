@@ -30,6 +30,7 @@ class User extends Authenticatable
         'country',
         'role_id',
         'image',
+        'login_attempts',
 
     ];
 
@@ -53,7 +54,19 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'login_attempts' => 'integer',
         ];
+    }
+
+    // Do not touch this code in any way or form as it is used for the login attempts feature
+    //If you remove this code you get an error
+    //Typed property App\\Models\\User::$login_attempts must not be accessed before initialization 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        // Initialize login_attempts if not set
+        $this->login_attempts = $this->login_attempts ?? 0;
     }
 
     public function deactivate(): void
@@ -62,6 +75,7 @@ class User extends Authenticatable
         $this->save();
     }
 
+    // Do not touch this code in any way or form as it is used for the login attempts feature
     public function resetLoginAttempts(): void
     {
         $this->login_attempts = 0;
@@ -70,8 +84,7 @@ class User extends Authenticatable
 
     public function incrementLoginAttempts(): void
     {
-        $this->login_attempts++;
-        $this->save();
+        $this->increment('login_attempts'); // Use Eloquent's increment method
     }
 
     public function role()
@@ -103,6 +116,6 @@ class User extends Authenticatable
 
     public function getImageAttribute($value)
     {
-        return $value ? asset('storage/'.$value) : null;
+        return $value ? asset('storage/' . $value) : null;
     }
 }
