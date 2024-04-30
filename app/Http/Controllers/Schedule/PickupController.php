@@ -8,8 +8,8 @@ use App\Models\PickupSchedule;
 use App\Traits\ValidatesRoles;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PickupController extends Controller
 {
@@ -214,8 +214,8 @@ class PickupController extends Controller
 
     /**
      * Set related data
-     * @param object $schedule
-     * @return array 
+     *
+     * @return array
      */
     private function setRelatedData(object $schedule)
     {
@@ -261,24 +261,24 @@ class PickupController extends Controller
 
     /**
      * Upload image
-     * @param array $validatedRequest
+     *
      * @return array
      */
     protected function imageUpload(array $validatedRequest)
     {
         $images = [];
         foreach ($validatedRequest['image'] as $image) {
-            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $filePath = 'uploads/pickup/' . $image_name;
+            $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
+            $filePath = 'uploads/pickup/'.$image_name;
 
             // Check if the 'uploads/pickup' directory exists and create it if it doesn't
-            if (!Storage::disk('public')->exists('uploads/pickup')) {
+            if (! Storage::disk('public')->exists('uploads/pickup')) {
                 Storage::disk('public')->makeDirectory('uploads/pickup');
             }
             // Save the image to a file in the public directory
             Storage::disk('public')->put($filePath, file_get_contents($image));
 
-            $image_location = 'storage/uploads/pickup/' . $image_name;
+            $image_location = 'storage/uploads/pickup/'.$image_name;
             $images[] = $image_location;
         }
         $validatedRequest['image'] = $images;

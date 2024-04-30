@@ -8,8 +8,6 @@ use App\Models\DeliveryTrip;
 use App\Traits\ValidatesRoles;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class DeliveryTripController extends Controller
 {

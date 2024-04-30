@@ -24,6 +24,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone_number',
+        'city',
+        'state',
+        'country',
+        'role_id',
+        'image',
+
     ];
 
     /**
@@ -92,5 +99,10 @@ class User extends Authenticatable
     public function delivery()
     {
         return $this->hasMany(Delivery::class);
+    }
+
+    public function getImageAttribute($value)
+    {
+        return $value ? asset('storage/'.$value) : null;
     }
 }

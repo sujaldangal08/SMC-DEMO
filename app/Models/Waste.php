@@ -31,4 +31,9 @@ class Waste extends Model
     {
         return $this->belongsTo(Ticket::class);
     }
+
+    public function getImageAttribute($value)
+    {
+        return $value ? asset('storage/'.$value) : null;
+    }
 }

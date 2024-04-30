@@ -34,4 +34,9 @@ class Insurance extends Model
     {
         return $this->belongsTo(Asset::class);
     }
+
+    public function getAttachmentAttribute($value)
+    {
+        return $value ? asset('storage/'.$value) : null;
+    }
 }

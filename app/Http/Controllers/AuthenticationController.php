@@ -167,7 +167,6 @@ class AuthenticationController extends Controller
         $decodedOtp = json_decode($checkOtp, true);
         dd($decodedOtp);
 
-
         // Check if the current time is greater than or equal to the OTP expiry time
         if ($second >= $secondTwo) {
             // If the OTP has expired, return a JSON response with an error message

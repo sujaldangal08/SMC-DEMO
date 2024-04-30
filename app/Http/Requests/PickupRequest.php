@@ -2,14 +2,15 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Traits\ValidatesRoles;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class PickupRequest extends FormRequest
 {
     use ValidatesRoles;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -31,6 +32,7 @@ class PickupRequest extends FormRequest
         $dateRule = $isPostRequest ? 'required|date' : 'nullable|date';
         $materialsCount = is_array($this->input('materials')) ? count($this->input('materials')) : 0;
         $n_bins = $this->has('n_bins') ? $this->input('n_bins') : 2;
+
         return [
             'route_id' => ['nullable', 'exists:routes,id'],
             'asset_id' => ['nullable', Rule::exists('assets', 'id')->where('asset_type', 'vehicle')],
@@ -40,20 +42,17 @@ class PickupRequest extends FormRequest
             'status' => 'nullable|in:pending,active,inactive,done,unloading,full,schedule',
             'notes' => 'nullable',
             'materials' => 'nullable|array',
-            'amount' => ['nullable', 'array', 'size:' . $materialsCount, 'numeric'],
-            'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . $materialsCount],
+            'amount' => ['nullable', 'array', 'size:'.$materialsCount, 'numeric'],
+            'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.$materialsCount],
             'n_bins' => 'nullable|integer',
-            'tare_weight' => ['nullable', 'array', 'numeric', 'size:' . $n_bins],
-            'image' => ['nullable', 'array', 'size:' . $n_bins],
+            'tare_weight' => ['nullable', 'array', 'numeric', 'size:'.$n_bins],
+            'image' => ['nullable', 'array', 'size:'.$n_bins],
             'coordinates' => 'nullable|array|size:2',
         ];
     }
 
-
     /**
      * Handle a failed validation attempt.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
      */
     protected function failedValidation(Validator $validator): \Illuminate\Http\JsonResponse
     {

@@ -2,14 +2,15 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\ValidatesRoles;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Contracts\Validation\Validator;
-use App\Traits\ValidatesRoles;
 
 class DeliveryRequest extends FormRequest
 {
     use ValidatesRoles;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -34,16 +35,16 @@ class DeliveryRequest extends FormRequest
             'amount_loaded' => 'array',
             'status' => 'in:pending,in_progress,completed',
             'trip_number' => 'string',
-            'attachment' => ['nullable', 'mimes:pdf,doc,docx,txt,png,jpg,jpeg']
+            'attachment' => ['nullable', 'array', 'mimes:pdf,doc,docx,txt,png,jpg,jpeg'],
         ];
 
         if ($this->isMethod('post')) {
             // Additional rules for 'post' method
-            $rules['schedule_id'] = 'required|' . $rules['schedule_id'];
-            $rules['materials'] = 'required|' . $rules['materials'];
-            $rules['amount_loaded'] = 'required|' . $rules['amount_loaded'];
-            $rules['status'] = 'required|' . $rules['status'];
-            $rules['trip_number'] = 'required|' . $rules['trip_number'];
+            $rules['schedule_id'] = 'required|'.$rules['schedule_id'];
+            $rules['materials'] = 'required|'.$rules['materials'];
+            $rules['amount_loaded'] = 'required|'.$rules['amount_loaded'];
+            $rules['status'] = 'required|'.$rules['status'];
+            $rules['trip_number'] = 'required|'.$rules['trip_number'];
         }
 
         return $rules;

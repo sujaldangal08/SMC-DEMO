@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProfileSettingsController extends Controller
@@ -18,6 +19,7 @@ class ProfileSettingsController extends Controller
                 return response()->json(['message' => 'Super-Admin Cannot Access This route'], 401);
             }
             $id = $request->user()->id;
+            $user = User::findOrFail($id);
             $validatedData = $request->validate([
                 'name' => 'sometimes|required|string',
                 'email' => 'sometimes|required|email|unique:users,email,'.$id,
@@ -28,14 +30,10 @@ class ProfileSettingsController extends Controller
                 'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            $image = $request->file('image');
-            $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('uploads/profile/');
-            $image->move($destinationPath, $image_name);
-            $image_location = 'uploads/profile/'.$image_name;
-            $validatedData['image'] = $image_location;
+            if ($validatedData['image']) {
+                $validatedData = $this->imageUpload($validatedData);
+            }
 
-            $user = User::findOrFail($id);
             $user->update($validatedData);
 
             return response()->json([
@@ -91,5 +89,27 @@ class ProfileSettingsController extends Controller
                 'exception' => $e->getMessage(),
             ], 400);
         }
+    }
+
+    protected function imageUpload(array $validatedData)
+    {
+        $images = [];
+        foreach ($validatedData['image'] as $image) {
+            $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
+            $filePath = 'uploads/user/'.$image_name;
+
+            // Check if the 'uploads/user' directory exists and create it if it doesn't
+            if (! Storage::disk('public')->exists('uploads/user')) {
+                Storage::disk('public')->makeDirectory('uploads/user');
+            }
+            // Save the image to a file in the public directory
+            Storage::disk('public')->put($filePath, file_get_contents($image));
+
+            $image_location = 'storage/uploads/user/'.$image_name;
+            $images[] = $image_location;
+        }
+        $validatedData['image'] = $images;
+
+        return $validatedData;
     }
 }

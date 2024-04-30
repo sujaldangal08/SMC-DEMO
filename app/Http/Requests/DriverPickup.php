@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 
 class DriverPickup extends FormRequest
@@ -25,15 +25,16 @@ class DriverPickup extends FormRequest
     {
         $materialsCount = is_array($this->input('materials')) ? count($this->input('materials')) : 0;
         $n_bins = $this->has('n_bins') ? $this->input('n_bins') : 2;
+
         return [
             'status' => 'nullable|in:pending,active,inactive,done,unloading,schedule',
             'notes' => 'nullable',
             'materials' => 'nullable|array',
-            'amount' => ['nullable', 'array', 'size:' . $materialsCount, 'numeric'],
-            'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . $materialsCount],
+            'amount' => ['nullable', 'array', 'size:'.$materialsCount, 'numeric'],
+            'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.$materialsCount],
             'n_bins' => 'nullable|integer',
-            'tare_weight' => ['nullable', 'array', 'numeric', 'size:' . $n_bins],
-            'image' => ['nullable', 'array', 'size:' . $n_bins],
+            'tare_weight' => ['nullable', 'array', 'numeric', 'size:'.$n_bins],
+            'image' => ['nullable', 'array', 'size:'.$n_bins],
         ];
     }
 

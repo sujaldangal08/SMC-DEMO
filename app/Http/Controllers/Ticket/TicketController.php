@@ -80,7 +80,7 @@ class TicketController extends Controller
             $previousWeight = $validatedData['initial_truck_weight'] ?? 0;
 
             for ($index = 0; $index < count($validatedData['customer_id']); $index++) {
-                [$ticketData, $truckWeight] = $this->prepareTicketData($validatedData, $previousWeight, $index, $lotNumber);
+                [$ticketData, $truckWeight] = $this->prepareTicketData($validatedData, $previousWeight, $index, $lotNumber, null);
                 $tickets[] = Ticket::create($ticketData);
                 $previousWeight = $truckWeight;  // Update previous weight for next iteration
             }
@@ -114,7 +114,7 @@ class TicketController extends Controller
             $previousWeight = $validatedData['initial_truck_weight'] ?? 0;
 
             foreach ($tickets as $index => $ticket) {
-                [$ticketData, $truckWeight] = $this->prepareTicketData($validatedData, $previousWeight, $index, $ticket->lot_number);
+                [$ticketData, $truckWeight] = $this->prepareTicketData($validatedData, $previousWeight, $index, $ticket->lot_number, $ticket->ticket_number);
                 $previousWeight = $truckWeight;  // Update previous weight for next iteration
                 $ticket->update($ticketData);
                 $updatedTickets[] = $ticket;
@@ -216,15 +216,16 @@ class TicketController extends Controller
      *
      * @param  int  $lotNumber
      */
-    private function prepareTicketData(array $validatedData, int $previousWeight, int $index, string $lotNumber): array
+    private function prepareTicketData(array $validatedData, int $previousWeight, int $index, string $lotNumber, ?string $ticketNumber): array
     {
         $tareBin = $validatedData['tare_bin'][$index] ?? 0;
         $truckWeight = $validatedData['next_truck_weight'][$index] ?? 0;
         $fullBinWeight = $validatedData['full_bin_weight'][$index] ?? 0;
         $material = $validatedData['material'][$index] ?? null;
         $customerId = $validatedData['customer_id'][$index];
-        $ticketNumber = 'TICKET-'.strtoupper(dechex($customerId)).'-'.Str::random(10);
-
+        if (request()->isMethod('post')) {
+            $ticketNumber = 'TICKET-'.strtoupper(dechex($customerId)).'-'.Str::random(10);
+        }
         $gross_weight = $validatedData['weighing_type'] === 'pallet'
             ? $fullBinWeight - $tareBin
             : $previousWeight - $truckWeight - $tareBin;

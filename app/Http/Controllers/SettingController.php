@@ -102,6 +102,7 @@ class SettingController extends Controller
         foreach ($settings as $setting) {
             $setting->setting_value = decrypt($setting->setting_value);
         }
+
         return $settings;
     }
 }

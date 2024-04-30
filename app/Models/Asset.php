@@ -20,7 +20,7 @@ class Asset extends Model
     protected function casts(): array
     {
         return [
-            'meta' => 'array',
+            'meta' => 'json',
         ];
     }
 
@@ -36,6 +36,11 @@ class Asset extends Model
 
     public function schedules()
     {
-        return $this->hasMany(PickSchedule::class);
+        return $this->hasMany(PickupSchedule::class);
+    }
+
+    public function getImageAttribute($value)
+    {
+        return $value ? asset('storage/'.$value) : null;
     }
 }
