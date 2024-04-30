@@ -201,13 +201,19 @@ class DriverController extends Controller
     public function updateSchedule(PickupRequest $request, int $id): JsonResponse
     {
         try {
-            dd($request->validated());
             $validatedData = $request->validated();
             $schedule = PickupSchedule::findOrFail($id)->where('driver_id', request()->user()->id)->first();
 
-            // Replace image with the uploaded image
-            $images = $this->imageUpload($validatedData);
-            $validatedData['image'] = $images;
+            if (isset($validatedRequest['image'])) {
+                $images = [];
+                foreach ($validatedRequest['image'] as $image) {
+                    $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+                    $image->storeAs('public/uploads/pickup', $image_name);
+                    $image_location = 'storage/uploads/pickup/' . $image_name;
+                    $images[] = $image_location;
+                }
+                $validatedRequest['image'] = $images;
+            }
 
             $schedule->update($validatedData);
 
