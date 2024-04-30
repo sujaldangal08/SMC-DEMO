@@ -180,8 +180,8 @@ class AuthenticationController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'OTP verified successfully. Please login to continue',
-                'data' => $checkUser,
+                'message' => 'OTP verified successfully.',
+                'data' => null,
             ], 200);
         } else {
             // If the OTP provided in the request does not match the OTP stored in the user record,
@@ -320,7 +320,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'OTP sent to your email',
-                'data' => $user,
+                'data' => null,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
