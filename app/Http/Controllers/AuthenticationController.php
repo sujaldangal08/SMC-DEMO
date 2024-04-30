@@ -309,14 +309,15 @@ class AuthenticationController extends Controller
 
             }
             $decodeTime = json_decode(Crypt::decryptString($user->otp), true);
-            $lastAttempt = Carbon::parse($decodeTime['last_attempt']);
-            $now = Carbon::now();
+            $lastAttempt = strtotime($decodeTime['last_attempt']);
+            $now = time();
 
-            if($now->diffInMinutes($lastAttempt) < 5){
-                $remainingTime = 5 - $now->diffInMinutes($lastAttempt);
+            if (($now - $lastAttempt) < (5 * 60)) { // 5 minutes * 60 seconds
+                $remainingTime = 5 - round(($now - $lastAttempt) / 60); // Convert the difference from seconds to minutes
+
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'You have exceeded the maximum number of attempts. Please wait for ' . $remainingTime . ' minutes.',
+                    'message' => 'You have exceeded the maximum number of attempts. Please wait for '.$remainingTime.' minutes.',
                     'data' => null,
                 ], 429); // 429 Too Many Requests
             }
@@ -339,10 +340,11 @@ class AuthenticationController extends Controller
                 $payload = [
                     'otp' => $otp,
                     'attempt' => 5,
-                    'last_attempt' => Carbon::now()->addMinutes(5),
+                    'last_attempt' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
                 ];
                 $user->otp = Crypt::encryptString(json_encode($payload));
                 $user->update();
+
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'You have exceeded the maximum number of attempts',
