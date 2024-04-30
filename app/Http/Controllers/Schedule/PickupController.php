@@ -72,8 +72,15 @@ class PickupController extends Controller
         try {
             $validatedRequest = $request->validated();
             if (isset($validatedRequest['image'])) {
-                $image = $this->storeImage($validatedRequest, $request);
-                $validatedRequest['image'] = $image;
+                $images = [];
+                foreach ($validatedRequest['image'] as $image) {
+                    $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+                    $destinationPath = public_path('uploads/pickup/');
+                    $image->move($destinationPath, $image_name);
+                    $image_location = 'uploads/pickup/' . $image_name;
+                    $images[] = $image_location;
+                }
+                $validatedRequest['image'] = $images;
             }
 
             $schedule = PickupSchedule::create($validatedRequest);

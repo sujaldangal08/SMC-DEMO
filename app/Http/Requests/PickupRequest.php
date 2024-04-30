@@ -44,7 +44,7 @@ class PickupRequest extends FormRequest
             'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:' . $materialsCount],
             'n_bins' => 'nullable|integer',
             'tare_weight' => 'nullable|array',
-            'image' => ['nullable', 'mimes:jpeg,png,jpg,pdf', 'array', 'size:' . $n_bins],
+            'image' => ['nullable', 'array', 'size:' . $n_bins],
             'coordinates' => 'nullable|array|size:2',
         ];
     }

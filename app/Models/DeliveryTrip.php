@@ -20,6 +20,7 @@ class DeliveryTrip extends Model
         'amount_loaded',
         'trip_number',
         'status',
+        'attachment',
     ];
 
     public function casts(): array
