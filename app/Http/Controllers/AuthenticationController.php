@@ -289,7 +289,15 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Reset the user's password
+     * This method handles the forgot password functionality.
+     * It validates the email provided in the request, checks if the user exists,
+     * and if the user has not exceeded the maximum number of OTP attempts.
+     * If the user has exceeded the maximum number of attempts, it waits for 5 minutes before allowing another attempt.
+     * If the user has not exceeded the maximum number of attempts, it generates a new OTP, sends it to the user's email,
+     * and updates the user's record with the new OTP and the number of attempts.
+     *
+     * @param  Request  $request
+     * @return JsonResponse
      */
     public function forgotPassword(Request $request): JsonResponse
     {
