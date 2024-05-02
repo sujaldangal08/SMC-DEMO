@@ -65,11 +65,6 @@ class DataSettingController extends Controller
         $updatedSettings = [];
         $updatedXeroSettings = false;
         $updatedForce2fa = false;
-        $updatedRecaptcha = false;
-        $updatedWhatsapp = false;
-        $updatedGoogleLocation = false;
-        $updatedGoogleOcr = false;
-
 
         foreach ($settings as $settingData) {
             $setting = Setting::find($settingData['id']);

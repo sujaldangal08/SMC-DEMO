@@ -38,8 +38,15 @@ Schedule::call(function () {
     Artisan::call('app:schedule-command');
 })->everyMinute();
 
-// Schedule::command('app:make-delivery-trips')
-//     ->everyFiveSeconds()
-//     ->appendOutputTo(storage_path('logs/delivery-trips.log'));
+Schedule::command('app:make-delivery-trips')
+    ->everyFiveSeconds()
+    ->appendOutputTo(storage_path('logs/delivery-trips.log'));
 
 Schedule::command('sanctum:prune-expired --hours=24')->daily();
+
+Schedule::command('app:execute-task')
+        ->everyMinute()
+        ->onFailure(function (\Exception $exception) {
+            Log::error('Failed to execute app:execute-task command');
+        });
+
