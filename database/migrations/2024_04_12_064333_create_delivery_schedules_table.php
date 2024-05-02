@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('coordinates');
             $table->string('materials');
+            $table->string('rate');
             $table->string('amount');
             $table->integer('n_trips');
             $table->integer('n_trips_done')->default(0);
