@@ -66,6 +66,7 @@ class PickupSchedule extends Model
             'weighing_type' => 'array',
             'tare_weight' => 'array',
             'amount' => 'array', //is not set as an array to calculate the sum of the amount in route controller
+            'rate' => 'array',
         ];
     }
 

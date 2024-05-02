@@ -40,6 +40,7 @@ class DeliverySchedule extends Model
             'amount' => 'array',
             'delivery_date' => 'json', // This is now a computed attribute
             'meta' => 'json',
+            'rate' => 'array',
         ];
     }
 
