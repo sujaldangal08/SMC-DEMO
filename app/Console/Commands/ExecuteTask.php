@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Route;
 
 class ExecuteTask extends Command
 {
@@ -27,7 +26,9 @@ class ExecuteTask extends Command
      */
     public function handle()
     {
-        $response = Http::get('https://smc.schost.me/api/v1/branch');
+        $contact = Http::get('http://smc-laravel-api.test/api/v1/xero/contacts');
+        $response = Http::get('http://smc-laravel-api.test/api/v1/xero/purchase-orders');
+
         return 'Task executed successfully.';
     }
 }
