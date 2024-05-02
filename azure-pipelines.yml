@@ -30,7 +30,7 @@ jobs:
             composer update
             composer upgrade
             php artisan key:generate
-            php artisan db:seed
             php artisan migrate
+            php artisan db:seed
             php artisan serve --port=80 &
           displayName: 'Continuous Integration and Deployment'
