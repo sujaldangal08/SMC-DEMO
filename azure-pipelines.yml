@@ -24,7 +24,7 @@ jobs:
         steps:
         - script: |
             cd /home/securesclogin/SMC-Laravel-API
-            git pull origin development-deploy-environment
+            git pull origin development-deploy-environment --force
             sudo apt update
             composer install
             composer update
