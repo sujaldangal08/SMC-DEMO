@@ -88,6 +88,19 @@ class DataSettingController extends Controller
                     $value = Crypt::encryptString($value);
                     $updatedXeroSettings = true;
                 }
+                $encryptSettings = [
+                    'smtp_password',
+                    'recaptcha_client_key',
+                    'recaptcha_client_secret',
+                    'whatsapp_secret_key',
+                    'whatsapp_client_key',
+                    'google_location_key',
+                    'google_ocr_key'
+                ];
+
+                if (in_array($setting->setting_name, $encryptSettings)) {
+                    $value = Crypt::encryptString($value);
+                }
 
                 $setting->update(['setting_value' => $value]);
                 $updatedSettings[] = $setting;
@@ -101,15 +114,35 @@ class DataSettingController extends Controller
                 'data' => null,
             ], 404);
         }
+        $settingMessages = [
+            'smtp_host' => 'SMTP host',
+            'smtp_username' => 'SMTP username',
+            'smtp_port' => 'SMTP port',
+            'smtp_protocol' => 'SMTP protocol',
+            'smtp_password' => 'SMTP password',
+            'recaptcha_client_key' => 'Recaptcha client key',
+            'recaptcha_client_secret' => 'Recaptcha client secret',
+            'whatsapp_secret_key' => 'WhatsApp secret key',
+            'whatsapp_client_key' => 'WhatsApp client key',
+            'google_location_key' => 'Google location key',
+            'google_ocr_key' => 'Google OCR key',
+        ];
 
-        $message = 'Settings updated successfully';
-        if ($updatedXeroSettings && $updatedForce2fa) {
-            $message = 'Xero and force 2FA settings updated successfully';
-        } elseif ($updatedXeroSettings) {
-            $message = 'Xero settings updated successfully';
-        } elseif ($updatedForce2fa) {
-            $message = 'Force 2FA setting updated successfully';
+        $updatedSettings = [];
+        if (isset($settingMessages[$setting->setting_name])) {
+            $updatedSettings[] = $settingMessages[$setting->setting_name];
         }
+
+        if ($updatedXeroSettings) {
+            $updatedSettings[] = 'Xero';
+        }
+
+        if ($updatedForce2fa) {
+            $updatedSettings[] = 'Force 2FA';
+        }
+
+
+        $message = implode(' and ', $updatedSettings) . ' settings updated successfully';
 
         return response()->json([
             'status' => 'success',
