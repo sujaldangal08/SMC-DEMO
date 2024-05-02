@@ -17,6 +17,7 @@ class DeliverySchedule extends Model
         'name',
         'coordinates',
         'materials',
+        'rate',
         'amount',
         'n_trips',
         'n_trips_done',
