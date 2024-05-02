@@ -1,1 +1,36 @@
+# PHP
+# Test and package your PHP project.
+# Add steps that run tests, save build artifacts, deploy, and more:
 
+trigger:
+- development-deploy-environment
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  phpVersion: '8.2'
+
+jobs:
+- deployment: VMDeploy
+  displayName: Web deploy
+  environment:
+    name: 'SMC-Backend'
+    resourceType: VirtualMachine
+    resourceName: 'SMC-Backend-Development'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - script: |
+            cd /home/securesclogin/SMC-Laravel-API
+            git pull
+            sudo apt update
+            composer install
+            composer update
+            composer upgrade
+            php artisan key:generate
+            php artisan db:seed
+            php artisan migrate
+            php artisan serve --port=80 &
+          displayName: 'Continuous Integration and Deployment'
