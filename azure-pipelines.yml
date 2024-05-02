@@ -23,6 +23,7 @@ jobs:
       deploy:
         steps:
         - script: |
+            sudo su
             cd /home/securesclogin/SMC-Laravel-API
             git pull
             sudo apt update
@@ -30,7 +31,7 @@ jobs:
             composer update
             composer upgrade
             php artisan key:generate
-            php artisan migrate
+            php artisan migrate 
             php artisan db:seed
             php artisan serve --port=80 &
           displayName: 'Continuous Integration and Deployment'
