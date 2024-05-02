@@ -27,7 +27,7 @@ class DriverPickup extends FormRequest
         $n_bins = $this->has('n_bins') ? $this->input('n_bins') : 2;
 
         return [
-            'status' => 'nullable|in:pending,active,inactive,done,unloading,schedule',
+            'status' => 'nullable|in:pending,active,inactive,done,unloading,cancelled',
             'notes' => 'nullable',
             'materials' => 'nullable|array',
             'amount' => ['nullable', 'array', 'size:'.$materialsCount, 'numeric'],
