@@ -1,7 +1,3 @@
-# PHP
-# Test and package your PHP project.
-# Add steps that run tests, save build artifacts, deploy, and more:
-
 trigger:
 - development-deploy-environment
 
@@ -23,9 +19,10 @@ jobs:
       deploy:
         steps:
         - script: |
+            sudo bash -c '
             cd /home/securesclogin/SMC-Laravel-API
             git pull origin development-deploy-environment
-            sudo apt update
+            apt update
             composer install
             composer update
             composer upgrade
@@ -33,4 +30,5 @@ jobs:
             php artisan migrate:fresh
             php artisan db:seed
             php artisan serve --port=80 &
+            '
           displayName: 'Continuous Integration and Deployment'
