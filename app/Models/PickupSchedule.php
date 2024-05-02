@@ -24,6 +24,7 @@ class PickupSchedule extends Model
         'tare_weight',
         'image',
         'amount',
+        'rate',
         'coordinates',
     ];
 
@@ -71,7 +72,7 @@ class PickupSchedule extends Model
     protected static function booted()
     {
         static::creating(function ($pickupSchedule) {
-            if (! isset($pickupSchedule->driver_id) && isset($pickupSchedule->route_id)) {
+            if (!isset($pickupSchedule->driver_id) && isset($pickupSchedule->route_id)) {
                 $route = Route::find($pickupSchedule->route_id);
                 if ($route && $route->driver_id) {
                     $pickupSchedule->driver_id = $route->driver_id;
