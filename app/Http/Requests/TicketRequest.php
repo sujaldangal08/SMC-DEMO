@@ -13,6 +13,7 @@ class TicketRequest extends FormRequest
 
     /**
      * Determine if the user is authorized to make this request.
+     * La CI/CD works :)
      */
     public function authorize(): bool
     {
