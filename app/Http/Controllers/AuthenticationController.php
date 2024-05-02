@@ -58,7 +58,7 @@ class AuthenticationController extends Controller
             }
 
             // Create a new token for the user
-            $tokenResult = $user->createToken('authToken');
+            $tokenResult = $user->createToken('authToken', ['*'], now()->addWeek());
 
             // Return the token in the response
             return response()->json([
@@ -316,7 +316,6 @@ class AuthenticationController extends Controller
                     'last_attempt' => null,
                 ];
                 $user->otp = Crypt::encryptString(json_encode($payload));
-
             }
             $decodeTime = json_decode(Crypt::decryptString($user->otp), true);
             $lastAttempt = strtotime($decodeTime['last_attempt']);
@@ -327,7 +326,7 @@ class AuthenticationController extends Controller
 
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'You have exceeded the maximum number of attempts. Please wait for '.$remainingTime.' minutes.',
+                    'message' => 'You have exceeded the maximum number of attempts. Please wait for ' . $remainingTime . ' minutes.',
                     'data' => null,
                 ], 429); // 429 Too Many Requests
             }
@@ -377,7 +376,7 @@ class AuthenticationController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Please check your email for the OTP to reset your password, you have '.$decodedJson['attempt'].' attempts left',
+                'message' => 'Please check your email for the OTP to reset your password, you have ' . $decodedJson['attempt'] . ' attempts left',
                 'data' => null,
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
