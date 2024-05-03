@@ -104,7 +104,6 @@ class OAuthController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Authenticated',
-                'data' => $checkuser,
                 'access_token' => $plainTextToken,
                 'token_type' => 'Bearer',
                 'expires_at' => $token->expires_at,
