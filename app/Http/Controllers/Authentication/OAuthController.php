@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class OAuthController extends Controller
 {
@@ -44,6 +45,27 @@ class OAuthController extends Controller
         $checkuser = User::where('email', $email)->first();
 
         // If the user doesn't exist, return an error response
+        return $this->extracted($checkuser);
+    }
+
+    public function facebookOauthReceive(Request $request)
+    {
+        // Get the token from the request
+        $accessToken = $token = $request->token;
+
+        $userDataUrl = 'https://graph.facebook.com/v12.0/me?fields=id,name,email';
+        $userDataResponse = Http::withToken($accessToken)->get($userDataUrl);
+        $userData = $userDataResponse->json();
+
+        $checkuser = User::where('email', $userData['email'])->first();
+
+        // If the user doesn't exist, return an error response
+        return $this->extracted($checkuser);
+
+    }
+
+    public function extracted(User $checkuser): JsonResponse
+    {
         if (! $checkuser) {
             return response()->json([
                 'status' => 'failure',

@@ -9,15 +9,29 @@ use App\Models\Xero\XeroConnect;
 use App\Models\Xero\XeroTenant;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Crypt;
 
 class XeroController extends Controller
 {
-    public function xeroConnect(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    /**
+     * This method is responsible for initiating the connection to Xero.
+     * It first retrieves the Xero credentials.
+     * Then, it builds a query string with the necessary parameters for the Xero authorization URL.
+     * Finally, it redirects the user to the Xero authorization URL.
+     *
+     * @return Application|\Illuminate\Foundation\Application|RedirectResponse|Redirector
+     */
+    public function xeroConnect()
     {
+        // Retrieve the Xero credentials
         $credentials = $this->getXero();
 
+        // Build a query string with the necessary parameters for the Xero authorization URL
         $query = http_build_query([
             'response_type' => 'code',
             'client_id' => $credentials['xero_client_id'],
@@ -25,34 +39,61 @@ class XeroController extends Controller
             'scope' => 'email profile openid accounting.settings accounting.transactions accounting.contacts offline_access', // Adjust scope as needed
         ]);
 
+        // Redirect the user to the Xero authorization URL
         return redirect('https://login.xero.com/identity/connect/authorize?'.$query);
     }
 
     /**
-     * @throws GuzzleException
+     * This method is responsible for retrieving the Xero credentials.
+     * It first retrieves all settings from the database.
+     * Then, it decrypts the client_id and client_secret.
+     * If the settings are not found, it returns a JSON response with an error message.
+     *
+     * @return array|JsonResponse
      */
     protected function getXero()
     {
+        // Retrieve all settings from the database
         $xeroSetting = Setting::all();
         $client_id = $xeroSetting['0']['setting_value'];
         $client_secret = $xeroSetting['1']['setting_value'];
 
+        // If the settings are not found, return a JSON response with an error message
         if (! $xeroSetting) {
             return response()->json(['message' => 'XeroSetting not found'], 404);
         }
 
+        // Decrypt the client_id and client_secret
         return [
             'xero_client_id' => Crypt::decryptString($client_id),
             'xero_client_secret' => Crypt::decryptString($client_secret),
         ];
     }
 
+    /**
+     * This method is responsible for handling the callback from Xero after the user has authorized the application.
+     * It first retrieves the authorization code from the request query parameters.
+     * Then, it retrieves the Xero credentials.
+     * It makes a POST request to the Xero API to exchange the authorization code for an access token.
+     * It updates the XeroConnect record in the database with the new access token and other related information.
+     * If an exception occurs during the process, it returns a JSON response with the error message.
+     *
+     * @return JsonResponse
+     *
+     * @throws GuzzleException
+     */
     public function xeroCallback(Request $request)
     {
+        // Retrieve the authorization code from the request query parameters
         $code = $request->query('code');
+
+        // Retrieve the Xero credentials
         $credentials = $this->getXero();
 
+        // Initialize a new Guzzle HTTP client
         $client = new Client();
+
+        // Make a POST request to the Xero API to exchange the authorization code for an access token
         $response = $client->post('https://identity.xero.com/connect/token', [
             'form_params' => [
                 'grant_type' => 'authorization_code',
@@ -63,8 +104,10 @@ class XeroController extends Controller
             ],
         ]);
 
+        // Decode the response body into an associative array
         $responseBody = json_decode((string) $response->getBody(), true);
 
+        // Get the access token and refresh token from the response
         $accessToken = $responseBody['access_token'];
         $refreshToken = $responseBody['refresh_token'];
 
@@ -81,6 +124,7 @@ class XeroController extends Controller
             'scope' => $responseBody['scope'],
         ]);
 
+        // Return a JSON response with the status, message, and the data
         return response()->json([
             'message' => 'Successfully connected to Xero',
             'access_token' => $accessToken,
@@ -88,11 +132,25 @@ class XeroController extends Controller
         ], 200);
     }
 
-    public function xeroRefresh(): \Illuminate\Http\JsonResponse
+    /**
+     * This method is responsible for refreshing the Xero access token.
+     * It first retrieves the first XeroConnect record from the database.
+     * Then, it makes a POST request to the Xero API to refresh the access token.
+     * It updates the XeroConnect record in the database with the new access token and other related information.
+     * If an exception occurs during the process, it returns a JSON response with the error message.
+     */
+    public function xeroRefresh(): JsonResponse
     {
+        // Fetch the first XeroConnect record from the database
         $xeroConnect = XeroConnect::first();
+
+        // Retrieve the Xero credentials
         $credentials = $this->getXero();
+
+        // Initialize a new Guzzle HTTP client
         $client = new Client();
+
+        // Make a POST request to the Xero API to refresh the access token
         $response = $client->post('https://identity.xero.com/connect/token', [
             'form_params' => [
                 'grant_type' => 'refresh_token',
@@ -102,7 +160,10 @@ class XeroController extends Controller
             ],
         ]);
 
+        // Decode the response body into an associative array
         $responseBody = json_decode((string) $response->getBody(), true);
+
+        // Update the XeroConnect record in the database with the new access token and other related information
         $xeroConnect->update([
             'access_token' => $responseBody['access_token'],
             'expires_in' => $responseBody['expires_in'],
@@ -111,6 +172,7 @@ class XeroController extends Controller
             'scope' => $responseBody['scope'],
         ]);
 
+        // Return a JSON response with the status, message, and the data
         return response()->json([
             'message' => 'Successfully refreshed the access token',
             'access_token' => $responseBody['access_token'],
@@ -118,21 +180,39 @@ class XeroController extends Controller
         ], 200);
     }
 
+    /**
+     * This method is responsible for fetching and saving the tenants from Xero.
+     * It first retrieves the first XeroConnect record from the database.
+     * Then, it makes a GET request to the Xero API to retrieve all tenants.
+     * For each tenant, it updates the XeroTenant record in the database.
+     * If an exception occurs during the process, it returns a JSON response with the error message.
+     *
+     * @return JsonResponse
+     *
+     * @throws GuzzleException
+     */
     public function xeroTenant()
     {
+        // Fetch the first XeroConnect record from the database
         $xeroConnect = XeroConnect::first();
 
+        // Initialize a new Guzzle HTTP client
         $client = new Client();
+
+        // Make a GET request to the Xero API to retrieve all tenants
         $response = $client->get('https://api.xero.com/connections', [
             'headers' => [
                 'Authorization' => 'Bearer '.$xeroConnect->access_token,
             ],
         ]);
 
+        // Decode the response body into an associative array
         $responseBody = json_decode((string) $response->getBody(), true);
 
-        // Save the data to the XeroTenant model
+        // Fetch the first XeroTenant record from the database
         $xeroTenant = XeroTenant::first();
+
+        // For each tenant, update the XeroTenant record in the database
         foreach ($responseBody as $tenant) {
             $xeroTenant->update([
                 'connection_id' => $tenant['id'],
@@ -146,18 +226,25 @@ class XeroController extends Controller
             ]);
         }
 
+        // Return a JSON response with the status, message, and the data
         return response()->json([
             'message' => 'Successfully fetched and saved the tenants',
             'tenants' => $responseBody,
         ], 200);
     }
 
-    public function getXeroData(): \Illuminate\Http\JsonResponse
+    /**
+     * This method is responsible for fetching all contacts from the database and transforming the data to match a specific format.
+     * It first retrieves all contacts from the database along with their related addresses, phones, and balances.
+     * Then, it transforms the contact data to match a specific format.
+     * Finally, it returns a JSON response with the status, message, total number of data, and the data.
+     */
+    public function getXeroData(): JsonResponse
     {
-        // Fetch all data from the database
+        // Fetch all contacts from the database along with their related addresses, phones, and balances
         $contacts = Contact::with(['addresses', 'phones', 'balances'])->get();
 
-        // Transform the data to match the provided JSON format
+        // Transform the contact data to match a specific format
         $transformedContacts = $contacts->map(function ($contact) {
             return [
                 'ContactID' => $contact->contact_id,
@@ -199,12 +286,19 @@ class XeroController extends Controller
         ], 200);
     }
 
-    public function getPurchaseOrder(): \Illuminate\Http\JsonResponse
+    /**
+     * This method is responsible for fetching a purchase order.
+     * It first retrieves the first contact from the database along with its related addresses, phones, balances, and purchase orders.
+     * Then, it transforms the purchase order data to match a specific format.
+     * If an exception occurs during the process, it returns a JSON response with the error message.
+     */
+    public function getPurchaseOrder(): JsonResponse
     {
-
+        // Fetch the first contact from the database along with its related addresses, phones, balances, and purchase orders
         $contact = Contact::with(['addresses', 'phones', 'balances', 'purchaseOrder'])->first();
         $purchaseOrder = $contact->purchaseOrder;
 
+        // Transform the purchase order data to match a specific format
         $transformedPurchaseOrder = $purchaseOrder->map(function ($purchaseOrder) {
             return [
                 'PurchaseOrderID' => $purchaseOrder->purchase_order_id,
@@ -251,6 +345,7 @@ class XeroController extends Controller
             ];
         });
 
+        // Return a JSON response with the status, message, total number of data, and the data
         return response()->json([
             'Id' => '58b5344c-edf0-44ce-9e54-f5540b525888',
             'Status' => 'OK',
