@@ -44,13 +44,20 @@ class PickupController extends Controller
     {
         try {
             $schedule = PickupSchedule::findOrFail($id);
-            $route = $schedule->route()->first();
-
+            // $route = $schedule->route()->first();
+            $customer = $schedule->customer()->select('id', 'name', 'phone_number', 'image')->first();
+            $driver = $schedule->driver()->select('id', 'name', 'phone_number', 'image')->first();
+            $asset = $schedule->asset()->select('title', 'rego_number', 'image')->first();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule fetched successfully',
-                'data' => $schedule,
-                'route' => $route,
+                'data' => [
+                    'schedule' => $schedule,
+                    'customer' => $customer,
+                    'driver' => $driver,
+                    'asset' => $asset
+                ]
+                // 'route' => $route,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
@@ -268,17 +275,17 @@ class PickupController extends Controller
     {
         $images = [];
         foreach ($validatedRequest['image'] as $image) {
-            $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
-            $filePath = 'uploads/pickup/'.$image_name;
+            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $filePath = 'uploads/pickup/' . $image_name;
 
             // Check if the 'uploads/pickup' directory exists and create it if it doesn't
-            if (! Storage::disk('public')->exists('uploads/pickup')) {
+            if (!Storage::disk('public')->exists('uploads/pickup')) {
                 Storage::disk('public')->makeDirectory('uploads/pickup');
             }
             // Save the image to a file in the public directory
             Storage::disk('public')->put($filePath, file_get_contents($image));
 
-            $image_location = 'storage/uploads/pickup/'.$image_name;
+            $image_location = 'storage/uploads/pickup/' . $image_name;
             $images[] = $image_location;
         }
         $validatedRequest['image'] = $images;

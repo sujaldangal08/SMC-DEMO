@@ -30,10 +30,10 @@ class DriverPickup extends FormRequest
             'status' => 'sometimes|in:pending,active,inactive,done,unloading,cancelled',
             'notes' => 'sometimes|string',
             'materials' => 'sometimes|array',
-            'amount' => ['sometimes', 'array', 'size:' . $materialsCount, 'numeric'],
-            'weighing_type' => ['sometimes', 'array', 'in:bridge,pallet', 'size:' . $materialsCount],
+            'amount' => ['sometimes', 'array', 'size:'.$materialsCount, 'numeric'],
+            'weighing_type' => ['sometimes', 'array', 'in:bridge,pallet', 'size:'.$materialsCount],
             'n_bins' => 'sometimes|integer',
-            'tare_weight' => ['sometimes', 'array', 'numeric', 'size:' . $n_bins],
+            'tare_weight' => ['sometimes', 'array', 'numeric', 'size:'.$n_bins],
             'image' => ['sometimes', 'array'],
         ];
     }

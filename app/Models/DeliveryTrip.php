@@ -58,8 +58,10 @@ class DeliveryTrip extends Model
             foreach ($images as $image) {
                 $imageUrls[] = url($image);
             }
+
             return $imageUrls;
         }
+
         return $value;
     }
 }
