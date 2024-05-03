@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('image');
+            $table->string('rego_number')->nullable();
             $table->enum('asset_type', ['vehicle', 'equipment', 'weighing_machine', 'office_equipment']);
             $table->text('meta');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade')->nullable();
