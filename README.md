@@ -8,6 +8,7 @@ Welcome to the Metal Recycling App repository! This application aims to revoluti
 2. Navigate to the project directory.
 3. Install dependencies by running `composer install` for Laravel backend.
 4. Set up your environment variables for database connection, Xero API keys, etc.
+5. Generate Key for Laravel with `php artisan key:generate`.
 5. Run migrations with `php artisan migrate` to set up the database schema.
 6. Run the database seeder with `php artisan db:seed` to populate the database with sample data.
 7. Start the Laravel development server with `php artisan serve`.
