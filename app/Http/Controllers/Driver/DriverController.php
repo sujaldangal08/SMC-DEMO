@@ -29,11 +29,15 @@ class DriverController extends Controller
             $routes = Route::where('driver_id', request()->user()->id)->with('schedule')->get();
             $route = $routes->map(function ($route) {
                 $route->type = 'pickup';
+                $route->pickups = $route->schedule;
+                unset($route->schedule);
+
                 return $route;
             });
             $delivers = DeliveryTrip::where('driver_id', request()->user()->id)->where('status', 'in_progress')->get();
             $delivery = $delivers->map(function ($delivery) {
                 $delivery->type = 'delivery';
+
                 return $delivery;
             });
             $dashboard = $route->concat($delivery)->sortBy('created_at');
@@ -213,12 +217,16 @@ class DriverController extends Controller
     {
         try {
             $validatedData = $request->validated();
+
             $schedule = PickupSchedule::findOrFail($id)->where('driver_id', request()->user()->id)->first();
 
-            if (isset($validatedRequest['image'])) {
-                $validatedData = $this->imageUpload($validatedData);
+            if (!$schedule) {
+                throw new ModelNotFoundException('Schedule not found');
             }
-
+            if (isset($validatedData['image'])) {
+                $validatedValue = $this->imageUpload($validatedData['image']);
+                $validatedData['image'] = $validatedValue;
+            }
             $schedule->update($validatedData);
 
             return response()->json([
@@ -325,9 +333,8 @@ class DriverController extends Controller
             if (!$trip) {
                 throw new ModelNotFoundException('Delivery trip not found');
             }
-
             $validatedData = $request->validated();
-            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']))) {
+            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']) && $trip['attachment'] === null)) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'Attachment is required when status is done.',
@@ -336,10 +343,9 @@ class DriverController extends Controller
             }
             // Check if request has image
             if (isset($validatedData['attachment']) && $validatedData['attachment'] !== null) {
-                dd($validatedData['attachment']);
-                $validatedData = $this->imageUpload($validatedData['attachment']);
+                $validatedValue = $this->imageUpload($validatedData['attachment']);
+                $validatedData['attachment'] = $validatedValue;
             }
-
             $trip->update($validatedData);
 
             return response()->json([
@@ -366,21 +372,21 @@ class DriverController extends Controller
     protected function imageUpload(array $validatedData)
     {
         $images = [];
-        foreach ($validatedData['attachment'] as $image) {
+        foreach ($validatedData as $image) {
             $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $filePath = 'uploads/pickup/' . $image_name;
+            $filePath = 'uploads/schedule/' . $image_name;
 
-            // Check if the 'uploads/pickup' directory exists and create it if it doesn't
-            if (!Storage::disk('public')->exists('uploads/pickup')) {
-                Storage::disk('public')->makeDirectory('uploads/pickup');
+            // Check if the 'uploads/schedule' directory exists and create it if it doesn't
+            if (!Storage::disk('public')->exists('uploads/schedule')) {
+                Storage::disk('public')->makeDirectory('uploads/schedule');
             }
             // Save the image to a file in the public directory
             Storage::disk('public')->put($filePath, file_get_contents($image));
 
-            $image_location = 'uploads/pickup/' . $image_name;
+            $image_location = 'uploads/schedule/' . $image_name;
             $images[] = $image_location;
         }
-        $validatedData['attachment'] = $images;
+        $validatedData = $images;
 
         return $validatedData;
     }

@@ -119,6 +119,6 @@ class User extends Authenticatable
 
     public function getImageAttribute($value)
     {
-        return $value ? asset('storage/' . $value) : null;
+        return $value ? asset('storage/'.$value) : null;
     }
 }

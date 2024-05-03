@@ -50,7 +50,7 @@ class DeliveryTrip extends Model
         return $this->belongsTo(Asset::class);
     }
 
-    public function getImageAttribute($value)
+    public function getAttachmentAttribute($value)
     {
         if ($value) {
             $images = json_decode($value);

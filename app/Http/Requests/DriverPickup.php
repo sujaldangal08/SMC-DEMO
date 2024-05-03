@@ -27,14 +27,14 @@ class DriverPickup extends FormRequest
         $n_bins = $this->has('n_bins') ? $this->input('n_bins') : 2;
 
         return [
-            'status' => 'nullable|in:pending,active,inactive,done,unloading,cancelled',
-            'notes' => 'nullable',
-            'materials' => 'nullable|array',
-            'amount' => ['nullable', 'array', 'size:'.$materialsCount, 'numeric'],
-            'weighing_type' => ['nullable', 'array', 'in:bridge,pallet', 'size:'.$materialsCount],
-            'n_bins' => 'nullable|integer',
-            'tare_weight' => ['nullable', 'array', 'numeric', 'size:'.$n_bins],
-            'image' => ['nullable', 'array', 'size:'.$n_bins],
+            'status' => 'sometimes|in:pending,active,inactive,done,unloading,cancelled',
+            'notes' => 'sometimes|string',
+            'materials' => 'sometimes|array',
+            'amount' => ['sometimes', 'array', 'size:'.$materialsCount, 'numeric'],
+            'weighing_type' => ['sometimes', 'array', 'in:bridge,pallet', 'size:'.$materialsCount],
+            'n_bins' => 'sometimes|integer',
+            'tare_weight' => ['sometimes', 'array', 'numeric', 'size:'.$n_bins],
+            'image' => ['sometimes', 'array'],
         ];
     }
 

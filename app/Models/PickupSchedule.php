@@ -64,7 +64,7 @@ class PickupSchedule extends Model
     protected static function booted()
     {
         static::creating(function ($pickupSchedule) {
-            if (!isset($pickupSchedule->driver_id) && isset($pickupSchedule->route_id)) {
+            if (! isset($pickupSchedule->driver_id) && isset($pickupSchedule->route_id)) {
                 $route = Route::find($pickupSchedule->route_id);
                 if ($route && $route->driver_id) {
                     $pickupSchedule->driver_id = $route->driver_id;
@@ -86,14 +86,19 @@ class PickupSchedule extends Model
     {
         if ($value) {
             $images = json_decode($value);
-            $imageUrls = [];
-            foreach ($images as $image) {
-                $imageUrls[] = url($image);
-            }
+            if (is_array($images)) {
+                $imageUrls = [];
+                foreach ($images as $image) {
+                    // Ensure the image is a non-empty string before adding it to the URLs array
+                    if (is_string($image) && ! empty($image)) {
+                        $imageUrls[] = url($image);
+                    }
+                }
 
-            return $imageUrls;
+                return $imageUrls;
+            }
         }
 
-        return $value;
+        return null; // Return null if the image attribute is empty or invalid
     }
 }

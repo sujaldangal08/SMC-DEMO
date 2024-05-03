@@ -95,7 +95,7 @@ class DataSettingController extends Controller
                     'whatsapp_secret_key',
                     'whatsapp_client_key',
                     'google_location_key',
-                    'google_ocr_key'
+                    'google_ocr_key',
                 ];
 
                 if (in_array($setting->setting_name, $encryptSettings)) {
@@ -141,8 +141,7 @@ class DataSettingController extends Controller
             $updatedSettings[] = 'Force 2FA';
         }
 
-
-        $message = implode(' and ', $updatedSettings) . ' settings updated successfully';
+        $message = implode(' and ', $updatedSettings).' settings updated successfully';
 
         return response()->json([
             'status' => 'success',
