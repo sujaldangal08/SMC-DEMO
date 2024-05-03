@@ -361,7 +361,7 @@ class AuthenticationController extends Controller
 
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'You have exceeded the maximum number of attempts',
+                    'message' => 'You have exceeded the maximum number of attempts. Try again after 10 minutes.',
                     'data' => null,
                 ], 401);
             }
