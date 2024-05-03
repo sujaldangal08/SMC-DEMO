@@ -86,14 +86,17 @@ class PickupSchedule extends Model
     {
         if ($value) {
             $images = json_decode($value);
-            $imageUrls = [];
-            foreach ($images as $image) {
-                $imageUrls[] = url($image);
+            if (is_array($images)) {
+                $imageUrls = [];
+                foreach ($images as $image) {
+                    // Ensure the image is a non-empty string before adding it to the URLs array
+                    if (is_string($image) && !empty($image)) {
+                        $imageUrls[] = url($image);
+                    }
+                }
+                return $imageUrls;
             }
-
-            return $imageUrls;
         }
-
-        return $value;
+        return null; // Return null if the image attribute is empty or invalid
     }
 }
