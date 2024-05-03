@@ -31,7 +31,6 @@ class User extends Authenticatable
         'role_id',
         'image',
         'login_attempts',
-
     ];
 
     /**
@@ -43,6 +42,9 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'otp',
+        'otp_expiry',
+        'email_verified_at',
+        'login_attempts',
     ];
 
     /**
@@ -61,7 +63,7 @@ class User extends Authenticatable
 
     // Do not touch this code in any way or form as it is used for the login attempts feature
     //If you remove this code you get an error
-    //Typed property App\\Models\\User::$login_attempts must not be accessed before initialization 
+    //Typed property App\\Models\\User::$login_attempts must not be accessed before initialization
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
