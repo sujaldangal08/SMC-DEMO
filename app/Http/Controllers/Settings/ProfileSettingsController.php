@@ -29,8 +29,9 @@ class ProfileSettingsController extends Controller
                 'country' => 'sometimes|required|string',
                 'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-            if ($validatedData['image']) { 
+            if ($validatedData['image']) {
                 $validatedData = $this->imageUpload($validatedData);
+                // dd($validatedData);
             }
 
             $user->update($validatedData);
@@ -92,22 +93,19 @@ class ProfileSettingsController extends Controller
 
     protected function imageUpload(array $validatedData)
     {
-        $images = [];
-        foreach ($validatedData['image'] as $image) {
-            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $filePath = 'uploads/user/' . $image_name;
+        $image = $validatedData['image'];
+        $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+        $filePath = 'uploads/user/' . $image_name;
 
-            // Check if the 'uploads/user' directory exists and create it if it doesn't
-            if (!Storage::disk('public')->exists('uploads/user')) {
-                Storage::disk('public')->makeDirectory('uploads/user');
-            }
-            // Save the image to a file in the public directory
-            Storage::disk('public')->put($filePath, file_get_contents($image));
-
-            $image_location = 'storage/uploads/user/' . $image_name;
-            $images[] = $image_location;
+        // Check if the 'uploads/user' directory exists and create it if it doesn't
+        if (!Storage::disk('public')->exists('uploads/user')) {
+            Storage::disk('public')->makeDirectory('uploads/user');
         }
-        $validatedData['image'] = $images;
+        // Save the image to a file in the public directory
+        Storage::disk('public')->put($filePath, file_get_contents($image));
+
+        $image_location = 'uploads/user/' . $image_name;
+        $validatedData['image'] = $image_location;
 
         return $validatedData;
     }
