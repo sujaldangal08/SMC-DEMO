@@ -18,7 +18,6 @@ use App\Http\Controllers\Schedule\DeliveryScheduleController;
 use App\Http\Controllers\Schedule\DeliveryTripController;
 use App\Http\Controllers\Schedule\PickupController;
 use App\Http\Controllers\Schedule\RouteController;
-use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Settings\AuthenticationSettingsController;
 use App\Http\Controllers\Settings\DataSettingController;
 use App\Http\Controllers\Settings\ProfileSettingsController;
@@ -95,7 +94,7 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware(
 // Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware(RoleAuthentication::class);
 Route::get('/dashboard', [AuthenticationController::class, 'dashboard'])->middleware('auth:sanctum');
 
-Route::patch('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
+Route::post('/profile', [ProfileSettingsController::class, 'updateProfile'])->middleware('auth:sanctum');
 Route::patch('/reset-password', [ProfileSettingsController::class, 'resetPassword'])->middleware('auth:sanctum');
 
 // Super Admin Routes
@@ -239,8 +238,3 @@ Route::patch('/driver/trips/{id}', [DriverController::class, 'updateDeliveryTrip
 
 //Driver Dashboard Data
 Route::get('/driver/dashboard', [DriverController::class, 'driverDashboard'])->middleware('auth:sanctum');
-
-Route::get('/setting', [SettingController::class, 'index']);
-Route::post('/setting', [SettingController::class, 'store']);
-Route::get('/setting/{id}', [SettingController::class, 'show']);
-Route::put('/setting/{id}', [SettingController::class, 'update']);
