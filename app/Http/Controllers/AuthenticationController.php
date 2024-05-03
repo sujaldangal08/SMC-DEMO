@@ -106,12 +106,7 @@ class AuthenticationController extends Controller
             $user->email = $request->email;
             $user->role_id = $role->id;
             $user->password = Hash::make($request->password);
-
-            $otp = rand(100000, 999999);
-            $user->otp = $otp;
-
-            // Set otp_expiry to be 5 minutes from now
-            $user->otp_expiry = Carbon::now()->addMinutes(5);
+            //Send welcome mail upon registration
             $username = $request->name;
 
             $welcomeTemplate = \App\Models\EmailTemplate::where('template_type', 'welcome')->first();
@@ -121,6 +116,21 @@ class AuthenticationController extends Controller
 
             $mailableWelcome = new EmailTemplate($username, $subjectWelcome, $welcome_type);
             Mail::to($user->email)->send($mailableWelcome);
+
+
+           // Always generate a new OTP
+            $otp = rand(100000, 999999);
+
+            $payload = [
+                'otp' => $otp,
+                'attempt' => 5,
+                'last_attempt' => null,
+            ];
+            $user->otp = Crypt::encryptString(json_encode($payload));
+
+
+            // Set otp_expiry to be 5 minutes from now
+            $user->otp_expiry = Carbon::now()->addMinutes(5);
 
             $emailTemplate = \App\Models\EmailTemplate::where('template_type', 'otp')->first();
             $subject = $emailTemplate->subject; // Retrieve the subject from the emailTemplate model
@@ -154,6 +164,7 @@ class AuthenticationController extends Controller
     /**
      * Verify the OTP sent to the user's email
      */
+
     public function verifyOtp(Request $request): JsonResponse
     {
         // Fetch the user record based on the email provided in the request
@@ -165,17 +176,20 @@ class AuthenticationController extends Controller
 
         // Convert the OTP expiry time to a Unix timestamp
         $secondTwo = strtotime($checkUser->otp_expiry);
-        $checkOtp = Crypt::decryptString($checkUser->otp);
-        $decodedOtp = json_decode($checkOtp, true);
 
+        // Decrypt the payload and access the 'otp' field
+        $payload = json_decode(Crypt::decryptString($checkUser->otp), true);
+        $otp = $payload['otp'];
         // Check if the current time is greater than or equal to the OTP expiry time
         if ($second >= $secondTwo) {
             // If the OTP has expired, return a JSON response with an error message
             return response()->json(['message' => 'OTP has expired'], 401);
-        } elseif (Crypt::decryptString($checkUser->otp) === $request->otp) {
+        } elseif ($otp === (int)$request->otp) {
+
             // If the OTP provided in the request matches the OTP stored in the user record,
             $checkUser->email_verified_at = Carbon::now(); // set the email_verified_at field to the current time
             $checkUser->otp = null; // set the otp field to null
+            $checkUser->otp_expiry = null; // set the otp_expiry field to null
 
             $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString() . '_' . Str::random(10));
 
@@ -187,11 +201,8 @@ class AuthenticationController extends Controller
                 'status' => 'success',
                 'message' => 'OTP verified successfully.',
                 'hash' => $checkUser->otp_hash,
-                'data' => null,
             ], 200);
         } else {
-            // If the OTP provided in the request does not match the OTP stored in the user record,
-            // return a JSON response with an error message
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Invalid OTP',
@@ -199,10 +210,10 @@ class AuthenticationController extends Controller
             ], 401);
         }
     }
-
     /**
      * Resend the OTP to the user's email
      */
+
     public function createUser(Request $request): JsonResponse
     {
         try {

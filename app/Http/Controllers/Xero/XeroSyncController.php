@@ -170,19 +170,20 @@ class XeroSyncController extends Controller
                 ]
             );
 
-
-                foreach ($xeroPurchaseOrders['LineItems'] as $lineItemData) {
-                    $lineItem = new LineItem();
-                    // $lineItem->id = \Illuminate\Support\Str::uuid(); // Generate a UUID for the id
-                    $lineItem->description = $lineItemData['Description'];
-                    $lineItem->unit_amount = $lineItemData['UnitAmount'];
-                    $lineItem->tax_type = $lineItemData['TaxType'];
-                    $lineItem->tax_amount = $lineItemData['TaxAmount'];
-                    $lineItem->line_amount = $lineItemData['LineAmount'];
-                    $lineItem->quantity = $lineItemData['Quantity'];
-                    $lineItem->purchase_order_id = $purchaseOrder->id;
-                    $purchaseOrder->lineItems()->save($lineItem);
-                }
+            foreach ($xeroPurchaseOrders['LineItems'] as $lineItemData) {
+                $lineItem = LineItem::updateOrCreate(
+                    ['line_item_id' => $lineItemData['LineItemID']],
+                    [
+                        'description' => $lineItemData['Description'],
+                        'unit_amount' => $lineItemData['UnitAmount'],
+                        'tax_type' => $lineItemData['TaxType'],
+                        'tax_amount' => $lineItemData['TaxAmount'],
+                        'line_amount' => $lineItemData['LineAmount'],
+                        'quantity' => $lineItemData['Quantity'],
+                        'purchase_order_id' => $purchaseOrder->id,
+                    ]
+                );
+            }
 
             }
 
