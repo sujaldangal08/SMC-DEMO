@@ -20,7 +20,7 @@ class DeliveryTripSeeder extends Seeder
             'materials_loaded' => ['Material Name', 'Material Name 2', 'Material Name 3'],
             'amount_loaded' => [100, 200, 300],
             'trip_number' => 1,
-            'status' => 'active',
+            'status' => 'in_progress',
             'note' => 'This is a more detailed note',
             'trip_date' => now(),
         ]);
