@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('line_items', function (Blueprint $table) {
             $table->id();
+            $table->string('line_item_id');
             $table->foreignId('purchase_order_id')->constrained('purchase_orders');
             $table->string('item_code')->nullable();
             $table->text('description');
