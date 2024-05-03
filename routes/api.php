@@ -191,6 +191,7 @@ Route::post('/2fa/disable', [AuthenticationController::class, 'disable2FA']);
 
 // OAuth for Google
 Route::post('/oauth/google', [OAuthController::class, 'OAuthReceive']);
+Route::post('/oauth/facebook', [OAuthController::class, 'facebookOauthReceive']);
 
 //Ticket Module Routes
 Route::get('/ticket', [TicketController::class, 'index']);

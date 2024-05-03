@@ -5,7 +5,6 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
-use Illuminate\Support\Facades\DB;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -46,8 +45,7 @@ Schedule::command('app:make-delivery-trips')
 Schedule::command('sanctum:prune-expired --hours=24')->daily();
 
 Schedule::command('app:execute-task')
-        ->everyMinute()
-        ->onFailure(function (\Exception $exception) {
-            Log::error('Failed to execute app:execute-task command');
-        });
-
+    ->everyMinute()
+    ->onFailure(function (\Exception $exception) {
+        Log::error('Failed to execute app:execute-task command');
+    });

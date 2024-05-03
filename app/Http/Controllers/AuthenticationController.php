@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use PragmaRX\Google2FA\Google2FA;
 
 class AuthenticationController extends Controller
@@ -35,7 +38,7 @@ class AuthenticationController extends Controller
             ]);
             $user = User::where('email', $credentials['email'])->first();
 
-            if (!$user) {
+            if (! $user) {
                 return response()->json(['message' => 'Invalid Credentials1'], 401);
             }
 
@@ -46,7 +49,6 @@ class AuthenticationController extends Controller
             }
             // dd($user->role->max_login_attempts, $user['login_attempts']);
 
-
             if (auth()->attempt($credentials)) {
                 $user->resetLoginAttempts();
                 if ($user->role->role === 'customer' && $user->email_verified_at === null) {
@@ -54,6 +56,7 @@ class AuthenticationController extends Controller
                 }
             } else {
                 $user->incrementLoginAttempts();
+
                 return response()->json(['message' => 'Invalid Credentials'], 401);
             }
 
@@ -117,8 +120,7 @@ class AuthenticationController extends Controller
             $mailableWelcome = new EmailTemplate($username, $subjectWelcome, $welcome_type);
             Mail::to($user->email)->send($mailableWelcome);
 
-
-           // Always generate a new OTP
+            // Always generate a new OTP
             $otp = rand(100000, 999999);
 
             $payload = [
@@ -127,7 +129,6 @@ class AuthenticationController extends Controller
                 'last_attempt' => null,
             ];
             $user->otp = Crypt::encryptString(json_encode($payload));
-
 
             // Set otp_expiry to be 5 minutes from now
             $user->otp_expiry = Carbon::now()->addMinutes(5);
@@ -164,7 +165,6 @@ class AuthenticationController extends Controller
     /**
      * Verify the OTP sent to the user's email
      */
-
     public function verifyOtp(Request $request): JsonResponse
     {
         // Fetch the user record based on the email provided in the request
@@ -184,14 +184,14 @@ class AuthenticationController extends Controller
         if ($second >= $secondTwo) {
             // If the OTP has expired, return a JSON response with an error message
             return response()->json(['message' => 'OTP has expired'], 401);
-        } elseif ($otp === (int)$request->otp) {
+        } elseif ($otp === (int) $request->otp) {
 
             // If the OTP provided in the request matches the OTP stored in the user record,
             $checkUser->email_verified_at = Carbon::now(); // set the email_verified_at field to the current time
             $checkUser->otp = null; // set the otp field to null
             $checkUser->otp_expiry = null; // set the otp_expiry field to null
 
-            $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString() . '_' . Str::random(10));
+            $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString().'_'.Str::random(10));
 
             $checkUser->otp_hash = $otp_hash;
 
@@ -210,10 +210,10 @@ class AuthenticationController extends Controller
             ], 401);
         }
     }
+
     /**
      * Resend the OTP to the user's email
      */
-
     public function createUser(Request $request): JsonResponse
     {
         try {
@@ -306,9 +306,6 @@ class AuthenticationController extends Controller
      * If the user has exceeded the maximum number of attempts, it waits for 5 minutes before allowing another attempt.
      * If the user has not exceeded the maximum number of attempts, it generates a new OTP, sends it to the user's email,
      * and updates the user's record with the new OTP and the number of attempts.
-     *
-     * @param  Request  $request
-     * @return JsonResponse
      */
     public function forgotPassword(Request $request): JsonResponse
     {
@@ -337,7 +334,7 @@ class AuthenticationController extends Controller
 
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'You have exceeded the maximum number of attempts. Please wait for ' . $remainingTime . ' minutes.',
+                    'message' => 'You have exceeded the maximum number of attempts. Please wait for '.$remainingTime.' minutes.',
                     'data' => null,
                 ], 429); // 429 Too Many Requests
             }
@@ -387,7 +384,7 @@ class AuthenticationController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Please check your email for the OTP to reset your password, you have ' . $decodedJson['attempt'] . ' attempts left',
+                'message' => 'Please check your email for the OTP to reset your password, you have '.$decodedJson['attempt'].' attempts left',
                 'data' => null,
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -414,7 +411,7 @@ class AuthenticationController extends Controller
             $credentials = $request->only('email', 'password');
             $user = Backend::where('email', $credentials['email'])->first();
 
-            if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            if (! $user || ! Hash::check($credentials['password'], $user->password)) {
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
 
@@ -476,10 +473,10 @@ class AuthenticationController extends Controller
             $qrCode = $writer->writeString($qrCodeUrl);
 
             // Define the file path
-            $filePath = 'qrcodes/' . Str::random(10) . '.svg';
+            $filePath = 'qrcodes/'.Str::random(10).'.svg';
 
             // Check if the 'qrcodes' directory exists and create it if it doesn't
-            if (!Storage::disk('public')->exists('qrcodes')) {
+            if (! Storage::disk('public')->exists('qrcodes')) {
                 Storage::disk('public')->makeDirectory('qrcodes');
             }
 
@@ -495,20 +492,35 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Verify the 2FA code
+     * This method is responsible for verifying the 2FA code provided by the user.
+     * It first validates the request data, ensuring that the OTP is a 6-digit number and the user ID is provided.
+     * Then, it creates a new instance of the Google2FA class.
+     * It retrieves the user record that matches the provided user ID and decrypts the user's tfa_secret.
+     * It ensures that the OTP and the secret key are strings.
+     * It verifies the OTP against the secret key using the Google2FA class.
+     * If the OTP is valid, it creates a new token for the user and sets the token's expiry time to 1 hour from now.
+     * If the user's is_tfa field is false, it sets it to true and saves the user record.
+     * Finally, it returns a JSON response indicating that the 2FA code was verified successfully and provides the token.
+     * If the OTP is not valid, it returns a JSON response with an error message.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws InvalidCharactersException
+     * @throws SecretKeyTooShortException
      */
     public function verify2FACode(Request $request): JsonResponse
     {
-        //        $otp = $request->input('otp');
-
+        // Validate the request data
         $request->validate([
             'otp' => 'required|regex:/^[0-9]{6}$/', // OTP must be a 6-digit number
             'user' => 'required|integer',
         ]);
 
+        // Create a new instance of the Google2FA class
         $google2fa = new Google2FA();
 
-        // Retrieve the secret key from your storage
+        // Retrieve the user record that matches the provided user ID and decrypt the user's tfa_secret
         $secretKey = User::where('id', $request->user)->first()->tfa_secret;
         $user = User::where('id', $request->user)->first();
 
@@ -518,6 +530,7 @@ class AuthenticationController extends Controller
         // Ensure that the OTP is a string
         $otp = (string) $request->otp;
 
+        // Verify the OTP against the secret key using the Google2FA class
         $isValid = $google2fa->verifyKey($secretKey, $otp);
 
         if ($isValid) {
@@ -528,7 +541,7 @@ class AuthenticationController extends Controller
             $token->save();
 
             $plainTextToken = $tokenResult->plainTextToken;
-            if (!$user->is_tfa) {
+            if (! $user->is_tfa) {
                 $user->is_tfa = true;
                 $user->save();
 
@@ -554,19 +567,33 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Disable 2FA for a user
+     * This method is responsible for disabling two-factor authentication (2FA) for a user.
+     * It first validates the request data, ensuring that the user ID is provided.
+     * Then, it retrieves the user record that matches the provided user ID.
+     * If the user is found, it sets the user's tfa_secret to null and is_tfa to false, and saves the user record.
+     * Finally, it returns a JSON response indicating that 2FA was disabled successfully.
+     *
+     * @param Request $request
+     * @return JsonResponse
      */
     public function disable2FA(Request $request): JsonResponse
     {
+        // Validate the request data
         $request->validate([
             'user' => 'required|integer',
         ]);
 
+        // Retrieve the user record that matches the provided user ID
         $user = User::where('id', $request->user)->first();
+
+        // Set the user's tfa_secret to null and is_tfa to false
         $user->tfa_secret = null;
         $user->is_tfa = false;
+
+        // Save the user record
         $user->save();
 
+        // Return a JSON response indicating that 2FA was disabled successfully
         return response()->json([
             'status' => 'success',
             'message' => '2FA disabled successfully',
@@ -574,6 +601,19 @@ class AuthenticationController extends Controller
         ], 200);
     }
 
+    /**
+     * This method is responsible for changing the user's password.
+     * It first validates the request data, ensuring that the password_hash is provided,
+     * and that the new password meets the necessary requirements (minimum length, includes uppercase and lowercase letters, a number, and a special character).
+     * Then, it retrieves the user record that matches the provided password_hash.
+     * If the user is not found, it returns a JSON response with an error message.
+     * If the user is found, it hashes the new password, sets the user's password to the hashed password,
+     * sets the user's otp_hash to null, and saves the user record.
+     * Finally, it returns a JSON response indicating that the password was changed successfully.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function changePassword(Request $request): JsonResponse
     {
         try {
@@ -591,7 +631,7 @@ class AuthenticationController extends Controller
 
             $user = User::where('otp_hash', $request->password_hash)->first();
 
-            if (!$user) {
+            if (! $user) {
 
                 return response()->json([
                     'status' => 'failure',
