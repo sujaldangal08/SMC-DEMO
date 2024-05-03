@@ -17,6 +17,7 @@ class AssetSeeder extends Seeder
             'title' => 'Asset',
             'image' => 'image.jpg',
             'asset_type' => 'Vehicle',
+            'rego_number' => 'KJH-1234',
             'meta' => json_encode([
                 'brand' => 'Volvo',
                 'model' => 'FH16',
@@ -30,6 +31,7 @@ class AssetSeeder extends Seeder
         Asset::factory()->create([
             'title' => 'Recyvle',
             'image' => 'image.jpg',
+            'rego_number' => 'LJH-1234',
             'asset_type' => 'Vehicle',
             'meta' => json_encode([
                 'brand' => 'Mercedes-Benz',
