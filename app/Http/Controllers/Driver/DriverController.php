@@ -363,7 +363,6 @@ class DriverController extends Controller
     /**
      * Upload image
      *
-     *
      * @return array
      */
     protected function imageUpload(array $validatedRequest)
