@@ -26,14 +26,7 @@ class DriverController extends Controller
     public function driverDashboard(): JsonResponse
     {
         try {
-            $routes = Route::where('driver_id', request()->user()->id)->with('schedule')->get();
-            $route = $routes->map(function ($route) {
-                $route->type = 'pickup';
-                $route->pickups = $route->schedule;
-                unset($route->schedule);
-
-                return $route;
-            });
+            $route = $this->getRoutesForUser(request()->user()->id);
             $delivers = DeliveryTrip::where('driver_id', request()->user()->id)->where('status', 'in_progress')->get();
             $delivery = $delivers->map(function ($delivery) {
                 $delivery->type = 'delivery';
@@ -65,36 +58,7 @@ class DriverController extends Controller
     {
         try {
             $driver_id = request()->user()->id;
-            $route = Route::where('driver_id', $driver_id)->with(['schedule.customer'])->get()->map(function ($route) {
-                // Get the customer names from the schedule relationship with the customer model
-                $route->customer_names = $route->schedule->map(function ($schedule) {
-                    return $schedule->customer->name;
-                });
-                //Calculate the total amount of materials in the route with the model relation through the schedule
-                $route->total_materials = $route->schedule->map(function ($schedule) {
-                    $amount = $schedule->amount;
-
-                    return is_array($amount) ? array_sum($amount) : 0;
-                });
-                // Hide the schedule attribute other wise the object will be too large
-                unset($route->schedule);
-
-                return [
-                    // Select only the required columns from the route doing this because directly returning teh route was not working
-                    'id' => $route->id,
-                    'name' => $route->name,
-                    'driver_id' => $route->driver_id,
-                    'asset_id' => $route->asset_id,
-                    'description' => $route->description,
-                    'status' => $route->status,
-                    'start_date' => $route->start_date,
-                    'deleted_at' => $route->deleted_at,
-                    'created_at' => $route->created_at,
-                    'updated_at' => $route->updated_at,
-                    'customer_names' => $route->customer_names,
-                    'amount' => $route->total_materials,
-                ];
-            });
+            $route = $this->getRoutesForUser(request()->user()->id);
 
             // dd($route);
             return response()->json([
@@ -389,5 +353,41 @@ class DriverController extends Controller
         $validatedData = $images;
 
         return $validatedData;
+    }
+
+    private function getRoutesForUser(int $id)
+    {
+        return Route::where('driver_id', $id)
+            ->with(['schedule.customer'])
+            ->get()
+            ->map(function ($route) {
+                $route->customer_names = $route->schedule->map(function ($schedule) {
+                    return $schedule->customer->name;
+                });
+
+                $route->total_materials = $route->schedule->map(function ($schedule) {
+                    $amount = $schedule->amount;
+
+                    return is_array($amount) ? array_sum($amount) : 0;
+                });
+
+                unset($route->schedule);
+
+                return [
+                    'id' => $route->id,
+                    'name' => $route->name,
+                    'driver_id' => $route->driver_id,
+                    'asset_id' => $route->asset_id,
+                    'type' => 'pickup',
+                    'description' => $route->description,
+                    'status' => $route->status,
+                    'start_date' => $route->start_date,
+                    'deleted_at' => $route->deleted_at,
+                    'created_at' => $route->created_at,
+                    'updated_at' => $route->updated_at,
+                    'customer_names' => $route->customer_names,
+                    'amount' => $route->total_materials,
+                ];
+            });
     }
 }
