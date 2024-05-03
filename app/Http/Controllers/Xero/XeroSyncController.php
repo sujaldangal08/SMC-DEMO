@@ -141,49 +141,48 @@ class XeroSyncController extends Controller
             ]);
             $purchaseOrders = json_decode($response->getBody()->getContents(), true)['PurchaseOrders'];
 
-
-        foreach ($purchaseOrders as $xeroPurchaseOrders) {
-            $purchaseOrder = PurchaseOrder::updateOrCreate(
-                ['purchase_order_id' => $xeroPurchaseOrders['PurchaseOrderID']],
-                [
-                    'purchase_order_number' => $xeroPurchaseOrders['PurchaseOrderNumber'],
-                    'date' => date('Y-m-d H:i:s', explode('+', str_replace(['/Date(', ')/'], '', $xeroPurchaseOrders['Date']))[0] / 1000),
-                    'delivery_address' => $xeroPurchaseOrders['DeliveryAddress'],
-                    'attention_to' => $xeroPurchaseOrders['AttentionTo'],
-                    'telephone' => $xeroPurchaseOrders['Telephone'],
-                    'delivery_instructions' => $xeroPurchaseOrders['DeliveryInstructions'],
-                    'has_errors' => $xeroPurchaseOrders['HasErrors'],
-                    'is_discounted' => $xeroPurchaseOrders['IsDiscounted'],
-                    'reference' => $xeroPurchaseOrders['Reference'],
-                    'type' => $xeroPurchaseOrders['Type'],
-                    'currency_rate' => $xeroPurchaseOrders['CurrencyRate'],
-                    'currency_code' => $xeroPurchaseOrders['CurrencyCode'],
-                    'contact_id' => $contact->id,
-                    'branding_theme_id' => $xeroPurchaseOrders['BrandingThemeID'],
-                    'status' => $xeroPurchaseOrders['Status'],
-                    'line_amount_types' => $xeroPurchaseOrders['LineAmountTypes'],
-                    'sub_total' => $xeroPurchaseOrders['SubTotal'],
-                    'total_tax' => $xeroPurchaseOrders['TotalTax'],
-                    'total' => $xeroPurchaseOrders['Total'],
-                    'updated_date_utc' => date('Y-m-d H:i:s', explode('+', str_replace(['/Date(', ')/'], '', $xeroPurchaseOrders['UpdatedDateUTC']))[0] / 1000),
-                    'has_attachments' => $xeroPurchaseOrders['HasAttachments'],
-                ]
-            );
-
-            foreach ($xeroPurchaseOrders['LineItems'] as $lineItemData) {
-                $lineItem = LineItem::updateOrCreate(
-                    ['line_item_id' => $lineItemData['LineItemID']],
+            foreach ($purchaseOrders as $xeroPurchaseOrders) {
+                $purchaseOrder = PurchaseOrder::updateOrCreate(
+                    ['purchase_order_id' => $xeroPurchaseOrders['PurchaseOrderID']],
                     [
-                        'description' => $lineItemData['Description'],
-                        'unit_amount' => $lineItemData['UnitAmount'],
-                        'tax_type' => $lineItemData['TaxType'],
-                        'tax_amount' => $lineItemData['TaxAmount'],
-                        'line_amount' => $lineItemData['LineAmount'],
-                        'quantity' => $lineItemData['Quantity'],
-                        'purchase_order_id' => $purchaseOrder->id,
+                        'purchase_order_number' => $xeroPurchaseOrders['PurchaseOrderNumber'],
+                        'date' => date('Y-m-d H:i:s', explode('+', str_replace(['/Date(', ')/'], '', $xeroPurchaseOrders['Date']))[0] / 1000),
+                        'delivery_address' => $xeroPurchaseOrders['DeliveryAddress'],
+                        'attention_to' => $xeroPurchaseOrders['AttentionTo'],
+                        'telephone' => $xeroPurchaseOrders['Telephone'],
+                        'delivery_instructions' => $xeroPurchaseOrders['DeliveryInstructions'],
+                        'has_errors' => $xeroPurchaseOrders['HasErrors'],
+                        'is_discounted' => $xeroPurchaseOrders['IsDiscounted'],
+                        'reference' => $xeroPurchaseOrders['Reference'],
+                        'type' => $xeroPurchaseOrders['Type'],
+                        'currency_rate' => $xeroPurchaseOrders['CurrencyRate'],
+                        'currency_code' => $xeroPurchaseOrders['CurrencyCode'],
+                        'contact_id' => $contact->id,
+                        'branding_theme_id' => $xeroPurchaseOrders['BrandingThemeID'],
+                        'status' => $xeroPurchaseOrders['Status'],
+                        'line_amount_types' => $xeroPurchaseOrders['LineAmountTypes'],
+                        'sub_total' => $xeroPurchaseOrders['SubTotal'],
+                        'total_tax' => $xeroPurchaseOrders['TotalTax'],
+                        'total' => $xeroPurchaseOrders['Total'],
+                        'updated_date_utc' => date('Y-m-d H:i:s', explode('+', str_replace(['/Date(', ')/'], '', $xeroPurchaseOrders['UpdatedDateUTC']))[0] / 1000),
+                        'has_attachments' => $xeroPurchaseOrders['HasAttachments'],
                     ]
                 );
-            }
+
+                foreach ($xeroPurchaseOrders['LineItems'] as $lineItemData) {
+                    $lineItem = LineItem::updateOrCreate(
+                        ['line_item_id' => $lineItemData['LineItemID']],
+                        [
+                            'description' => $lineItemData['Description'],
+                            'unit_amount' => $lineItemData['UnitAmount'],
+                            'tax_type' => $lineItemData['TaxType'],
+                            'tax_amount' => $lineItemData['TaxAmount'],
+                            'line_amount' => $lineItemData['LineAmount'],
+                            'quantity' => $lineItemData['Quantity'],
+                            'purchase_order_id' => $purchaseOrder->id,
+                        ]
+                    );
+                }
 
             }
 
