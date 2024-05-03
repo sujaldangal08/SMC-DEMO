@@ -52,8 +52,9 @@ class OAuthController extends Controller
     /**
      * This method is used to handle the OAuth token received from the Facebook client.
      *
-     * @param Request $request The incoming HTTP request containing the OAuth token.
+     * @param  Request  $request  The incoming HTTP request containing the OAuth token.
      * @return JsonResponse Returns a JSON response indicating whether the authentication was successful or not.
+     *
      * @throws ConnectionException
      */
     public function facebookOauthReceive(Request $request)
