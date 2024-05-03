@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use App\Models\Setting;
 
 class ExecuteTask extends Command
 {
@@ -26,6 +27,7 @@ class ExecuteTask extends Command
      */
     public function handle()
     {
+        Setting::where('setting_name', 'last_cron_run')->update(['setting_value' => now()]);
         $contact = Http::get('http://smc-laravel-api.test/api/v1/xero/contacts');
         $response = Http::get('http://smc-laravel-api.test/api/v1/xero/purchase-orders');
 
