@@ -26,10 +26,17 @@ class DriverController extends Controller
     public function driverDashboard(): JsonResponse
     {
         try {
-            $dashboard = [
-                'routes' => Route::where('driver_id', request()->user()->id)->where('status', 'active')->with('schedule')->get(),
-                'delivery' => DeliveryTrip::where('driver_id', request()->user()->id)->where('status', 'in_progress')->get(),
-            ];
+            $routes = Route::where('driver_id', request()->user()->id)->with('schedule')->get();
+            $route = $routes->map(function ($route) {
+                $route->type = 'pickup';
+                return $route;
+            });
+            $delivers = DeliveryTrip::where('driver_id', request()->user()->id)->where('status', 'in_progress')->get();
+            $delivery = $delivers->map(function ($delivery) {
+                $delivery->type = 'delivery';
+                return $delivery;
+            });
+            $dashboard = $route->concat($delivery)->sortBy('created_at');
 
             return response()->json([
                 'status' => 'success',

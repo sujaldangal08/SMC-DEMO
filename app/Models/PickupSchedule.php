@@ -48,15 +48,6 @@ class PickupSchedule extends Model
         return $this->belongsTo(User::class);
     }
 
-    // protected function casts(): array
-    // {
-    //     return [
-    //         'coordinates' => 'array',
-    //         'image' => 'array',
-    //         'materials' => 'array',
-    //         'weighing_type' => 'array',
-    //     ];
-    // }
     protected function casts(): array
     {
         return [
