@@ -41,11 +41,11 @@ class DeliveryRequest extends FormRequest
 
         if ($this->isMethod('post')) {
             // Additional rules for 'post' method
-            $rules['schedule_id'] = 'required|' . $rules['schedule_id'];
-            $rules['materials'] = 'required|' . $rules['materials'];
-            $rules['amount_loaded'] = 'required|' . $rules['amount_loaded'];
-            $rules['status'] = 'required|' . $rules['status'];
-            $rules['trip_number'] = 'required|' . $rules['trip_number'];
+            $rules['schedule_id'] = 'required|'.$rules['schedule_id'];
+            $rules['materials'] = 'required|'.$rules['materials'];
+            $rules['amount_loaded'] = 'required|'.$rules['amount_loaded'];
+            $rules['status'] = 'required|'.$rules['status'];
+            $rules['trip_number'] = 'required|'.$rules['trip_number'];
         }
 
         return $rules;
