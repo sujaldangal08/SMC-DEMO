@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'active', 'inactive', 'done', 'unloading', 'cancelled'])->default('pending');
             $table->string('notes')->nullable();
             $table->string('materials')->nullable();
+            $table->string('rate')->nullable();
             $table->string('amount')->nullable();
             $table->string('weighing_type')->nullable();
             $table->string('n_bins')->nullable();

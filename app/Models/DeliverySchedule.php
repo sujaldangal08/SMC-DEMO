@@ -17,6 +17,7 @@ class DeliverySchedule extends Model
         'name',
         'coordinates',
         'materials',
+        'rate',
         'amount',
         'n_trips',
         'n_trips_done',
@@ -39,6 +40,7 @@ class DeliverySchedule extends Model
             'amount' => 'array',
             'delivery_date' => 'json', // This is now a computed attribute
             'meta' => 'json',
+            'rate' => 'array',
         ];
     }
 

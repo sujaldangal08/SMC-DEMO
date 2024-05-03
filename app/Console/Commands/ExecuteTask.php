@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Setting;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use App\Models\Setting;
 
 class ExecuteTask extends Command
 {
