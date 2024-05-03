@@ -26,10 +26,17 @@ class DriverController extends Controller
     public function driverDashboard(): JsonResponse
     {
         try {
-            $dashboard = [
-                'routes' => Route::where('driver_id', request()->user()->id)->where('status', 'active')->with('schedule')->get(),
-                'delivery' => DeliveryTrip::where('driver_id', request()->user()->id)->where('status', 'in_progress')->get(),
-            ];
+            $routes = Route::where('driver_id', request()->user()->id)->with('schedule')->get();
+            $route = $routes->map(function ($route) {
+                $route->type = 'pickup';
+                return $route;
+            });
+            $delivers = DeliveryTrip::where('driver_id', request()->user()->id)->where('status', 'in_progress')->get();
+            $delivery = $delivers->map(function ($delivery) {
+                $delivery->type = 'delivery';
+                return $delivery;
+            });
+            $dashboard = $route->concat($delivery)->sortBy('created_at');
 
             return response()->json([
                 'status' => 'success',
@@ -320,21 +327,19 @@ class DriverController extends Controller
             }
 
             $validatedData = $request->validated();
-
-            // Upload image
-            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']) || $trip['attachment'] === null)) {
+            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']))) {
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'Image is required when status is done.',
+                    'message' => 'Attachment is required when status is done.',
                     'data' => null,
                 ], 422);
             }
-            $images = [];
             // Check if request has image
             if (isset($validatedData['attachment']) && $validatedData['attachment'] !== null) {
-                $images = $this->imageUpload($validatedData);
-                $validatedData['attachment'] = $images;
+                dd($validatedData['attachment']);
+                $validatedData = $this->imageUpload($validatedData['attachment']);
             }
+
             $trip->update($validatedData);
 
             return response()->json([
@@ -356,13 +361,12 @@ class DriverController extends Controller
     /**
      * Upload image
      *
-     *
      * @return array
      */
-    protected function imageUpload(array $validatedRequest)
+    protected function imageUpload(array $validatedData)
     {
         $images = [];
-        foreach ($validatedRequest['image'] as $image) {
+        foreach ($validatedData['attachment'] as $image) {
             $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
             $filePath = 'uploads/pickup/' . $image_name;
 
@@ -373,11 +377,11 @@ class DriverController extends Controller
             // Save the image to a file in the public directory
             Storage::disk('public')->put($filePath, file_get_contents($image));
 
-            $image_location = 'storage/uploads/pickup/' . $image_name;
+            $image_location = 'uploads/pickup/' . $image_name;
             $images[] = $image_location;
         }
-        $validatedRequest['image'] = $images;
+        $validatedData['attachment'] = $images;
 
-        return $validatedRequest;
+        return $validatedData;
     }
 }
