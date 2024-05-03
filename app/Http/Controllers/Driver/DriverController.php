@@ -327,21 +327,19 @@ class DriverController extends Controller
             }
 
             $validatedData = $request->validated();
-
-            // Upload image
-            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']) || $trip['attachment'] === null)) {
+            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']))) {
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'Image is required when status is done.',
+                    'message' => 'Attachment is required when status is done.',
                     'data' => null,
                 ], 422);
             }
-            $images = [];
             // Check if request has image
             if (isset($validatedData['attachment']) && $validatedData['attachment'] !== null) {
-                $images = $this->imageUpload($validatedData);
-                $validatedData['attachment'] = $images;
+                dd($validatedData['attachment']);
+                $validatedData = $this->imageUpload($validatedData['attachment']);
             }
+
             $trip->update($validatedData);
 
             return response()->json([
@@ -365,10 +363,10 @@ class DriverController extends Controller
      *
      * @return array
      */
-    protected function imageUpload(array $validatedRequest)
+    protected function imageUpload(array $validatedData)
     {
         $images = [];
-        foreach ($validatedRequest['image'] as $image) {
+        foreach ($validatedData['attachment'] as $image) {
             $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
             $filePath = 'uploads/pickup/' . $image_name;
 
@@ -379,11 +377,11 @@ class DriverController extends Controller
             // Save the image to a file in the public directory
             Storage::disk('public')->put($filePath, file_get_contents($image));
 
-            $image_location = 'storage/uploads/pickup/' . $image_name;
+            $image_location = 'uploads/pickup/' . $image_name;
             $images[] = $image_location;
         }
-        $validatedRequest['image'] = $images;
+        $validatedData['attachment'] = $images;
 
-        return $validatedRequest;
+        return $validatedData;
     }
 }

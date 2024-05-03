@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ad_hocs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('users');
-            $table->integer('')
+            $table->integer('staff_id');
             $table->timestamps();
         });
     }
