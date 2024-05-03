@@ -325,9 +325,8 @@ class DriverController extends Controller
             if (!$trip) {
                 throw new ModelNotFoundException('Delivery trip not found');
             }
-
             $validatedData = $request->validated();
-            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']))) {
+            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']) && $trip['attachment'] === null)) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'Attachment is required when status is done.',
@@ -336,10 +335,8 @@ class DriverController extends Controller
             }
             // Check if request has image
             if (isset($validatedData['attachment']) && $validatedData['attachment'] !== null) {
-                dd($validatedData['attachment']);
                 $validatedData = $this->imageUpload($validatedData['attachment']);
             }
-
             $trip->update($validatedData);
 
             return response()->json([
@@ -366,7 +363,7 @@ class DriverController extends Controller
     protected function imageUpload(array $validatedData)
     {
         $images = [];
-        foreach ($validatedData['attachment'] as $image) {
+        foreach ($validatedData as $image) {
             $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
             $filePath = 'uploads/pickup/' . $image_name;
 
