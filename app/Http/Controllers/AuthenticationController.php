@@ -35,7 +35,7 @@ class AuthenticationController extends Controller
             ]);
             $user = User::where('email', $credentials['email'])->first();
 
-            if (!$user) {
+            if (! $user) {
                 return response()->json(['message' => 'Invalid Credentials1'], 401);
             }
 
@@ -46,7 +46,6 @@ class AuthenticationController extends Controller
             }
             // dd($user->role->max_login_attempts, $user['login_attempts']);
 
-
             if (auth()->attempt($credentials)) {
                 $user->resetLoginAttempts();
                 if ($user->role->role === 'customer' && $user->email_verified_at === null) {
@@ -54,6 +53,7 @@ class AuthenticationController extends Controller
                 }
             } else {
                 $user->incrementLoginAttempts();
+
                 return response()->json(['message' => 'Invalid Credentials'], 401);
             }
 
@@ -117,8 +117,7 @@ class AuthenticationController extends Controller
             $mailableWelcome = new EmailTemplate($username, $subjectWelcome, $welcome_type);
             Mail::to($user->email)->send($mailableWelcome);
 
-
-           // Always generate a new OTP
+            // Always generate a new OTP
             $otp = rand(100000, 999999);
 
             $payload = [
@@ -127,7 +126,6 @@ class AuthenticationController extends Controller
                 'last_attempt' => null,
             ];
             $user->otp = Crypt::encryptString(json_encode($payload));
-
 
             // Set otp_expiry to be 5 minutes from now
             $user->otp_expiry = Carbon::now()->addMinutes(5);
@@ -164,7 +162,6 @@ class AuthenticationController extends Controller
     /**
      * Verify the OTP sent to the user's email
      */
-
     public function verifyOtp(Request $request): JsonResponse
     {
         // Fetch the user record based on the email provided in the request
@@ -184,14 +181,14 @@ class AuthenticationController extends Controller
         if ($second >= $secondTwo) {
             // If the OTP has expired, return a JSON response with an error message
             return response()->json(['message' => 'OTP has expired'], 401);
-        } elseif ($otp === (int)$request->otp) {
+        } elseif ($otp === (int) $request->otp) {
 
             // If the OTP provided in the request matches the OTP stored in the user record,
             $checkUser->email_verified_at = Carbon::now(); // set the email_verified_at field to the current time
             $checkUser->otp = null; // set the otp field to null
             $checkUser->otp_expiry = null; // set the otp_expiry field to null
 
-            $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString() . '_' . Str::random(10));
+            $otp_hash = Crypt::encryptString(Carbon::now()->toDateTimeString().'_'.Str::random(10));
 
             $checkUser->otp_hash = $otp_hash;
 
@@ -210,10 +207,10 @@ class AuthenticationController extends Controller
             ], 401);
         }
     }
+
     /**
      * Resend the OTP to the user's email
      */
-
     public function createUser(Request $request): JsonResponse
     {
         try {
@@ -306,9 +303,6 @@ class AuthenticationController extends Controller
      * If the user has exceeded the maximum number of attempts, it waits for 5 minutes before allowing another attempt.
      * If the user has not exceeded the maximum number of attempts, it generates a new OTP, sends it to the user's email,
      * and updates the user's record with the new OTP and the number of attempts.
-     *
-     * @param  Request  $request
-     * @return JsonResponse
      */
     public function forgotPassword(Request $request): JsonResponse
     {
@@ -337,7 +331,7 @@ class AuthenticationController extends Controller
 
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'You have exceeded the maximum number of attempts. Please wait for ' . $remainingTime . ' minutes.',
+                    'message' => 'You have exceeded the maximum number of attempts. Please wait for '.$remainingTime.' minutes.',
                     'data' => null,
                 ], 429); // 429 Too Many Requests
             }
@@ -387,7 +381,7 @@ class AuthenticationController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Please check your email for the OTP to reset your password, you have ' . $decodedJson['attempt'] . ' attempts left',
+                'message' => 'Please check your email for the OTP to reset your password, you have '.$decodedJson['attempt'].' attempts left',
                 'data' => null,
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -414,7 +408,7 @@ class AuthenticationController extends Controller
             $credentials = $request->only('email', 'password');
             $user = Backend::where('email', $credentials['email'])->first();
 
-            if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            if (! $user || ! Hash::check($credentials['password'], $user->password)) {
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
 
@@ -476,10 +470,10 @@ class AuthenticationController extends Controller
             $qrCode = $writer->writeString($qrCodeUrl);
 
             // Define the file path
-            $filePath = 'qrcodes/' . Str::random(10) . '.svg';
+            $filePath = 'qrcodes/'.Str::random(10).'.svg';
 
             // Check if the 'qrcodes' directory exists and create it if it doesn't
-            if (!Storage::disk('public')->exists('qrcodes')) {
+            if (! Storage::disk('public')->exists('qrcodes')) {
                 Storage::disk('public')->makeDirectory('qrcodes');
             }
 
@@ -528,7 +522,7 @@ class AuthenticationController extends Controller
             $token->save();
 
             $plainTextToken = $tokenResult->plainTextToken;
-            if (!$user->is_tfa) {
+            if (! $user->is_tfa) {
                 $user->is_tfa = true;
                 $user->save();
 
@@ -591,7 +585,7 @@ class AuthenticationController extends Controller
 
             $user = User::where('otp_hash', $request->password_hash)->first();
 
-            if (!$user) {
+            if (! $user) {
 
                 return response()->json([
                     'status' => 'failure',

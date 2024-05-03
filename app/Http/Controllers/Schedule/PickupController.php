@@ -43,7 +43,7 @@ class PickupController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $schedule = PickupSchedule::findOrFail($id);
+            $schedule = PickupSchedule::where('id', $id)->with('customer', 'driver', 'asset');
             $route = $schedule->route()->first();
 
             return response()->json([
@@ -268,17 +268,17 @@ class PickupController extends Controller
     {
         $images = [];
         foreach ($validatedRequest['image'] as $image) {
-            $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
-            $filePath = 'uploads/pickup/'.$image_name;
+            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $filePath = 'uploads/pickup/' . $image_name;
 
             // Check if the 'uploads/pickup' directory exists and create it if it doesn't
-            if (! Storage::disk('public')->exists('uploads/pickup')) {
+            if (!Storage::disk('public')->exists('uploads/pickup')) {
                 Storage::disk('public')->makeDirectory('uploads/pickup');
             }
             // Save the image to a file in the public directory
             Storage::disk('public')->put($filePath, file_get_contents($image));
 
-            $image_location = 'storage/uploads/pickup/'.$image_name;
+            $image_location = 'storage/uploads/pickup/' . $image_name;
             $images[] = $image_location;
         }
         $validatedRequest['image'] = $images;
