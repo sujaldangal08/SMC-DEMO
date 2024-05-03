@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use PragmaRX\Google2FA\Google2FA;
 
 class AuthenticationController extends Controller
@@ -489,20 +492,35 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Verify the 2FA code
+     * This method is responsible for verifying the 2FA code provided by the user.
+     * It first validates the request data, ensuring that the OTP is a 6-digit number and the user ID is provided.
+     * Then, it creates a new instance of the Google2FA class.
+     * It retrieves the user record that matches the provided user ID and decrypts the user's tfa_secret.
+     * It ensures that the OTP and the secret key are strings.
+     * It verifies the OTP against the secret key using the Google2FA class.
+     * If the OTP is valid, it creates a new token for the user and sets the token's expiry time to 1 hour from now.
+     * If the user's is_tfa field is false, it sets it to true and saves the user record.
+     * Finally, it returns a JSON response indicating that the 2FA code was verified successfully and provides the token.
+     * If the OTP is not valid, it returns a JSON response with an error message.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws InvalidCharactersException
+     * @throws SecretKeyTooShortException
      */
     public function verify2FACode(Request $request): JsonResponse
     {
-        //        $otp = $request->input('otp');
-
+        // Validate the request data
         $request->validate([
             'otp' => 'required|regex:/^[0-9]{6}$/', // OTP must be a 6-digit number
             'user' => 'required|integer',
         ]);
 
+        // Create a new instance of the Google2FA class
         $google2fa = new Google2FA();
 
-        // Retrieve the secret key from your storage
+        // Retrieve the user record that matches the provided user ID and decrypt the user's tfa_secret
         $secretKey = User::where('id', $request->user)->first()->tfa_secret;
         $user = User::where('id', $request->user)->first();
 
@@ -512,6 +530,7 @@ class AuthenticationController extends Controller
         // Ensure that the OTP is a string
         $otp = (string) $request->otp;
 
+        // Verify the OTP against the secret key using the Google2FA class
         $isValid = $google2fa->verifyKey($secretKey, $otp);
 
         if ($isValid) {
@@ -548,19 +567,33 @@ class AuthenticationController extends Controller
     }
 
     /**
-     * Disable 2FA for a user
+     * This method is responsible for disabling two-factor authentication (2FA) for a user.
+     * It first validates the request data, ensuring that the user ID is provided.
+     * Then, it retrieves the user record that matches the provided user ID.
+     * If the user is found, it sets the user's tfa_secret to null and is_tfa to false, and saves the user record.
+     * Finally, it returns a JSON response indicating that 2FA was disabled successfully.
+     *
+     * @param Request $request
+     * @return JsonResponse
      */
     public function disable2FA(Request $request): JsonResponse
     {
+        // Validate the request data
         $request->validate([
             'user' => 'required|integer',
         ]);
 
+        // Retrieve the user record that matches the provided user ID
         $user = User::where('id', $request->user)->first();
+
+        // Set the user's tfa_secret to null and is_tfa to false
         $user->tfa_secret = null;
         $user->is_tfa = false;
+
+        // Save the user record
         $user->save();
 
+        // Return a JSON response indicating that 2FA was disabled successfully
         return response()->json([
             'status' => 'success',
             'message' => '2FA disabled successfully',
@@ -568,6 +601,19 @@ class AuthenticationController extends Controller
         ], 200);
     }
 
+    /**
+     * This method is responsible for changing the user's password.
+     * It first validates the request data, ensuring that the password_hash is provided,
+     * and that the new password meets the necessary requirements (minimum length, includes uppercase and lowercase letters, a number, and a special character).
+     * Then, it retrieves the user record that matches the provided password_hash.
+     * If the user is not found, it returns a JSON response with an error message.
+     * If the user is found, it hashes the new password, sets the user's password to the hashed password,
+     * sets the user's otp_hash to null, and saves the user record.
+     * Finally, it returns a JSON response indicating that the password was changed successfully.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function changePassword(Request $request): JsonResponse
     {
         try {
