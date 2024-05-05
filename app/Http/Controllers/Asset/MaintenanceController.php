@@ -45,12 +45,6 @@ class MaintenanceController extends Controller
                 'message' => 'Maintenance fetched successfully',
                 'data' => $maintenances,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Maintenance not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
