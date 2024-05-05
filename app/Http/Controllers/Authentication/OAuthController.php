@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\EmailTemplate;
+
 class OAuthController extends Controller
 {
     /**
@@ -134,7 +135,6 @@ class OAuthController extends Controller
         }
 
         // If the user doesn't exist, return an error response
-
         return $this->extracted($checkuser);
     }
 
