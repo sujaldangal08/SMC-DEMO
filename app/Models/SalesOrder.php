@@ -11,6 +11,7 @@ class SalesOrder extends Model
     use HasFactory;
 
     protected $fillable = [
+        'type',
         'invoice_id',
         'invoice_number',
         'reference',
