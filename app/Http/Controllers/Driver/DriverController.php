@@ -181,7 +181,7 @@ class DriverController extends Controller
     {
         try {
             $validatedData = $request->validated();
-            dd($validatedData);
+
             $schedule = PickupSchedule::findOrFail($id)->where('driver_id', request()->user()->id)->first();
 
             if (! $schedule) {
