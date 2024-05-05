@@ -124,7 +124,7 @@ class OAuthController extends Controller
                 'role_id' => 4,
                 'email_verified_at' => now(),
             ]);
-
+            //send welcome mail
             $welcomeTemplate = \App\Models\EmailTemplate::where('template_type', 'welcome')->first();
             $username = $userData['name'];
             $subjectWelcome = $welcomeTemplate->subject; // Retrieve the subject from the emailTemplate model
