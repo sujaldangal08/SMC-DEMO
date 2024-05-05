@@ -19,6 +19,9 @@ class SalesOrder extends Model
         'amount_paid',
         'amount_credited',
         'contact_id',
+        'status',
+        'line_amount_types',
+        'currency_code',
     ];
 
     public function contact()

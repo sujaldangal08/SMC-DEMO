@@ -132,7 +132,6 @@ class XeroSyncController extends Controller
             $invoices = json_decode($response->getBody()->getContents(), true)['Invoices'];
 
             // For each invoice, create a new SalesOrder record in the database
-
         foreach ($invoices as $xeroInvoice) {
             $invoice = SalesOrder::updateOrCreate(
                 ['invoice_id' => $xeroInvoice['InvoiceID']], // Column/values to find
@@ -143,7 +142,13 @@ class XeroSyncController extends Controller
                     'amount_due' => $xeroInvoice['AmountDue'],
                     'amount_paid' => $xeroInvoice['AmountPaid'],
                     'amount_credited' => $xeroInvoice['AmountCredited'],
+                    'sub_total' => $xeroInvoice['SubTotal'],
+                    'total_tax' => $xeroInvoice['TotalTax'],
+                    'total' => $xeroInvoice['Total'],
+                    'currency_code' => $xeroInvoice['CurrencyCode'],
                     'contact_id' => $contact->id, // Assuming the ContactID is available in the Contact object of the invoice
+                    'status' => $xeroInvoice['Status'],
+                    'line_amount_types' => $xeroInvoice['LineAmountTypes'],
                 ]
             );
 
