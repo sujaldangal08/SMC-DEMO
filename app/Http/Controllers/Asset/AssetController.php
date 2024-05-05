@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Asset;
 
 use App\Http\Controllers\Controller;
 use App\Models\Asset;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AssetController extends Controller
 {
@@ -46,12 +47,6 @@ class AssetController extends Controller
                 'message' => 'Asset fetched successfully',
                 'data' => $asset,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Asset not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
@@ -67,26 +62,17 @@ class AssetController extends Controller
     public function createAsset(Request $request): JsonResponse
     {
         try {
-            $request->validate([
+            $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
+                'asset_type' => 'required|string|max:255|in:vehicle,equipment,weighing_machine, office_equipment',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'asset_type' => 'required|string|max:255',
-                'meta' => 'required|array',
+                'rego_number' => 'required_if:asset_type,vehicle|string|max:255',
+                'meta' => 'required',
                 'branch_id' => 'required|integer|exists:branches,id',
             ]);
-
-            $image = $request->file('image');
-            $imageName = time().'.'.$image->extension();
-            $image->move(public_path('uploads/assets'), $imageName);
-            $destinationPath = 'uploads/assets/'.$imageName;
-
-            $asset = new Asset();
-            $asset->title = $request->title;
-            $asset->image = $destinationPath;
-            $asset->asset_type = $request->asset_type;
-            $asset->meta = $request->meta;
-            $asset->branch_id = $request->branch_id;
-            $asset->save();
+            $validatedData = $this->imageUpload($validatedData);
+            $validatedData['meta'] = json_decode($validatedData['meta'], true);
+            $asset = Asset::create($validatedData);
 
             return response()->json([
                 'status' => 'success',
@@ -111,19 +97,16 @@ class AssetController extends Controller
             $request->validate([
                 'title' => 'sometimes|required|string|max:255',
                 'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'asset_type' => 'sometimes|required|string|max:255',
-                'meta' => 'sometimes|required|array',
+                'rego_number' => 'sometimes|required|string|max:255', // Add 'sometimes' to make this field 'optional
+                'asset_type' => 'sometimes|required|in:vehicle,equipment,weighing_machine, office_equipment',
+                'meta' => 'sometimes|required|string',
                 'branch_id' => 'sometimes|required|integer|exists:branches,id',
             ]);
 
             $asset = Asset::findOrFail($id);
-
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time().'.'.$image->extension();
-                $image->move(public_path('uploads/assets'), $imageName);
-                $destinationPath = 'uploads/assets/'.$imageName;
-                $asset->image = $destinationPath;
+                $validatedData = $this->imageUpload($request->all());
+                $asset->image = $validatedData['image'];
             }
 
             $meta = $asset->meta;  // Retrieve the 'meta' array
@@ -141,12 +124,6 @@ class AssetController extends Controller
                 'message' => 'Asset updated successfully',
                 'data' => $asset,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Asset not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
@@ -170,12 +147,6 @@ class AssetController extends Controller
                 'message' => 'Asset deleted successfully',
                 'data' => null,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Asset not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
@@ -199,12 +170,6 @@ class AssetController extends Controller
                 'message' => 'Asset restored successfully',
                 'data' => $asset,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Asset not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
@@ -228,12 +193,6 @@ class AssetController extends Controller
                 'message' => 'Asset permanently deleted',
                 'data' => null,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Asset not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
@@ -241,5 +200,24 @@ class AssetController extends Controller
                 'data' => null,
             ], 500);
         }
+    }
+
+    protected function imageUpload(array $validatedRequest)
+    {
+        $image = $validatedRequest['image'];
+        $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
+        $filePath = 'uploads/asset/' . $image_name;
+
+        // Check if the 'uploads/asset' directory exists and create it if it doesn't
+        if (!Storage::disk('public')->exists('uploads/asset')) {
+            Storage::disk('public')->makeDirectory('uploads/asset');
+        }
+        // Save the image to a file in the public directory
+        Storage::disk('public')->put($filePath, file_get_contents($image));
+
+        $image_location = 'uploads/asset/' . $image_name;
+        $validatedRequest['image'] = $image_location;
+
+        return $validatedRequest;
     }
 }

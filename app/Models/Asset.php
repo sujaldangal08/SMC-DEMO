@@ -13,8 +13,10 @@ class Asset extends Model
     protected $fillable = [
         'title',
         'image',
+        'rego_number',
         'asset_type',
         'meta',
+        'branch_id',
     ];
 
     protected function casts(): array
@@ -42,5 +44,10 @@ class Asset extends Model
     public function getImageAttribute($value)
     {
         return $value ? asset('storage/'.$value) : null;
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
     }
 }
