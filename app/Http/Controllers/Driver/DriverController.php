@@ -298,7 +298,6 @@ class DriverController extends Controller
                 throw new ModelNotFoundException('Delivery trip not found');
             }
             $validatedData = $request->validated();
-
             if ($validatedData['status'] === 'completed' && (! isset($validatedData['attachment']) && $trip['attachment'] === null)) {
                 return response()->json([
                     'status' => 'failure',
@@ -307,7 +306,7 @@ class DriverController extends Controller
                 ], 422);
             }
             // Check if request has image
-            if (isset($validatedData['attachment'])) {
+            if (isset($validatedData['attachment']) && $validatedData['attachment'] !== null) {
                 $validatedValue = $this->imageUpload($validatedData['attachment']);
                 $validatedData['attachment'] = $validatedValue;
             }

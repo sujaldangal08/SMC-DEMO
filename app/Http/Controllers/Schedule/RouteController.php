@@ -35,20 +35,19 @@ class RouteController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
+
             $route = Route::findOrFail($id);
-            $pickup = optional($route->schedule()->get())->toArray();
+            $route = $route->load([
+                'driver:id,name,image',
+                'asset:id,title,rego_number,image',
+                'schedule.customer:id,name,phone_number,image',
+            ]);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Route fetched successfully',
                 'data' => $route,
-                'pickup' => $pickup,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Route not found',
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',

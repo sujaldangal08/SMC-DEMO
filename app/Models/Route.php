@@ -37,7 +37,17 @@ class Route extends Model
 
     public function customer()
     {
-        return $this->belongsTo(User::class, 'customer_id')->through(PickupSchedule::class);
+        return $this->hasMany(User::class, 'customer_id')->through(PickupSchedule::class);
+    }
+
+    public function driver()
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class, 'asset_id');
     }
 
     protected static function boot()

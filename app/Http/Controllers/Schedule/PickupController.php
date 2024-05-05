@@ -48,6 +48,7 @@ class PickupController extends Controller
             $customer = $schedule->customer()->select('id', 'name', 'phone_number', 'image')->first();
             $driver = $schedule->driver()->select('id', 'name', 'phone_number', 'image')->first();
             $asset = $schedule->asset()->select('title', 'rego_number', 'image')->first();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule fetched successfully',
@@ -55,8 +56,8 @@ class PickupController extends Controller
                     'schedule' => $schedule,
                     'customer' => $customer,
                     'driver' => $driver,
-                    'asset' => $asset
-                ]
+                    'asset' => $asset,
+                ],
                 // 'route' => $route,
             ], 200);
         } catch (ModelNotFoundException $e) {
@@ -137,11 +138,6 @@ class PickupController extends Controller
                 'customer' => $customer,
                 'asset' => $asset,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Pickup schedule not found',
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -160,11 +156,6 @@ class PickupController extends Controller
                 'status' => 'success',
                 'message' => 'Pickup schedule deleted successfully',
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Pickup schedule not found',
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -183,11 +174,6 @@ class PickupController extends Controller
                 'status' => 'success',
                 'message' => 'Pickup schedule restored successfully',
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Pickup schedule not found',
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -206,11 +192,6 @@ class PickupController extends Controller
                 'status' => 'success',
                 'message' => 'Pickup schedule permanently deleted successfully',
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Pickup schedule not found',
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -275,17 +256,17 @@ class PickupController extends Controller
     {
         $images = [];
         foreach ($validatedRequest['image'] as $image) {
-            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $filePath = 'uploads/pickup/' . $image_name;
+            $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
+            $filePath = 'uploads/pickup/'.$image_name;
 
             // Check if the 'uploads/pickup' directory exists and create it if it doesn't
-            if (!Storage::disk('public')->exists('uploads/pickup')) {
+            if (! Storage::disk('public')->exists('uploads/pickup')) {
                 Storage::disk('public')->makeDirectory('uploads/pickup');
             }
             // Save the image to a file in the public directory
             Storage::disk('public')->put($filePath, file_get_contents($image));
 
-            $image_location = 'storage/uploads/pickup/' . $image_name;
+            $image_location = 'storage/uploads/pickup/'.$image_name;
             $images[] = $image_location;
         }
         $validatedRequest['image'] = $images;
