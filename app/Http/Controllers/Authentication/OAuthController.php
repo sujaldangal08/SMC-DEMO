@@ -11,7 +11,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Hash;
+use App\Mail\EmailTemplate;
 class OAuthController extends Controller
 {
     /**
@@ -52,9 +54,26 @@ class OAuthController extends Controller
 
         // Get the email from the response data
         $email = $data['email'];
-
         // Check if a user with this email exists in the database
-        $checkuser = User::where('email', $email)->first();
+        $checkuser = User::where('email', $data['email'])->first();
+        if(!$checkuser){
+            $checkuser = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => hash('sha256', microtime()),
+                'role_id' => 4,
+                'email_verified_at' => now(),
+            ]);
+
+            $welcomeTemplate = \App\Models\EmailTemplate::where('template_type', 'welcome')->first();
+            $username = $data['name'];
+            $subjectWelcome = $welcomeTemplate->subject; // Retrieve the subject from the emailTemplate model
+            $welcome_type = $welcomeTemplate->template_type; // Retrieve the template type from the emailTemplate model
+
+            $mailableWelcome = new EmailTemplate($username, $subjectWelcome, $welcome_type);
+            Mail::to($data['email'])->send($mailableWelcome);
+        }
+
 
         // If the user doesn't exist, return an error response
         return $this->extracted($checkuser);
@@ -96,8 +115,26 @@ class OAuthController extends Controller
         }
 
         $checkuser = User::where('email', $userData['email'])->first();
+        if(!$checkuser){
+            $checkuser = User::create([
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'password' => hash('sha256', microtime()),
+                'role_id' => 4,
+                'email_verified_at' => now(),
+            ]);
+
+            $welcomeTemplate = \App\Models\EmailTemplate::where('template_type', 'welcome')->first();
+            $username = $userData['name'];
+            $subjectWelcome = $welcomeTemplate->subject; // Retrieve the subject from the emailTemplate model
+            $welcome_type = $welcomeTemplate->template_type; // Retrieve the template type from the emailTemplate model
+
+            $mailableWelcome = new EmailTemplate($username, $subjectWelcome, $welcome_type);
+            Mail::to($userData['email'])->send($mailableWelcome);
+        }
 
         // If the user doesn't exist, return an error response
+
         return $this->extracted($checkuser);
     }
 
