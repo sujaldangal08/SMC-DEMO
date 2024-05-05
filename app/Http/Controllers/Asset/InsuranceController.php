@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Asset;
 
 use App\Http\Controllers\Controller;
 use App\Models\Insurance;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class InsuranceController extends Controller
@@ -20,6 +20,9 @@ class InsuranceController extends Controller
     {
         try {
             $insurances = Insurance::all();
+            $insurances->load([
+                'asset:id,title',
+            ]);
 
             return response()->json([
                 'status' => 'success',
@@ -44,6 +47,9 @@ class InsuranceController extends Controller
     {
         try {
             $insurance = Insurance::findOrFail($id);
+            $insurance->load([
+                'asset:id,title',
+            ]);
 
             return response()->json([
                 'status' => 'success',
@@ -65,7 +71,7 @@ class InsuranceController extends Controller
     public function createInsurance(Request $request): JsonResponse
     {
         try {
-            $request->validate([
+            $validatedData = $request->validate([
                 'asset_id' => 'required|integer|exists:assets,id',
                 'insurance_type' => 'required|string',
                 'provider' => 'required|string',
@@ -78,27 +84,15 @@ class InsuranceController extends Controller
 
             ]);
 
-            $attachments = [];
             if ($request->hasFile('attachment')) {
-                $files = $request->file('attachment');
-                foreach ($files as $file) {
-                    $filename = Str::random(10).'.'.$file->getClientOriginalExtension();
-                    $file->move(public_path('uploads/attachments'), $filename);
-                    $attachments[] = 'uploads/attachments/'.$filename;
-                }
+                $validatedData = $this->attachmentUpload($validatedData);
             }
-            $insurance = new Insurance();
-            $insurance->asset_id = $request->asset_id;
-            $insurance->insurance_type = $request->insurance_type;
-            $insurance->provider = $request->provider;
-            $insurance->amount = $request->amount;
-            $insurance->start_date = $request->start_date;
-            $insurance->end_date = $request->end_date;
-            $insurance->purchase_date = $request->purchase_date;
-            $insurance->attachment = $attachments;
-            $insurance->contact_meta = json_decode($request->contact_meta, true);
-            $insurance->save();
-            $insurance->asset_title = $insurance->asset->title;
+
+            $validatedData['contact_meta'] = json_decode($validatedData['contact_meta'], true);
+            $insurance = Insurance::create($validatedData);
+            $insurance->load([
+                'asset:id,title',
+            ]);
 
             return response()->json([
                 'status' => 'success',
@@ -108,7 +102,7 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -121,7 +115,7 @@ class InsuranceController extends Controller
     {
         try {
             $insurance = Insurance::findOrFail($id);
-            $request->validate([
+            $validatedData = $request->validate([
                 'asset_id' => 'sometimes|integer|exists:assets,id',
                 'insurance_type' => 'sometimes|string',
                 'provider' => 'sometimes|string',
@@ -129,47 +123,27 @@ class InsuranceController extends Controller
                 'start_date' => 'sometimes|date',
                 'end_date' => 'sometimes|date',
                 'purchase_date' => 'sometimes|date',
-                'attachment' => 'sometimes|file',
+                'attachment.*' => 'sometimes|mimes:pdf,jpg,jpeg,png|max:2048',
                 'contact_meta' => 'sometimes|array',
             ]);
 
-            $attachments = [];
             if ($request->hasFile('attachment')) {
-                $files = $request->file('attachment');
-                foreach ($files as $file) {
-                    $filename = Str::random(10).'.'.$file->getClientOriginalExtension();
-                    $file->move(public_path('uploads/attachments'), $filename);
-                    $attachments[] = 'uploads/attachments/'.$filename;
-                }
+                $validatedData = $this->attachmentUpload($validatedData);
             }
-            $insurance->asset_id = $request->asset_id ?? $insurance->asset_id;
-            $insurance->insurance_type = $request->insurance_type ?? $insurance->insurance_type;
-            $insurance->provider = $request->provider ?? $insurance->provider;
-            $insurance->amount = $request->amount ?? $insurance->amount;
-            $insurance->start_date = $request->start_date ?? $insurance->start_date;
-            $insurance->end_date = $request->end_date ?? $insurance->end_date;
-            $insurance->purchase_date = $request->purchase_date ?? $insurance->purchase_date;
-            $insurance->attachment = $attachments ?? $insurance->attachment;
-            $insurance->contact_meta = json_decode($request->contact_meta, true) ?? $insurance->contact_meta;
-            $insurance->save();
-
-            $insurance->asset_title = $insurance->asset->title;
+            if (isset($validatedData['contact_meta'])) {
+                $validatedData['contact_meta'] = json_decode($validatedData['contact_meta'], true);
+            }
+            $insurance->update($validatedData);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Insurance updated successfully',
                 'data' => $insurance,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Insurance not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -191,16 +165,10 @@ class InsuranceController extends Controller
                 'message' => 'Insurance deleted successfully',
                 'data' => null,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Insurance not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -222,16 +190,10 @@ class InsuranceController extends Controller
                 'message' => 'Insurance restored successfully',
                 'data' => $insurance,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Insurance not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -253,18 +215,34 @@ class InsuranceController extends Controller
                 'message' => 'Insurance permanently deleted successfully',
                 'data' => null,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Insurance not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Database Error:'.$e->getMessage(),
+                'message' => $e->getMessage(),
                 'data' => null,
             ], 500);
         }
+    }
+
+    protected function attachmentUpload(array $validatedRequest)
+    {
+        $attachments = [];
+        foreach ($validatedRequest['attachment'] as $attachment) {
+            $attachment_name = Str::random(10).'.'.$attachment->getClientOriginalExtension();
+            $filePath = 'uploads/insurance/'.$attachment_name;
+
+            // Check if the 'uploads/insurance' directory exists and create it if it doesn't
+            if (! Storage::disk('public')->exists('uploads/insurance')) {
+                Storage::disk('public')->makeDirectory('uploads/insurance');
+            }
+            // Save the attachment to a file in the public directory
+            Storage::disk('public')->put($filePath, file_get_contents($attachment));
+
+            $attachment_location = 'uploads/insurance/'.$attachment_name;
+            $attachments[] = $attachment_location;
+        }
+        $validatedRequest['attachment'] = $attachments;
+
+        return $validatedRequest;
     }
 }
