@@ -132,17 +132,46 @@ class XeroSyncController extends Controller
             $invoices = json_decode($response->getBody()->getContents(), true)['Invoices'];
 
             // For each invoice, create a new SalesOrder record in the database
-            foreach ($invoices as $xeroInvoice) {
-                $invoice = new SalesOrder();
-                $invoice->invoice_id = $xeroInvoice['InvoiceID'];
-                $invoice->invoice_number = $xeroInvoice['InvoiceNumber'];
-                $invoice->reference = $xeroInvoice['Reference'];
-                $invoice->amount_due = $xeroInvoice['AmountDue'];
-                $invoice->amount_paid = $xeroInvoice['AmountPaid'];
-                $invoice->amount_credited = $xeroInvoice['AmountCredited'];
-                $invoice->contact_id = $contact->id; // Assuming the ContactID is available in the Contact object of the invoice
-                $invoice->save();
+        foreach ($invoices as $xeroInvoice) {
+            $invoice = SalesOrder::updateOrCreate(
+                ['invoice_id' => $xeroInvoice['InvoiceID']], // Column/values to find
+                [ // New values to create/update
+                    'type' => $xeroInvoice['Type'],
+                    'invoice_number' => $xeroInvoice['InvoiceNumber'],
+                    'reference' => $xeroInvoice['Reference'],
+                    'amount_due' => $xeroInvoice['AmountDue'],
+                    'amount_paid' => $xeroInvoice['AmountPaid'],
+                    'amount_credited' => $xeroInvoice['AmountCredited'],
+                    'sub_total' => $xeroInvoice['SubTotal'],
+                    'total_tax' => $xeroInvoice['TotalTax'],
+                    'total' => $xeroInvoice['Total'],
+                    'currency_code' => $xeroInvoice['CurrencyCode'],
+                    'contact_id' => $contact->id, // Assuming the ContactID is available in the Contact object of the invoice
+                    'status' => $xeroInvoice['Status'],
+                    'line_amount_types' => $xeroInvoice['LineAmountTypes'],
+                ]
+            );
+
+            if (isset($xeroInvoice['LineItems']) && count($xeroInvoice['LineItems']) > 0) {
+                foreach ($xeroInvoice['LineItems'] as $lineItemData) {
+                    $lineItem = LineItem::updateOrCreate(
+                        ['line_item_id' => $lineItemData['LineItemID']], // Column/values to find
+                        [ // New values to create/update
+                            'item_code' => $lineItemData['ItemCode'],
+                            'description' => $lineItemData['Description'],
+                            'quantity' => $lineItemData['Quantity'],
+                            'unit_amount' => $lineItemData['UnitAmount'],
+                            'tax_type' => $lineItemData['TaxType'],
+                            'tax_amount' => $lineItemData['TaxAmount'],
+                            'line_amount' => $lineItemData['LineAmount'],
+                            'account_code' => $lineItemData['AccountCode'],
+                            'account_id' => $lineItemData['AccountId'],
+                            'invoice_id' => $invoice->id, // Assuming the LineItem is associated with the Invoice
+                        ]
+                    );
+                }
             }
+        }
 
             // Return a success message
             return response()->json(['message' => 'Invoices synced successfully']);
@@ -194,7 +223,6 @@ class XeroSyncController extends Controller
 
             // Decode the response body into an associative array
             $purchaseOrders = json_decode($response->getBody()->getContents(), true)['PurchaseOrders'];
-
             // For each purchase order, create or update a PurchaseOrder record in the database
             foreach ($purchaseOrders as $xeroPurchaseOrders) {
                 $purchaseOrder = PurchaseOrder::updateOrCreate(

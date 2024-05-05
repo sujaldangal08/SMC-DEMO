@@ -20,8 +20,29 @@ class LineItem extends Model
         'tax_type',
         'tax_amount',
         'line_amount',
-        'discount_rate',
-        'discount_amount',
-        'total_amount',
+        'account_id',
+        'item_id',
+        'tracking_id',
     ];
+
+    public function purchaseOrder()
+    {
+        return $this->belongsTo(PurchaseOrder::class);
+    }
+
+    public function tracking()
+    {
+        return $this->belongsTo(Tracking::class);
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
+
 }
