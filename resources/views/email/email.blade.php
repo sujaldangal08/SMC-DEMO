@@ -56,6 +56,7 @@
 												<h4 class="text" style="color:#666;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0">Dear {!! $username !!}, @if($template_type=='otp') Your OTP is @elseif($template_type=="welcome")Welcome, you have been registered to ShotCoder Tech @endif</h4>
 											</td>
 										</tr>
+
 										<tr>
 											<td style="padding-bottom: 25px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
                                                 @if($template_type=='otp')
@@ -69,7 +70,38 @@
                                                 @endif
 											</td>
 										</tr>
-
+                                        @if ($template_type=='delivery' || $template_type=='schedule')
+                                        <tr>
+    <td style="padding: 10px; text-align: left;" colspan="4">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px; margin-top: 20px; margin-bottom: 20px;">
+    <thead>
+        <tr style="background-color: #2ab463; color: #fff;">
+            <th style="padding: 10px; text-align: left;">Materials</th>
+            <th style="padding: 10px; text-align: left;">Weight</th>
+            <th style="padding: 10px; text-align: left;">Rate</th>
+            <th style="padding: 10px; text-align: left;">Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Add as many rows as needed -->
+        <tr>
+            <td style="padding: 10px; text-align: left;">Material 1</td>
+            <td style="padding: 10px; text-align: left;">Weight 1</td>
+            <td style="padding: 10px; text-align: left;">Rate 1</td>
+            <td style="padding: 10px; text-align: left;">Time 1</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px; text-align: left;">Material 2</td>
+            <td style="padding: 10px; text-align: left;">Weight 2</td>
+            <td style="padding: 10px; text-align: left;">Rate 2</td>
+            <td style="padding: 10px; text-align: left;">Time 2</td>
+        </tr>
+        <!-- ... -->
+    </tbody>
+</table>
+    </td>
+</tr>
+@else @endif
 										<tr>
 											<td style="padding-left:20px;padding-right:20px" align="center" valign="top" class="containtTable ui-sortable">
 												<table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableDescription" style="">
