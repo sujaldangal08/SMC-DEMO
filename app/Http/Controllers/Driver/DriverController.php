@@ -126,7 +126,7 @@ class DriverController extends Controller
             ]);
 
             $route = Route::where('id', $id)->where('driver_id', request()->user()->id)->first();
-            if (!$route) {
+            if (! $route) {
                 throw new ModelNotFoundException('Route not found');
             }
 
@@ -181,10 +181,10 @@ class DriverController extends Controller
     {
         try {
             $validatedData = $request->validated();
-
+            dd($validatedData);
             $schedule = PickupSchedule::findOrFail($id)->where('driver_id', request()->user()->id)->first();
 
-            if (!$schedule) {
+            if (! $schedule) {
                 throw new ModelNotFoundException('Schedule not found');
             }
             if (isset($validatedData['image'])) {
@@ -225,7 +225,7 @@ class DriverController extends Controller
                 return $trip;
             });
 
-            if (!$trip) {
+            if (! $trip) {
                 throw new ModelNotFoundException('Delivery trips not found');
             }
 
@@ -252,7 +252,7 @@ class DriverController extends Controller
     {
         try {
             $trip = DeliveryTrip::where('id', $id)->where('driver_id', request()->user()->id)->first();
-            if (!$trip) {
+            if (! $trip) {
                 throw new ModelNotFoundException('Delivery trip not found');
             }
             $trip->customer = [
@@ -294,11 +294,12 @@ class DriverController extends Controller
         try {
             $trip = DeliveryTrip::where('id', $id)->where('driver_id', request()->user()->id)->first();
 
-            if (!$trip) {
+            if (! $trip) {
                 throw new ModelNotFoundException('Delivery trip not found');
             }
             $validatedData = $request->validated();
-            if ($validatedData['status'] === 'completed' && (!isset($validatedData['attachment']) && $trip['attachment'] === null)) {
+
+            if ($validatedData['status'] === 'completed' && (! isset($validatedData['attachment']) && $trip['attachment'] === null)) {
                 return response()->json([
                     'status' => 'failure',
                     'message' => 'Attachment is required when status is done.',
@@ -306,7 +307,7 @@ class DriverController extends Controller
                 ], 422);
             }
             // Check if request has image
-            if (isset($validatedData['attachment']) && $validatedData['attachment'] !== null) {
+            if (isset($validatedData['attachment'])) {
                 $validatedValue = $this->imageUpload($validatedData['attachment']);
                 $validatedData['attachment'] = $validatedValue;
             }
@@ -337,17 +338,17 @@ class DriverController extends Controller
     {
         $images = [];
         foreach ($validatedData as $image) {
-            $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-            $filePath = 'uploads/schedule/' . $image_name;
+            $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
+            $filePath = 'uploads/schedule/'.$image_name;
 
             // Check if the 'uploads/schedule' directory exists and create it if it doesn't
-            if (!Storage::disk('public')->exists('uploads/schedule')) {
+            if (! Storage::disk('public')->exists('uploads/schedule')) {
                 Storage::disk('public')->makeDirectory('uploads/schedule');
             }
             // Save the image to a file in the public directory
             Storage::disk('public')->put($filePath, file_get_contents($image));
 
-            $image_location = 'uploads/schedule/' . $image_name;
+            $image_location = 'uploads/schedule/'.$image_name;
             $images[] = $image_location;
         }
         $validatedData = $images;
