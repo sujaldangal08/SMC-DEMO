@@ -43,14 +43,21 @@ class PickupController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $schedule = PickupSchedule::where('id', $id)->with('customer', 'driver', 'asset');
-            $route = $schedule->route()->first();
-
+            $schedule = PickupSchedule::findOrFail($id);
+            // $route = $schedule->route()->first();
+            $customer = $schedule->customer()->select('id', 'name', 'phone_number', 'image')->first();
+            $driver = $schedule->driver()->select('id', 'name', 'phone_number', 'image')->first();
+            $asset = $schedule->asset()->select('title', 'rego_number', 'image')->first();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Pickup schedule fetched successfully',
-                'data' => $schedule,
-                'route' => $route,
+                'data' => [
+                    'schedule' => $schedule,
+                    'customer' => $customer,
+                    'driver' => $driver,
+                    'asset' => $asset
+                ]
+                // 'route' => $route,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
