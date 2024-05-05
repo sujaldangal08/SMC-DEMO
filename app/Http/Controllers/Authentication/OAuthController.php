@@ -10,6 +10,7 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class OAuthController extends Controller
 {
@@ -29,12 +30,22 @@ class OAuthController extends Controller
         // Create a new Guzzle HTTP client
         $client = new Client();
 
-        // Send a GET request to the Google OAuth2 API to validate the token
-        $response = $client->get('https://oauth2.googleapis.com/tokeninfo', [
-            'query' => [
-                'id_token' => $token,
-            ],
-        ]);
+        try {
+            // Send a GET request to the Google OAuth2 API to validate the token
+            $response = $client->get('https://oauth2.googleapis.com/tokeninfo', [
+                'query' => [
+                    'id_token' => $token,
+                ],
+            ]);
+        } catch (GuzzleException $e) {
+            // Log the exception message and return an error response
+            Log::error('GuzzleException: '.$e->getMessage());
+
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Error while validating the token',
+            ], 500);
+        }
 
         // Decode the response body
         $data = json_decode($response->getBody(), true);
@@ -60,17 +71,34 @@ class OAuthController extends Controller
     public function facebookOauthReceive(Request $request)
     {
         // Get the token from the request
-        $accessToken = $token = $request->token;
+        $accessToken = $request->token;
 
-        $userDataUrl = 'https://graph.facebook.com/v12.0/me?fields=id,name,email';
+        // Your app secret
+        $appSecret = '565719fb7d1563723c0d39672d76207e';
+
+        // Generate the appsecret_proof
+        $appsecretProof = hash_hmac('sha256', $accessToken, $appSecret);
+
+        $userDataUrl = 'https://graph.facebook.com/v19.0/me?fields=id,name,email,picture&appsecret_proof='.$appsecretProof;
         $userDataResponse = Http::withToken($accessToken)->get($userDataUrl);
         $userData = $userDataResponse->json();
+
+
+        // Check if the 'email' key exists in the userData
+        if (! array_key_exists('email', $userData)) {
+            // Log the error and return an error response
+            Log::error('Email not found in the response data');
+
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Email not found in the response data',
+            ], 500);
+        }
 
         $checkuser = User::where('email', $userData['email'])->first();
 
         // If the user doesn't exist, return an error response
         return $this->extracted($checkuser);
-
     }
 
     /**
@@ -81,10 +109,10 @@ class OAuthController extends Controller
      * The token's expiry time is set to 1 hour from the current time.
      * Finally, it returns a JSON response with a status of 'success', a message of 'Authenticated', and the user data and token information.
      *
-     * @param  User  $checkuser  The user object retrieved from the database.
+     * @param  User|null  $checkuser  The user object retrieved from the database.
      * @return JsonResponse Returns a JSON response indicating whether the authentication was successful or not.
      */
-    public function extracted(User $checkuser): JsonResponse
+    public function extracted(?User $checkuser): JsonResponse
     {
         if (! $checkuser) {
             return response()->json([
