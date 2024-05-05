@@ -298,7 +298,6 @@ class DriverController extends Controller
                 throw new ModelNotFoundException('Delivery trip not found');
             }
             $validatedData = $request->validated();
-
             if ($validatedData['status'] === 'completed' && (! isset($validatedData['attachment']) && $trip['attachment'] === null)) {
                 return response()->json([
                     'status' => 'failure',

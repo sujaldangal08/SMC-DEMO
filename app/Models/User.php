@@ -61,7 +61,7 @@ class User extends Authenticatable
         ];
     }
 
-    // Do not touch this code in any way or form as it is used for the login attempts feature
+    //Do not touch this code in any way or form as it is used for the login attempts feature
     //If you remove this code you get an error
     //Typed property App\\Models\\User::$login_attempts must not be accessed before initialization
     public function __construct(array $attributes = [])
