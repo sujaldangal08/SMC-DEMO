@@ -98,7 +98,7 @@ class AssetController extends Controller
                 'title' => 'sometimes|required|string|max:255',
                 'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'rego_number' => 'sometimes|required|string|max:255', // Add 'sometimes' to make this field 'optional
-                'asset_type' => 'sometimes|required|string|max:255',
+                'asset_type' => 'sometimes|required|in:vehicle,equipment,weighing_machine, office_equipment',
                 'meta' => 'sometimes|required|string',
                 'branch_id' => 'sometimes|required|integer|exists:branches,id',
             ]);
