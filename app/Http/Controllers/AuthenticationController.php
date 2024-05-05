@@ -503,8 +503,6 @@ class AuthenticationController extends Controller
      * Finally, it returns a JSON response indicating that the 2FA code was verified successfully and provides the token.
      * If the OTP is not valid, it returns a JSON response with an error message.
      *
-     * @param Request $request
-     * @return JsonResponse
      * @throws IncompatibleWithGoogleAuthenticatorException
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
@@ -572,9 +570,6 @@ class AuthenticationController extends Controller
      * Then, it retrieves the user record that matches the provided user ID.
      * If the user is found, it sets the user's tfa_secret to null and is_tfa to false, and saves the user record.
      * Finally, it returns a JSON response indicating that 2FA was disabled successfully.
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function disable2FA(Request $request): JsonResponse
     {
@@ -610,9 +605,6 @@ class AuthenticationController extends Controller
      * If the user is found, it hashes the new password, sets the user's password to the hashed password,
      * sets the user's otp_hash to null, and saves the user record.
      * Finally, it returns a JSON response indicating that the password was changed successfully.
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function changePassword(Request $request): JsonResponse
     {

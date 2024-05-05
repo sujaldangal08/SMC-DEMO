@@ -50,12 +50,6 @@ class InsuranceController extends Controller
                 'message' => 'Insurance fetched successfully',
                 'data' => $insurance,
             ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Insurance not found',
-                'data' => null,
-            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
