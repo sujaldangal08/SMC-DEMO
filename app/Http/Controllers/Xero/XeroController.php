@@ -28,19 +28,31 @@ class XeroController extends Controller
      */
     public function xeroConnect()
     {
-        // Retrieve the Xero credentials
-        $credentials = $this->getXero();
+       try{
+         // Retrieve the Xero credentials
+         $credentials = $this->getXero();
 
-        // Build a query string with the necessary parameters for the Xero authorization URL
-        $query = http_build_query([
-            'response_type' => 'code',
-            'client_id' => $credentials['xero_client_id'],
-            'redirect_uri' => config('services.xero.redirect_uri'),
-            'scope' => 'email profile openid accounting.settings accounting.transactions accounting.contacts offline_access', // Adjust scope as needed
-        ]);
+         // Build a query string with the necessary parameters for the Xero authorization URL
+         $query = http_build_query([
+             'response_type' => 'code',
+             'client_id' => $credentials['xero_client_id'],
+             'redirect_uri' => config('services.xero.redirect_uri'),
+             'scope' => 'email profile openid accounting.settings accounting.transactions accounting.contacts offline_access', // Adjust scope as needed
+         ]);
 
-        // Redirect the user to the Xero authorization URL
-        return redirect('https://login.xero.com/identity/connect/authorize?'.$query);
+         // Redirect the user to the Xero authorization URL
+         return redirect('https://login.xero.com/identity/connect/authorize?'.$query);
+       } catch (\Exception $e) {
+         return response()->json([
+             'status' => 'failure',
+             'message' => 'An error occurred while connecting to Xero: '. $e->getMessage(),
+         ], 500);
+       } catch (GuzzleException $e) {
+         return response()->json([
+             'status' => 'failure',
+             'message' => 'An error occurred while connecting to Xero: '. $e->getMessage(),
+         ], 500);
+       }
     }
 
     /**
@@ -53,21 +65,33 @@ class XeroController extends Controller
      */
     protected function getXero()
     {
-        // Retrieve all settings from the database
-        $xeroSetting = Setting::all();
-        $client_id = $xeroSetting['0']['setting_value'];
-        $client_secret = $xeroSetting['1']['setting_value'];
+        try {
+            // Retrieve all settings from the database
+            $xeroSetting = Setting::all();
 
-        // If the settings are not found, return a JSON response with an error message
-        if (! $xeroSetting) {
-            return response()->json(['message' => 'XeroSetting not found'], 404);
+            // If the settings are not found, return a JSON response with an error message
+            if ($xeroSetting->isEmpty()) {
+                return response()->json(['message' => 'XeroSetting not found'], 404);
+            }
+
+            $client_id = $xeroSetting['0']['setting_value'];
+            $client_secret = $xeroSetting['1']['setting_value'];
+
+            // Decrypt the client_id and client_secret
+            return [
+                'xero_client_id' => Crypt::decryptString($client_id),
+                'xero_client_secret' => Crypt::decryptString($client_secret),
+            ];
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while retrieving Xero settings'], 500);
+        } catch (GuzzleException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while retrieving Xero settings: '. $e->getMessage(),
+            ], 500);
         }
-
-        // Decrypt the client_id and client_secret
-        return [
-            'xero_client_id' => Crypt::decryptString($client_id),
-            'xero_client_secret' => Crypt::decryptString($client_secret),
-        ];
     }
 
     /**
@@ -84,7 +108,8 @@ class XeroController extends Controller
      */
     public function xeroCallback(Request $request)
     {
-        // Retrieve the authorization code from the request query parameters
+        try{
+                    // Retrieve the authorization code from the request query parameters
         $code = $request->query('code');
 
         // Retrieve the Xero credentials
@@ -130,6 +155,17 @@ class XeroController extends Controller
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken,
         ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while connecting to Xero'
+            ], 500);
+        } catch (GuzzleException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while connecting to Xero: '. $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -141,7 +177,8 @@ class XeroController extends Controller
      */
     public function xeroRefresh(): JsonResponse
     {
-        // Fetch the first XeroConnect record from the database
+        try{
+                    // Fetch the first XeroConnect record from the database
         $xeroConnect = XeroConnect::first();
 
         // Retrieve the Xero credentials
@@ -178,6 +215,17 @@ class XeroController extends Controller
             'access_token' => $responseBody['access_token'],
             'refresh_token' => $responseBody['refresh_token'],
         ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while refreshing the access token'
+            ], 500);
+        } catch (GuzzleException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while refreshing the access token: '. $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -193,7 +241,8 @@ class XeroController extends Controller
      */
     public function xeroTenant()
     {
-        // Fetch the first XeroConnect record from the database
+        try{
+             // Fetch the first XeroConnect record from the database
         $xeroConnect = XeroConnect::first();
 
         // Initialize a new Guzzle HTTP client
@@ -231,6 +280,17 @@ class XeroController extends Controller
             'message' => 'Successfully fetched and saved the tenants',
             'tenants' => $responseBody,
         ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while fetching and saving the tenants'
+            ], 500);
+        } catch (GuzzleException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while fetching and saving the tenants: '. $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -241,7 +301,8 @@ class XeroController extends Controller
      */
     public function getXeroData(): JsonResponse
     {
-        // Fetch all contacts from the database along with their related addresses, phones, and balances
+        try{
+            // Fetch all contacts from the database along with their related addresses, phones, and balances
         $contacts = Contact::with(['addresses', 'phones', 'balances'])->get();
 
         // Transform the contact data to match a specific format
@@ -284,6 +345,17 @@ class XeroController extends Controller
             'DateTimeUTC' => now()->timestamp,
             'Contacts' => $transformedContacts,
         ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while fetching Xero data'
+            ], 500);
+        } catch (GuzzleException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'An error occurred while fetching Xero data: '. $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -294,64 +366,76 @@ class XeroController extends Controller
      */
     public function getPurchaseOrder(): JsonResponse
     {
-        // Fetch the first contact from the database along with its related addresses, phones, balances, and purchase orders
-        $contact = Contact::with(['addresses', 'phones', 'balances', 'purchaseOrder'])->first();
-        $purchaseOrder = $contact->purchaseOrder;
+       try{
+         // Fetch the first contact from the database along with its related addresses, phones, balances, and purchase orders
+         $contact = Contact::with(['addresses', 'phones', 'balances', 'purchaseOrder'])->first();
+         $purchaseOrder = $contact->purchaseOrder;
 
-        // Transform the purchase order data to match a specific format
-        $transformedPurchaseOrder = $purchaseOrder->map(function ($purchaseOrder) {
-            return [
-                'PurchaseOrderID' => $purchaseOrder->purchase_order_id,
-                'PurchaseOrderNumber' => $purchaseOrder->purchase_order_number,
-                'DateString' => $purchaseOrder->date_string,
-                'Date' => '/Date('.(new \DateTime($purchaseOrder->date))->getTimestamp().'000+0000)/',
-                'DeliveryDate' => '/Date('.(new \DateTime($purchaseOrder->delivery_date))->getTimestamp().'000+0000)/',
-                'DeliveryAddress' => $purchaseOrder->delivery_address,
-                'AttentionTo' => $purchaseOrder->attention_to,
-                'Telephone' => $purchaseOrder->telephone,
-                'DeliveryInstructions' => $purchaseOrder->delivery_instructions,
-                'HasErrors' => $purchaseOrder->has_errors,
-                'IsDiscounted' => $purchaseOrder->is_discounted,
-                'Reference' => $purchaseOrder->reference,
-                'Type' => $purchaseOrder->type,
-                'CurrencyRate' => $purchaseOrder->currency_rate,
-                'CurrencyCode' => $purchaseOrder->currency_code,
-                'Contact' => [
-                    'ContactID' => $purchaseOrder->contact->id,
-                    'ContactStatus' => $purchaseOrder->contact->status,
-                    'Name' => $purchaseOrder->contact->name,
-                    'Addresses' => $purchaseOrder->contact->addresses,
-                    'Phones' => $purchaseOrder->contact->phones,
-                    'UpdatedDateUTC' => '/Date('.(new \DateTime($purchaseOrder->contact->updated_at))->getTimestamp().'000+0000)/',
-                    'ContactGroups' => $purchaseOrder->contact->contactGroups,
-                    'DefaultCurrency' => $purchaseOrder->contact->defaultCurrency,
-                    'ContactPersons' => $purchaseOrder->contact->contactPersons,
-                    'HasValidationErrors' => $purchaseOrder->contact->hasValidationErrors,
-                ],
-                'LineItems' => $purchaseOrder->line_items->map(function ($lineItem) {
-                    return [
-                        'ItemCode' => $lineItem->item_code,
-                        'Description' => $lineItem->description,
-                        'UnitAmount' => $lineItem->unit_amount,
-                        'TaxType' => $lineItem->tax_type,
-                        'TaxAmount' => $lineItem->tax_amount,
-                        'LineAmount' => $lineItem->line_amount,
-                        'AccountCode' => $lineItem->account_code,
-                        'Tracking' => $lineItem->tracking,
-                        'Quantity' => $lineItem->quantity,
-                        'LineItemID' => $lineItem->line_item_id,
-                    ];
-                }),
-            ];
-        });
+         // Transform the purchase order data to match a specific format
+         $transformedPurchaseOrder = $purchaseOrder->map(function ($purchaseOrder) {
+             return [
+                 'PurchaseOrderID' => $purchaseOrder->purchase_order_id,
+                 'PurchaseOrderNumber' => $purchaseOrder->purchase_order_number,
+                 'DateString' => $purchaseOrder->date_string,
+                 'Date' => '/Date('.(new \DateTime($purchaseOrder->date))->getTimestamp().'000+0000)/',
+                 'DeliveryDate' => '/Date('.(new \DateTime($purchaseOrder->delivery_date))->getTimestamp().'000+0000)/',
+                 'DeliveryAddress' => $purchaseOrder->delivery_address,
+                 'AttentionTo' => $purchaseOrder->attention_to,
+                 'Telephone' => $purchaseOrder->telephone,
+                 'DeliveryInstructions' => $purchaseOrder->delivery_instructions,
+                 'HasErrors' => $purchaseOrder->has_errors,
+                 'IsDiscounted' => $purchaseOrder->is_discounted,
+                 'Reference' => $purchaseOrder->reference,
+                 'Type' => $purchaseOrder->type,
+                 'CurrencyRate' => $purchaseOrder->currency_rate,
+                 'CurrencyCode' => $purchaseOrder->currency_code,
+                 'Contact' => [
+                     'ContactID' => $purchaseOrder->contact->id,
+                     'ContactStatus' => $purchaseOrder->contact->status,
+                     'Name' => $purchaseOrder->contact->name,
+                     'Addresses' => $purchaseOrder->contact->addresses,
+                     'Phones' => $purchaseOrder->contact->phones,
+                     'UpdatedDateUTC' => '/Date('.(new \DateTime($purchaseOrder->contact->updated_at))->getTimestamp().'000+0000)/',
+                     'ContactGroups' => $purchaseOrder->contact->contactGroups,
+                     'DefaultCurrency' => $purchaseOrder->contact->defaultCurrency,
+                     'ContactPersons' => $purchaseOrder->contact->contactPersons,
+                     'HasValidationErrors' => $purchaseOrder->contact->hasValidationErrors,
+                 ],
+                 'LineItems' => $purchaseOrder->line_items->map(function ($lineItem) {
+                     return [
+                         'ItemCode' => $lineItem->item_code,
+                         'Description' => $lineItem->description,
+                         'UnitAmount' => $lineItem->unit_amount,
+                         'TaxType' => $lineItem->tax_type,
+                         'TaxAmount' => $lineItem->tax_amount,
+                         'LineAmount' => $lineItem->line_amount,
+                         'AccountCode' => $lineItem->account_code,
+                         'Tracking' => $lineItem->tracking,
+                         'Quantity' => $lineItem->quantity,
+                         'LineItemID' => $lineItem->line_item_id,
+                     ];
+                 }),
+             ];
+         });
 
-        // Return a JSON response with the status, message, total number of data, and the data
-        return response()->json([
-            'Id' => '58b5344c-edf0-44ce-9e54-f5540b525888',
-            'Status' => 'OK',
-            'ProviderName' => 'LaravelApp',
-            'DateTimeUTC' => now()->timestamp,
-            'Contacts' => $transformedPurchaseOrder,
-        ], 200);
+         // Return a JSON response with the status, message, total number of data, and the data
+         return response()->json([
+             'Id' => '58b5344c-edf0-44ce-9e54-f5540b525888',
+             'Status' => 'OK',
+             'ProviderName' => 'LaravelApp',
+             'DateTimeUTC' => now()->timestamp,
+             'Contacts' => $transformedPurchaseOrder,
+         ], 200);
+        } catch (\Exception $e) {
+         return response()->json([
+             'status' => 'failure',
+             'message' => 'An error occurred while fetching the purchase order'
+         ], 500);
+        }catch (GuzzleException $e) {
+         return response()->json([
+             'status' => 'failure',
+             'message' => 'An error occurred while fetching the purchase order: '. $e->getMessage(),
+         ], 500);
+       }
     }
 }
