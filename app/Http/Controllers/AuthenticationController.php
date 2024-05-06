@@ -35,6 +35,7 @@ class AuthenticationController extends Controller
             $credentials = $request->validate([
                 'email' => 'required|email',
                 'password' => 'required|string',
+                'token' => 'nullable|string',
             ]);
             $user = User::where('email', $credentials['email'])->first();
 
@@ -48,9 +49,13 @@ class AuthenticationController extends Controller
                 return response()->json(['message' => 'You account has been deactivated. Please contact your admin in order to activate it again'], 401);
             }
             // dd($user->role->max_login_attempts, $user['login_attempts']);
+            $token = $credentials['token'];
+            unset($credentials['token']);
 
             if (auth()->attempt($credentials)) {
                 $user->resetLoginAttempts();
+                $user->device_token = $token;
+                $user->save();
                 if ($user->role->role === 'customer' && $user->email_verified_at === null) {
                     return response()->json(['message' => 'Please verify your email'], 401);
                 }
