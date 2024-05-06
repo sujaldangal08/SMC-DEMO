@@ -14,8 +14,9 @@ class SkuController extends Controller
     public function sku(): \Illuminate\Http\JsonResponse
     {
         $skuData = Sku::all();
-
-        return response()->json([
+        // $skuData = Sku::with('branch','warehouses','inventory')->get();
+        dd($skuData);
+          return response()->json([
             'status' => 'success',
             'message' => 'SKU retrieved successfully',
             'data' => $skuData,
@@ -53,6 +54,7 @@ class SkuController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to create SKU: '.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -94,6 +96,7 @@ class SkuController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to update SKU: '.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }

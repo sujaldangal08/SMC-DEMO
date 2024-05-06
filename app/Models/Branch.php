@@ -29,4 +29,9 @@ class Branch extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function sku()
+    {
+        return $this->hasMany(Sku::class);
+    }
 }

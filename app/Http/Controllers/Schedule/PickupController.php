@@ -32,7 +32,7 @@ class PickupController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch all pickup schedules' . $e->getMessage(),
             ], 500);
         }
     }
@@ -68,7 +68,7 @@ class PickupController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch pickup schedule' . $e->getMessage(),
             ], 500);
         }
     }
@@ -103,7 +103,7 @@ class PickupController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to create pickup schedule' . $e->getMessage(),
             ], 500);
         }
     }
@@ -141,7 +141,7 @@ class PickupController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to update pickup schedule' . $e->getMessage(),
             ], 500);
         }
     }
@@ -159,7 +159,7 @@ class PickupController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to delete pickup schedule' . $e->getMessage(),
             ], 500);
         }
     }
@@ -177,7 +177,7 @@ class PickupController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to restore pickup schedule' . $e->getMessage(),
             ], 500);
         }
     }
@@ -195,7 +195,7 @@ class PickupController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to permanently delete pickup schedule' . $e->getMessage(),
             ], 500);
         }
     }

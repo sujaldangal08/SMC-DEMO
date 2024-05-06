@@ -33,7 +33,7 @@ class ReportController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Data not found!',
+                'message' => 'Data not found!' . $e->getMessage(),
                 'data' => null,
                 'error' => 'Data not found!',
             ], 404);
@@ -72,7 +72,7 @@ class ReportController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Data not found!',
+                'message' => 'Data not found!' .  $e->getMessage(),
                 'data' => null,
                 'error' => 'Data not found!'], 400);
         }
@@ -105,7 +105,7 @@ class ReportController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Data not found!',
+                'message' => 'Data not found!' . $e->getMessage(),
                 'data' => null,
                 'error' => 'Data not found!'], 404);
         }
@@ -138,7 +138,7 @@ class ReportController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Data not found!',
+                'message' => 'Data not found!' . $e->getMessage(),
                 'data' => null,
                 'error' => 'Data not found!'], 404);
         }
@@ -170,7 +170,7 @@ class ReportController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Data not found!',
+                'message' => 'Data not found!' . $e->getMessage(),
                 'data' => null,
                 'error' => 'Data not found!'], 404);
         }

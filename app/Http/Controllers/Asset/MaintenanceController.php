@@ -29,7 +29,7 @@ class MaintenanceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Maintenance fetch failure' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -54,7 +54,7 @@ class MaintenanceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Maintenance fetch failed' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -88,7 +88,7 @@ class MaintenanceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to create Maintenance' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -135,7 +135,7 @@ class MaintenanceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to update Maintenance' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -164,7 +164,7 @@ class MaintenanceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to delete Maintenance' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -193,7 +193,7 @@ class MaintenanceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to restore Maintenance' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -222,7 +222,7 @@ class MaintenanceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to delete Maintenance permanently' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }

@@ -21,6 +21,6 @@ class Warehouse extends Model
 
     public function skus()
     {
-        return $this->belongsToMany(Sku::class, 'sku_warehouse', 'warehouse_id', 'sku_id');
+        return $this->belongsToMany(Sku::class, 'warehouse_id', 'id');
     }
 }

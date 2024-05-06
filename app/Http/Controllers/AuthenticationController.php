@@ -35,6 +35,7 @@ class AuthenticationController extends Controller
             $credentials = $request->validate([
                 'email' => 'required|email',
                 'password' => 'required|string',
+                'token' => 'nullable|string',
             ]);
             $user = User::where('email', $credentials['email'])->first();
 
@@ -48,9 +49,13 @@ class AuthenticationController extends Controller
                 return response()->json(['message' => 'You account has been deactivated. Please contact your admin in order to activate it again'], 401);
             }
             // dd($user->role->max_login_attempts, $user['login_attempts']);
+            $token = $credentials['token'];
+            unset($credentials['token']);
 
             if (auth()->attempt($credentials)) {
                 $user->resetLoginAttempts();
+                $user->device_token = $token;
+                $user->save();
                 if ($user->role->role === 'customer' && $user->email_verified_at === null) {
                     return response()->json(['message' => 'Please verify your email'], 401);
                 }
@@ -76,6 +81,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Invalid Credentials',
                 'data' => null,
             ], 400);
         }
@@ -151,12 +157,14 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'errors' => $e->validator->errors(),
+                'message' => 'Validation error',
                 'data' => null,
             ], 400);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Registration failed',
                 'data' => null,
             ], 400);
         }
@@ -258,6 +266,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'User creation failed',
                 'data' => null,
             ], 400);
         }
@@ -280,6 +289,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Logout failed',
                 'data' => null,
             ], 400);
         }
@@ -288,7 +298,7 @@ class AuthenticationController extends Controller
     /**
      * Reset the user's password
      *
-     * @param  Request  $request
+     * @return JsonResponse
      */
     public function dashboard(): JsonResponse
     {
@@ -391,12 +401,14 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'errors' => $e->validator->errors(),
+                'message' => 'Validation error',
                 'data' => null,
             ], 400);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Failed to send OTP',
                 'data' => null,
             ], 400);
         }
@@ -431,6 +443,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Invalid credentials',
                 'data' => null,
             ], 400);
         }
@@ -484,9 +497,12 @@ class AuthenticationController extends Controller
             Storage::disk('public')->put($filePath, $qrCode);
 
             return response()->json([
+                'status' => 'success',
                 'message' => '2FA generated successfully',
-                'qr_code_url' => url(Storage::url($filePath)),
-                'secret_key' => $secretKey,
+                'data' => [
+                    'qr_code_url' => url(Storage::url($filePath)),
+                    'secret_key' => $secretKey,
+                ],
             ], 200);
         }
     }
@@ -645,12 +661,14 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'errors' => $e->validator->errors(),
+                'message' => 'Validation error',
                 'data' => null,
             ], 400);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Failed to change password',
                 'data' => null,
             ], 400);
         }

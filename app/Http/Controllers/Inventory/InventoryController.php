@@ -79,6 +79,7 @@ class InventoryController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to create inventory: '.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -129,6 +130,7 @@ class InventoryController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to update inventory: '.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
