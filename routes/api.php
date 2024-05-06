@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Adhoc\AdHocController;
 use App\Http\Controllers\Asset\AssetController;
 use App\Http\Controllers\Asset\InsuranceController;
 use App\Http\Controllers\Asset\MaintenanceController;
@@ -244,3 +245,8 @@ Route::post('/driver/trips/{id}', [DriverController::class, 'updateDeliveryTrip'
 
 //Driver Dashboard Data
 Route::get('/driver/dashboard', [DriverController::class, 'driverDashboard'])->middleware('auth:sanctum');
+
+// AdHoc Module Routes
+Route::get('/adhoc', [AdHocController::class, 'index']);
+Route::get('/adhoc/{id}', [AdHocController::class, 'getOne']);
+Route::post('/adhoc', [AdHocController::class, 'create']);

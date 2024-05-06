@@ -37,6 +37,21 @@ class Insurance extends Model
 
     public function getAttachmentAttribute($value)
     {
-        return $value ? asset('storage/'.$value) : null;
+        if ($value) {
+            $images = json_decode($value);
+            if (is_array($images)) {
+                $imageUrls = [];
+                foreach ($images as $image) {
+                    // Ensure the image is a non-empty string before adding it to the URLs array
+                    if (is_string($image) && ! empty($image)) {
+                        $imageUrls[] = url($image);
+                    }
+                }
+
+                return $imageUrls;
+            }
+        }
+
+        return null; // Return null if the image attribute is empty or invalid
     }
 }

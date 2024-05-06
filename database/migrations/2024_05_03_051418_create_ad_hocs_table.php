@@ -16,13 +16,14 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('users');
             $table->foreignId('staff_id')->constrained('users');
             $table->string('materials');
-            $table->integer('rate');
+            $table->string('rate');
             $table->enum('staff_status', ['pending', 'approved', 'rejected', 'review'])->default('pending');
-            $table->enum('weighing_type', ['bridge', 'pallet']);
+            $table->string('weighing_type');
             $table->string('notes')->nullable();
             $table->string('amount');
             $table->enum('customer_status', ['pending', 'approved', 'rejected', 'review'])->default('pending');
             $table->string('attachment')->nullable();
+            $table->foreignId('branch_id')->constrained('branches');
             $table->timestamps();
         });
     }

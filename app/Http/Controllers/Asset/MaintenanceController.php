@@ -17,6 +17,9 @@ class MaintenanceController extends Controller
     {
         try {
             $maintenances = Maintenance::all();
+            $maintenances->load([
+                'asset:id,title',
+            ]);
 
             return response()->json([
                 'status' => 'success',
@@ -39,6 +42,9 @@ class MaintenanceController extends Controller
     {
         try {
             $maintenances = Maintenance::findOrFail($id);
+            $maintenances->load([
+                'asset:id,title',
+            ]);
 
             return response()->json([
                 'status' => 'success',
