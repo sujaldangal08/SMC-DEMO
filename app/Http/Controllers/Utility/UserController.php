@@ -29,8 +29,8 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch user' . $e->getMessage(),
             ], 500);
         }
     }
@@ -48,8 +48,8 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch user' . $e->getMessage(),
             ], 500);
         }
     }
@@ -69,8 +69,8 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch driver' . $e->getMessage(),
             ], 500);
         }
     }
@@ -90,8 +90,8 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch manager' . $e->getMessage(),
             ], 500);
         }
     }
@@ -111,8 +111,8 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch staffs' . $e->getMessage(),
             ], 500);
         }
     }
@@ -132,8 +132,8 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch customers' . $e->getMessage(),
             ], 500);
         }
     }
@@ -153,8 +153,8 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch admins' . $e->getMessage(),
             ], 500);
         }
     }

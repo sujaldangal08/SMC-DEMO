@@ -33,6 +33,7 @@ return new class extends Migration
             $table->text('otp')->nullable();
             $table->text('otp_hash')->nullable();
             $table->timestamp('otp_expiry')->nullable();
+            $table->string('device_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

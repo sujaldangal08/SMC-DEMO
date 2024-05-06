@@ -28,7 +28,7 @@ class AssetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Asset fetch failure' .$e->getMessage(),
                 'data' => null,
             ], 500); // Internal Server Error
         }
@@ -50,7 +50,7 @@ class AssetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Asset fetch failure' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -82,7 +82,7 @@ class AssetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Asset creation failed' .$e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -127,7 +127,7 @@ class AssetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Asset update failed' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -150,7 +150,7 @@ class AssetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Asset deletion failed' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -173,7 +173,7 @@ class AssetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Asset restoration failed' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -196,7 +196,7 @@ class AssetController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Asset could not be deleted' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }

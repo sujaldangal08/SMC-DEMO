@@ -43,7 +43,7 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch dashboard' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -70,7 +70,7 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch all routes' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -107,7 +107,7 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch route' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -140,7 +140,7 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to update route' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -166,7 +166,7 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch Schedule' . $e->getMessage(),
                 'data' => null,
             ]);
         }
@@ -203,7 +203,7 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to update Schedule' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -237,7 +237,7 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to retrieve delivery trips' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -278,7 +278,7 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to retrieve delivery trip' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -322,7 +322,7 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to update delivery trip' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }

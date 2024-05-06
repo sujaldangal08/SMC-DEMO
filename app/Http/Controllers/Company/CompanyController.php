@@ -16,7 +16,7 @@ class CompanyController extends Controller
     {
         // Fetch all companies from the database
         $companies = Company::with('branches')->get();
-        dd($companies);
+        // dd($companies);
         // Count the total number of companies
         $CompanyCount = Company::count();
 

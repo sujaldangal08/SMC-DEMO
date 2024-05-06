@@ -31,6 +31,7 @@ class User extends Authenticatable
         'role_id',
         'image',
         'login_attempts',
+        'device_token',
     ];
 
     /**

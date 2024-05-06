@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('barcode');
             $table->string('tags');
             $table->string('status');
+            $table->foreignId('branch_id')->constrained('branches');
             $table->timestamps();
         });
     }
