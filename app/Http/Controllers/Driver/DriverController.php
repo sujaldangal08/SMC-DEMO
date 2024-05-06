@@ -306,7 +306,7 @@ class DriverController extends Controller
                 ], 422);
             }
             // Check if request has image
-            if (isset($validatedData['attachment']) && $validatedData['attachment'] !== null) {
+            if (isset($validatedData['attachment'])) {
                 $validatedValue = $this->imageUpload($validatedData['attachment']);
                 $validatedData['attachment'] = $validatedValue;
             }

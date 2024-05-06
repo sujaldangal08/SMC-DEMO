@@ -205,17 +205,17 @@ class AssetController extends Controller
     protected function imageUpload(array $validatedRequest)
     {
         $image = $validatedRequest['image'];
-        $image_name = Str::random(10) . '.' . $image->getClientOriginalExtension();
-        $filePath = 'uploads/asset/' . $image_name;
+        $image_name = Str::random(10).'.'.$image->getClientOriginalExtension();
+        $filePath = 'uploads/asset/'.$image_name;
 
         // Check if the 'uploads/asset' directory exists and create it if it doesn't
-        if (!Storage::disk('public')->exists('uploads/asset')) {
+        if (! Storage::disk('public')->exists('uploads/asset')) {
             Storage::disk('public')->makeDirectory('uploads/asset');
         }
         // Save the image to a file in the public directory
         Storage::disk('public')->put($filePath, file_get_contents($image));
 
-        $image_location = 'uploads/asset/' . $image_name;
+        $image_location = 'uploads/asset/'.$image_name;
         $validatedRequest['image'] = $image_location;
 
         return $validatedRequest;

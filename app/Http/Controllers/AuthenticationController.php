@@ -288,7 +288,7 @@ class AuthenticationController extends Controller
     /**
      * Reset the user's password
      *
-     * @param  Request  $request
+     * @return JsonResponse
      */
     public function dashboard(): JsonResponse
     {
@@ -484,9 +484,12 @@ class AuthenticationController extends Controller
             Storage::disk('public')->put($filePath, $qrCode);
 
             return response()->json([
+                'status' => 'success',
                 'message' => '2FA generated successfully',
-                'qr_code_url' => url(Storage::url($filePath)),
-                'secret_key' => $secretKey,
+                'data' => [
+                    'qr_code_url' => url(Storage::url($filePath)),
+                    'secret_key' => $secretKey,
+                ],
             ], 200);
         }
     }
