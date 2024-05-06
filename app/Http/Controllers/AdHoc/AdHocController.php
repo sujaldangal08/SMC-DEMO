@@ -28,7 +28,7 @@ class AdHocController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'AdHoc fetch failure'.$e->getMessage(),
             ], 500);
         }
     }
@@ -46,7 +46,7 @@ class AdHocController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'AdHoc fetch failure'.$e->getMessage(),
             ], 500);
         }
     }
@@ -67,7 +67,7 @@ class AdHocController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'AdHoc creation failure' . $e->getMessage(),
             ], 500);
         }
     }

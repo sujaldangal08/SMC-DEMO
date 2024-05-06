@@ -31,8 +31,8 @@ class TicketController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch all tickets ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -53,13 +53,13 @@ class TicketController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Ticket not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch tickets' . $e->getMessage(),
             ], 500);
         }
     }
@@ -91,7 +91,9 @@ class TicketController extends Controller
                 'data' => $tickets,
             ], 201);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Failed to create ticket ' . $e->getMessage()], 500);
         }
     }
 
@@ -127,8 +129,8 @@ class TicketController extends Controller
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to update ticket ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -148,13 +150,13 @@ class TicketController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Ticket not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failure to delete ticket ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -174,13 +176,13 @@ class TicketController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Ticket not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to restore ticket ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -200,13 +202,13 @@ class TicketController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Ticket not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to permanently delete ticket ' . $e->getMessage(),
             ], 500);
         }
     }

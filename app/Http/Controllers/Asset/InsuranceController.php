@@ -102,7 +102,7 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to create Insurance' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -143,7 +143,7 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to create Insurance' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -168,7 +168,7 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to delete Insurance' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -193,7 +193,7 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to restore Insurance' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }
@@ -218,7 +218,7 @@ class InsuranceController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to delete Insurance permanently' . $e->getMessage(),
                 'data' => null,
             ], 500);
         }

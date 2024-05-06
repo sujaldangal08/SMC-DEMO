@@ -53,6 +53,7 @@ class SkuController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to create SKU: '.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }
@@ -94,6 +95,7 @@ class SkuController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Failed to update SKU: '.$e->getMessage(),
+                'data' => null,
             ], 500);
         }
     }

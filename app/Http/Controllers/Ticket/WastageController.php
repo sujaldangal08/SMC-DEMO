@@ -22,12 +22,13 @@ class WastageController extends Controller
 
             return response()->json([
                 'status' => 'success',
+                'message' => 'All wastes fetched successfully',
                 'data' => $waste,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch all wastes ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -42,17 +43,18 @@ class WastageController extends Controller
 
             return response()->json([
                 'status' => 'success',
+                'message' => 'Waste fetched successfully',
                 'data' => $waste,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to fetch wastes' . $e->getMessage(),
             ], 500);
         }
     }
@@ -84,7 +86,7 @@ class WastageController extends Controller
             // dd($data);
             if ($data->gross_weight < $validatedData['quantity']) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failure',
                     'message' => 'Waste quantity cannot be greater than gross weight',
                 ], 400);
             }
@@ -96,13 +98,14 @@ class WastageController extends Controller
             $waste = Waste::create($validatedData);
 
             return response()->json([
-                'status' => $message,
+                'status' => 'success' . $message,
+                'message' => 'Waste created successfully',
                 'data' => $waste,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to create waste' . $e->getMessage(),
             ], 500);
         }
     }
@@ -124,7 +127,7 @@ class WastageController extends Controller
             // dd($data);
             if ($data->gross_weight < $validatedData['quantity']) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failure',
                     'message' => 'Waste quantity cannot be greater than gross weight',
                 ], 400);
             }
@@ -138,18 +141,19 @@ class WastageController extends Controller
             $waste->update($validatedData);
 
             return response()->json([
-                'status' => $message,
+                'status' => 'success' . $message,
+                'message' => 'Waste updated successfully',
                 'data' => $waste,
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to update waste' .  $e->getMessage(),
             ], 500);
         }
     }
@@ -169,13 +173,13 @@ class WastageController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to delete waste' . $e->getMessage(),
             ], 500);
         }
     }
@@ -195,13 +199,13 @@ class WastageController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to restore waste' . $e->getMessage(),
             ], 500);
         }
     }
@@ -221,13 +225,13 @@ class WastageController extends Controller
             ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => 'failure',
                 'message' => 'Waste not found',
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
+                'status' => 'failure',
+                'message' => 'Failed to permanently delete waste' . $e->getMessage(),
             ], 500);
         }
     }

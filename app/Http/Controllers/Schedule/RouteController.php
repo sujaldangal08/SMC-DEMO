@@ -27,7 +27,7 @@ class RouteController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch all routes ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -51,7 +51,7 @@ class RouteController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch route' . $e->getMessage(),
             ], 500);
         }
     }
@@ -78,7 +78,7 @@ class RouteController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to create route ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -113,7 +113,7 @@ class RouteController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to update route' . $e->getMessage(),
             ], 500);
         }
     }
@@ -136,7 +136,7 @@ class RouteController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to delete route' . $e->getMessage(),
             ], 500);
         }
     }
@@ -159,7 +159,7 @@ class RouteController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to restore route ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -182,7 +182,7 @@ class RouteController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to permanently delete route' . $e->getMessage(),
             ], 500);
         }
     }

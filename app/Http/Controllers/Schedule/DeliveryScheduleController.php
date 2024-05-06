@@ -37,7 +37,7 @@ class DeliveryScheduleController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'An error occurred while retrieving the delivery schedules',
+                'message' => 'An error occurred while retrieving the delivery schedules' . $e->getMessage(),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -57,12 +57,12 @@ class DeliveryScheduleController extends Controller
         } catch (ModelNotFoundException $e) { // More specific exception
             return response()->json([
                 'status' => 'error',
-                'message' => 'Delivery schedule not found',
+                'message' => 'Delivery schedule not found' . $e->getMessage(),
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'An error occurred while retrieving the delivery schedule',
+                'message' => 'An error occurred while retrieving the delivery schedule' . $e->getMessage(),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -122,7 +122,7 @@ class DeliveryScheduleController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'An error occurred while creating the delivery schedule',
+                'message' => 'An error occurred while creating the delivery schedule' . $e->getMessage(),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -175,12 +175,12 @@ class DeliveryScheduleController extends Controller
         } catch (ModelNotFoundException $e) { // More specific exception for model not found
             return response()->json([
                 'status' => 'error',
-                'message' => 'Delivery schedule not found',
+                'message' => 'Delivery schedule not found' . $e->getMessage(),
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'An error occurred while updating the delivery schedule',
+                'message' => 'An error occurred while updating the delivery schedule' . $e->getMessage(),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -200,12 +200,12 @@ class DeliveryScheduleController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Delivery schedule not found',
+                'message' => 'Delivery schedule not found' . $e->getMessage(),
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'An error occurred while deleting the delivery schedule',
+                'message' => 'An error occurred while deleting the delivery schedule' . $e->getMessage(),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -225,12 +225,12 @@ class DeliveryScheduleController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Delivery schedule not found',
+                'message' => 'Delivery schedule not found' . $e->getMessage(),
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'An error occurred while restoring the delivery schedule',
+                'message' => 'An error occurred while restoring the delivery schedule' . $e->getMessage(),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -251,12 +251,12 @@ class DeliveryScheduleController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Delivery schedule not found',
+                'message' => 'Delivery schedule not found' . $e->getMessage(),
             ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'An error occurred while permanently deleting the delivery schedule',
+                'message' => 'An error occurred while permanently deleting the delivery schedule' . $e->getMessage(),
                 'error' => $e->getMessage(),
             ], 500);
         }
