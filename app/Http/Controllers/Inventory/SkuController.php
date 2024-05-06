@@ -14,8 +14,9 @@ class SkuController extends Controller
     public function sku(): \Illuminate\Http\JsonResponse
     {
         $skuData = Sku::all();
-
-        return response()->json([
+        // $skuData = Sku::with('branch','warehouses','inventory')->get();
+        dd($skuData);
+          return response()->json([
             'status' => 'success',
             'message' => 'SKU retrieved successfully',
             'data' => $skuData,
