@@ -16,12 +16,23 @@ class RouteController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $routes = Route::paginate(10);
+            $query = Route::query();
+
+            $filters = ['status', 'branch_id', 'driver_id', 'asset_id', 'start_date',];
+            foreach ($filters as $filter) {
+                if (request()->has($filter)) {
+                    $query->where($filter, request($filter));
+                }
+            }
+            $routes = $query->with([
+                'driver:id,name,image',
+                'asset:id,title,rego_number,image',
+                'schedule:id,route_id',
+            ])->paginate(request('paginate', 10));
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'All routes fetched successfully',
-                'total' => $routes->count(),
                 'routes' => $routes,
             ], 200);
         } catch (\Exception $e) {
