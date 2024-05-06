@@ -47,5 +47,41 @@ class PickupScheduleSeeder extends Seeder
             'image' => ['image1.jpg', 'image2.jpg'],
             'coordinates' => ['27.701479', '85.340105'],
         ]);
+
+        PickupSchedule::factory()->create([
+            'route_id' => 2,
+            'driver_id' => 2,
+            'asset_id' => 1,
+            'customer_id' => 4,
+            'pickup_date' => now(),
+            'status' => 'active',
+            'notes' => 'Some notes',
+            'materials' => ['AluminumR2', 'CopperR2'],
+            'amount' => [200, 300],
+            'rate' => [20, 30],
+            'weighing_type' => ['bridge', 'bridge'],
+            'n_bins' => 2,
+            'tare_weight' => [60, 70],
+            'image' => ['image1.jpg', 'image2.jpg'],
+            'coordinates' => ['27.701479', '85.340105'],
+        ]);
+
+        PickupSchedule::factory()->create([
+            'route_id' => 3,
+            'driver_id' => 6,
+            'asset_id' => 1,
+            'customer_id' => 4,
+            'pickup_date' => now(),
+            'status' => 'active',
+            'notes' => 'Some notes',
+            'materials' => ['AluminumR3', 'CopperR3'],
+            'amount' => [200, 300],
+            'rate' => [20, 30],
+            'weighing_type' => ['bridge', 'bridge'],
+            'n_bins' => 2,
+            'tare_weight' => [60, 70],
+            'image' => ['image1.jpg', 'image2.jpg'],
+            'coordinates' => ['27.701479', '85.340105'],
+        ]);
     }
 }
