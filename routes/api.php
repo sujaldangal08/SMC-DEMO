@@ -11,6 +11,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\Inventory\InventoryController;
 use App\Http\Controllers\Inventory\SkuController;
 use App\Http\Controllers\Inventory\WarehouseController;
+use App\Http\Controllers\SendNotificationController;
 use App\Http\Controllers\Report\{ReportController};
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\Schedule\DeliveryController;
@@ -25,6 +26,10 @@ use App\Http\Controllers\Ticket\TicketController;
 use App\Http\Controllers\Ticket\WastageController;
 use Illuminate\Support\Facades\Route;
 
+
+//Notification
+
+Route::get('/notification', [SendNotificationController::class, 'sendNotification']);
 // User routes
 Route::get('/drivers', 'App\Http\Controllers\Utility\UserController@RetrieveDriver');
 Route::get('/managers', 'App\Http\Controllers\Utility\UserController@RetrieveManager');

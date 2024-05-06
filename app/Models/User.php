@@ -121,4 +121,9 @@ class User extends Authenticatable
     {
         return $value ? asset('storage/'.$value) : null;
     }
+
+    public function routeNotificationForFirebase($notification)
+    {
+        return $this->device_token; // replace with the name of the device token column in your users table
+    }
 }
