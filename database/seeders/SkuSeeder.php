@@ -18,6 +18,7 @@ class SkuSeeder extends Seeder
             'barcode' => 'BAR0001',
             'tags' => 'Tag1',
             'status' => 'active',
+            'branch_id' => 1,
         ]);
     }
 }

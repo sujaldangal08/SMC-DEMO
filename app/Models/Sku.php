@@ -14,6 +14,7 @@ class Sku extends Model
         'barcode',
         'tags',
         'status',
+        'branch_id',
     ];
 
     public function inventory()
@@ -23,7 +24,12 @@ class Sku extends Model
 
     public function warehouses()
     {
-        return $this->belongsToMany(Warehouse::class, 'sku_warehouse', 'sku_id', 'warehouse_id');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'id');
     }
 
     public static function boot()
