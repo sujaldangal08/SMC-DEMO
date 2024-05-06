@@ -151,6 +151,7 @@ class XeroController extends Controller
 
         // Return a JSON response with the status, message, and the data
         return response()->json([
+            'status' => 'success',
             'message' => 'Successfully connected to Xero',
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken,
@@ -211,6 +212,7 @@ class XeroController extends Controller
 
         // Return a JSON response with the status, message, and the data
         return response()->json([
+            'status' => 'success',
             'message' => 'Successfully refreshed the access token',
             'access_token' => $responseBody['access_token'],
             'refresh_token' => $responseBody['refresh_token'],
@@ -277,6 +279,7 @@ class XeroController extends Controller
 
         // Return a JSON response with the status, message, and the data
         return response()->json([
+            'status' => 'success',
             'message' => 'Successfully fetched and saved the tenants',
             'tenants' => $responseBody,
         ], 200);

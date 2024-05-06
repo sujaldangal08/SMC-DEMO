@@ -22,7 +22,7 @@ class AuthenticationSettingsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch login attempts' . $e->getMessage(),
                 'exception' => $e->getMessage()], 400);
         }
     }
@@ -39,12 +39,12 @@ class AuthenticationSettingsController extends Controller
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Validation errors' .  $e->getMessage(),
                 'error' => $e->validator->errors()->getMessages()], 401);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to fetch login attempt' . $e->getMessage(),
                 'exception' => $e->getMessage()], 400);
         }
     }
@@ -66,7 +66,7 @@ class AuthenticationSettingsController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Failed to update login attempts' . $e->getMessage(),
                 'exception' => $e->getMessage()], 400);
         }
     }

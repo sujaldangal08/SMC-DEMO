@@ -76,6 +76,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Invalid Credentials',
                 'data' => null,
             ], 400);
         }
@@ -151,12 +152,14 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'errors' => $e->validator->errors(),
+                'message' => 'Validation error',
                 'data' => null,
             ], 400);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Registration failed',
                 'data' => null,
             ], 400);
         }
@@ -258,6 +261,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'User creation failed',
                 'data' => null,
             ], 400);
         }
@@ -280,6 +284,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Logout failed',
                 'data' => null,
             ], 400);
         }
@@ -391,12 +396,14 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'errors' => $e->validator->errors(),
+                'message' => 'Validation error',
                 'data' => null,
             ], 400);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Failed to send OTP',
                 'data' => null,
             ], 400);
         }
@@ -431,6 +438,7 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Invalid credentials',
                 'data' => null,
             ], 400);
         }
@@ -648,12 +656,14 @@ class AuthenticationController extends Controller
             return response()->json([
                 'status' => 'failure',
                 'errors' => $e->validator->errors(),
+                'message' => 'Validation error',
                 'data' => null,
             ], 400);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
                 'exception' => $e->getMessage(),
+                'message' => 'Failed to change password',
                 'data' => null,
             ], 400);
         }
