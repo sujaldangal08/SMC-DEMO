@@ -27,7 +27,8 @@ class RouteController extends Controller
             $routes = $query->with([
                 'driver:id,name,image',
                 'asset:id,title,rego_number,image',
-                'schedule:id,route_id',
+                'schedule:id,route_id,customer_id,materials,amount,rate,status',
+                'schedule.customer:id,name',
             ])->paginate(request('paginate', 10));
 
             return response()->json([
@@ -51,7 +52,7 @@ class RouteController extends Controller
             $route = $route->load([
                 'driver:id,name,image',
                 'asset:id,title,rego_number,image',
-                'schedule.customer:id,name,phone_number,image',
+                'schedule.customer:id,name',
             ]);
 
             return response()->json([
