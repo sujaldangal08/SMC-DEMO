@@ -21,4 +21,4 @@ jobs:
         - task: Bash@3
           displayName: 'Run deploy.sh script'
           inputs:
-            filePath: '/home/smcuser/SMC-DEMO'
+            filePath: '/home/smcuser/SMC-DEMO/deploy.sh'
