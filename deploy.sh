@@ -3,12 +3,12 @@
 cd /home/smcuser/SMC-DEMO
 git pull origin Sujal
 sudo apt update
-composer install
-composer update
-composer upgrade
+/usr/local/bin/composer install
+/usr/local/bin/composer update
+/usr/local/bin/composer upgrade
 php artisan key:generate
 php artisan migrate:fresh 
 php artisan db:seed
 rm -rf public/storage
 php artisan storage:link
-php artisan serve --port=80 &
+php artisan serve --port=8080 &
