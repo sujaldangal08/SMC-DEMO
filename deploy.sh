@@ -1,8 +1,8 @@
 #!/bin/bash
 
 cd /home/smcuser/SMC-DEMO
-git pull Sujal
-apt update
+git pull origin Sujal
+sudo apt update
 composer install
 composer update
 composer upgrade
