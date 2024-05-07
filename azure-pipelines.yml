@@ -1,5 +1,5 @@
 trigger:
-- development-deploy-environment
+- Sujal
 
 pool:
   vmImage: ubuntu-latest
@@ -11,26 +11,14 @@ jobs:
 - deployment: VMDeploy
   displayName: Web deploy
   environment:
-    name: 'SMC-Backend'
+    name: 'smcdemo'
     resourceType: VirtualMachine
-    resourceName: 'SMC-Backend-Development'
+    resourceName: 'smcdemo'
   strategy:
     runOnce:
       deploy:
         steps:
-        - script: |
-            sudo bash -c '
-            cd /home/securesclogin/SMC-Laravel-API
-            git pull origin development-deploy-environment
-            apt update
-            composer install
-            composer update
-            composer upgrade
-            php artisan key:generate
-            php artisan migrate:fresh 
-            php artisan db:seed
-            rm -rf public/storage
-            php artisan storage:link
-            php artisan serve --port=80 &
-            '
-          displayName: 'Continuous Integration and Deployment'
+        - task: Bash@3
+          displayName: 'Run deploy.sh script'
+          inputs:
+            filePath: deploy.sh
