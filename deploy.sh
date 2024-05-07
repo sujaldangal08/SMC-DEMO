@@ -11,4 +11,4 @@ sudo php artisan migrate:fresh
 sudo php artisan db:seed
 rm -rf public/storage
 sudo php artisan storage:link
-sudo php artisan serve --port=8000 &
+sudo php artisan serve --port=3000 &
