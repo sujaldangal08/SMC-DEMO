@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/laraveluser/SMC-DEMO
+cd /home/smclaravel/SMC-DEMO
 git pull origin Sujal
 apt update
 /usr/local/bin/composer install
@@ -11,4 +11,4 @@ php artisan migrate:fresh
 php artisan db:seed
 rm -rf public/storage
 php artisan storage:link
-php artisan serve --port=3000 &
+php artisan serve --port=8000 &
