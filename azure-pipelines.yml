@@ -11,9 +11,9 @@ jobs:
 - deployment: VMDeploy
   displayName: Web deploy
   environment:
-    name: 'laravel'
+    name: 'smclaravel'
     resourceType: VirtualMachine
-    resourceName: 'laravel'
+    resourceName: 'smclaravel'
   strategy:
     runOnce:
       deploy:
