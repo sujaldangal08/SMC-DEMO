@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/smcuser/SMC-DEMO
+cd /home/laraveluser/SMC-DEMO
 git pull origin Sujal
 apt update
 /usr/local/bin/composer install
