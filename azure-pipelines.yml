@@ -21,4 +21,4 @@ jobs:
         - task: Bash@3
           displayName: 'Run deploy.sh script'
           inputs:
-            filePath: '/home/laraveluser/SMC-DEMO/deploy.sh'
+            filePath: '/home/smclaravel/SMC-DEMO/deploy.sh'
